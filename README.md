@@ -48,11 +48,13 @@ Menggunakan metodologi **Waterfall dengan Iterasi**:
 Berikut adalah tampilan antarmuka dari ScheApp:
 
 ### 1. Halaman Login
-![Halaman Login](img/login.png)<img width="1919" height="1007" alt="Screenshot 2026-02-12 095852" src="https://github.com/user-attachments/assets/6209ad8c-3c2a-4ecd-b720-988a7e852809" />
+Halaman Login(img/login.png)<img width="1919" height="1007" alt="Screenshot 2026-02-12 095852" src="https://github.com/user-attachments/assets/6209ad8c-3c2a-4ecd-b720-988a7e852809" />
 
 
 ### 2. Dashboard Jadwal
-![Dashboard](img/dashboard.png)
+[Dashboard(img/dashboard.png)<img width="1917" height="1004" alt="Screenshot 2026-02-12 100456" src="https://github.com/user-attachments/assets/56e14e31-6ac1-4f1a-b8f6-4eebad66032c" />
+
 
 ### 3. Tambah Jadwal
-![Tambah Jadwal](img/create_schedule.png)
+Tambah Jadwal(img/create_schedule.png)<img width="1919" height="1005" alt="Screenshot 2026-02-12 100538" src="https://github.com/user-attachments/assets/c6c478ff-8b81-4994-8e9e-561ef5bae617" />
+
