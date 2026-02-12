@@ -45,5 +45,6 @@ Menggunakan metodologi **Waterfall dengan Iterasi**:
 ---
 
 ## 📸 Preview Interface
-*(Ganti link gambar di bawah dengan screenshot aplikasi kamu)*
-![Halaman Login](https://link-to-your-image.com/login.png)
+
+![Halaman Login](<img width="1919" height="1007" alt="image" src="https://github.com/user-attachments/assets/8440ac8e-9e5e-445e-a6d8-c3f538257909" />
+)
