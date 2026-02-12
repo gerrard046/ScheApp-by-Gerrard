@@ -46,5 +46,5 @@ Menggunakan metodologi **Waterfall dengan Iterasi**:
 
 ## 📸 Preview Interface
 
-![Halaman Login](<img width="1919" height="1007" alt="image" src="https://github.com/user-attachments/assets/8440ac8e-9e5e-445e-a6d8-c3f538257909" />
-)
+![Halaman Login](http://127.0.0.1:8000/)
+
