@@ -1,4 +1,3 @@
-Siap. Kita rapikan bahasanya supaya lebih formal, akademis, dan profesional—cocok untuk laporan proyek, README kampus, atau dokumentasi Scrum.
 
 📘 SCRUM PRODUCT BACKLOG
 ScheApp – User Authentication Module
