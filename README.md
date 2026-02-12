@@ -58,3 +58,90 @@ Halaman Login(img/login.png)<img width="1919" height="1007" alt="Screenshot 2026
 ### 3. Tambah Jadwal
 Tambah Jadwal(img/create_schedule.png)<img width="1919" height="1005" alt="Screenshot 2026-02-12 100538" src="https://github.com/user-attachments/assets/c6c478ff-8b81-4994-8e9e-561ef5bae617" />
 
+📊 Database Design – Entity Relationship Diagram (ERD)
+📌 Overview
+
+Pada tahap Design (SDLC Phase 3), dilakukan perancangan struktur basis data menggunakan Entity Relationship Diagram (ERD).
+ERD ini bertujuan untuk menggambarkan hubungan antar data utama dalam aplikasi ScheApp – Platform Manajemen Jadwal Pintar agar sistem terstruktur, konsisten, dan mudah dikembangkan.
+
+Aplikasi ScheApp memiliki tiga entitas utama, yaitu Roles, Users, dan Schedules, yang saling terhubung untuk mendukung fitur autentikasi pengguna dan manajemen jadwal berbasis akun.
+
+🗂️ Entitas dan Atribut
+1️⃣ Entity: ROLES
+
+Digunakan untuk mengelola hak akses pengguna dalam sistem (Admin dan User).
+
+Attribute	Type	Description
+id	Primary Key	Identitas unik role
+name	String	Jenis role (admin / user)
+created_at	Timestamp	Waktu pembuatan data
+updated_at	Timestamp	Waktu pembaruan data
+
+Fungsi:
+Menentukan peran pengguna dalam sistem sehingga pengelolaan hak akses lebih terstruktur.
+
+2️⃣ Entity: USERS
+
+Menyimpan data akun pengguna yang dapat mengakses aplikasi ScheApp.
+
+Attribute	Type	Description
+id	Primary Key	Identitas unik user
+role_id	Foreign Key	Relasi ke tabel roles
+name	String	Nama pengguna
+email	String (Unique)	Email untuk login
+password	String	Password terenkripsi
+created_at	Timestamp	Waktu pembuatan akun
+updated_at	Timestamp	Waktu pembaruan akun
+
+Fungsi:
+Sebagai identitas pengguna yang dapat membuat dan mengelola jadwal.
+
+3️⃣ Entity: SCHEDULES
+
+Menyimpan data jadwal kegiatan yang dibuat oleh pengguna.
+
+Attribute	Type	Description
+id	Primary Key	Identitas unik jadwal
+user_id	Foreign Key	Pemilik jadwal
+title	String	Judul kegiatan
+description	Text	Deskripsi kegiatan
+date	Date	Tanggal kegiatan
+start_time	Time	Waktu mulai
+end_time	Time	Waktu selesai
+priority	Enum	low / medium / high
+status	Enum	pending / done
+created_at	Timestamp	Waktu pembuatan
+updated_at	Timestamp	Waktu pembaruan
+
+Fungsi:
+Mengelola aktivitas harian pengguna beserta prioritas dan status penyelesaiannya.
+
+🔗 Relasi Antar Entitas
+Entity 1	Relationship	Entity 2
+Roles	1 : N	Users
+Users	1 : N	Schedules
+
+Penjelasan Relasi:
+
+Satu Role dapat dimiliki oleh banyak User
+
+Satu User dapat memiliki banyak Schedule
+
+Satu Schedule hanya dimiliki oleh satu User
+
+🧩 Diagram ERD (Representasi Visual)
++-----------+        +-----------+        +-------------+
+|   ROLES   |        |   USERS   |        |  SCHEDULES  |
++-----------+        +-----------+        +-------------+
+| id (PK)   |<------ | id (PK)   |<------ | id (PK)     |
+| name      |        | role_id   |        | user_id     |
+| created_at|        | name      |        | title       |
+| updated_at|        | email     |        | description |
++-----------+        | password  |        | date        |
+                     | created_at|        | start_time  |
+                     | updated_at|        | end_time    |
+                     +-----------+        | priority    |
+                                          | status      |
+                                          | created_at  |
+                                          | updated_at  |
+                                          +-------------+
