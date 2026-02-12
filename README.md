@@ -129,19 +129,5 @@ Satu User dapat memiliki banyak Schedule
 
 Satu Schedule hanya dimiliki oleh satu User
 
-🧩 Diagram ERD (Representasi Visual)
-+-----------+        +-----------+        +-------------+
-|   ROLES   |        |   USERS   |        |  SCHEDULES  |
-+-----------+        +-----------+        +-------------+
-| id (PK)   |<------ | id (PK)   |<------ | id (PK)     |
-| name      |        | role_id   |        | user_id     |
-| created_at|        | name      |        | title       |
-| updated_at|        | email     |        | description |
-+-----------+        | password  |        | date        |
-                     | created_at|        | start_time  |
-                     | updated_at|        | end_time    |
-                     +-----------+        | priority    |
-                                          | status      |
-                                          | created_at  |
-                                          | updated_at  |
-                                          +-------------+
+<img width="617" height="499" alt="Screenshot 2026-02-12 104303" src="https://github.com/user-attachments/assets/38466873-3f2f-415d-8e4f-c9762ae9b42f" />
+
