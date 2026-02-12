@@ -36,4 +36,22 @@ Menggunakan metodologi **Waterfall dengan Iterasi**:
 
 | Phase | Aktivitas | Output |
 | :--- | :--- | :--- |
-| **1. Planning** | Requirement gathering
+| **1. Planning** | Requirement gathering, user story | PRD, User Stories |
+| **2. Analysis** | SRS, feature prioritization | Feature List, SRS Doc |
+| **3. Design** | UML diagrams, database design | UML, ERD, Mockups |
+| **4. Development** | Coding, unit testing | Source code, tests |
+| **5. Testing** | Feature testing, security audit | Test cases (16 tests) |
+
+---
+
+## 📸 Preview Interface
+Berikut adalah tampilan antarmuka dari ScheApp:
+
+### 1. Halaman Login
+![Halaman Login](img/login.png)
+
+### 2. Dashboard Jadwal
+![Dashboard](img/dashboard.png)
+
+### 3. Tambah Jadwal
+![Tambah Jadwal](img/create_schedule.png)
