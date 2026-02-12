@@ -1,63 +1,150 @@
-<<<<<<< HEAD
-# ScheApp-by-Gerrard
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Siap. Kita rapikan bahasanya supaya lebih formal, akademis, dan profesional—cocok untuk laporan proyek, README kampus, atau dokumentasi Scrum.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+📘 SCRUM PRODUCT BACKLOG
+ScheApp – User Authentication Module
+🎯 EPIC: User Authentication & Authorization
 
-## About Laravel
+Deskripsi:
+Menyediakan mekanisme autentikasi pengguna yang aman dan andal agar hanya pengguna terdaftar yang dapat mengakses fitur aplikasi ScheApp.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+📌 FEATURE 1: User Registration
+User Story 1.1 – Registrasi Akun
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Sebagai calon pengguna
+Saya ingin mendaftarkan akun menggunakan email dan kata sandi
+Sehingga saya dapat mengakses sistem ScheApp
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Acceptance Criteria:
 
-## Learning Laravel
+Sistem menyediakan form registrasi berisi nama, email, dan kata sandi.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Email yang didaftarkan harus bersifat unik.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Kata sandi dienkripsi menggunakan algoritma bcrypt.
 
-## Laravel Sponsors
+Sistem menyimpan data pengguna ke dalam basis data.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Pengguna diarahkan ke halaman login atau dashboard setelah registrasi berhasil.
 
-### Premium Partners
+Sistem menampilkan pesan kesalahan jika validasi gagal.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Estimasi Story Point: 5
 
-## Contributing
+📌 FEATURE 2: User Login
+User Story 2.1 – Login Pengguna
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Sebagai pengguna terdaftar
+Saya ingin masuk ke sistem menggunakan email dan kata sandi
+Sehingga saya dapat mengakses fitur ScheApp sesuai hak akses
 
-## Code of Conduct
+Acceptance Criteria:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Sistem menyediakan form login (email dan kata sandi).
 
-## Security Vulnerabilities
+Sistem memverifikasi kecocokan email dan kata sandi.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Kata sandi diverifikasi menggunakan bcrypt.
 
-## License
+Jika autentikasi berhasil, pengguna diarahkan ke dashboard.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> 4519e61 (Initial Commit: Sistem Login Register dengan Bcrypt)
+Jika autentikasi gagal, sistem menampilkan pesan kesalahan.
+
+Estimasi Story Point: 3
+
+📌 FEATURE 3: User Logout
+User Story 3.1 – Logout Pengguna
+
+Sebagai pengguna
+Saya ingin keluar dari sistem
+Sehingga keamanan akun saya tetap terjaga
+
+Acceptance Criteria:
+
+Sistem menyediakan fitur logout.
+
+Session pengguna dihapus.
+
+Pengguna diarahkan kembali ke halaman login.
+
+Estimasi Story Point: 2
+
+📌 FEATURE 4: Input Validation & Security
+User Story 4.1 – Validasi Data
+
+Sebagai pengguna
+Saya ingin sistem memvalidasi data yang saya masukkan
+Sehingga kesalahan input dapat dicegah sejak awal
+
+Acceptance Criteria:
+
+Seluruh field wajib diisi.
+
+Format email harus valid.
+
+Kata sandi memiliki panjang minimal 8 karakter.
+
+Pesan validasi ditampilkan secara informatif.
+
+Estimasi Story Point: 3
+
+User Story 4.2 – Keamanan Kata Sandi
+
+Sebagai pengguna
+Saya ingin kata sandi saya disimpan secara aman
+Sehingga data akun terlindungi dari penyalahgunaan
+
+Acceptance Criteria:
+
+Kata sandi tidak disimpan dalam bentuk plain text.
+
+Sistem menggunakan hashing bcrypt bawaan Laravel.
+
+Estimasi Story Point: 2
+
+🗓️ Contoh Sprint Goal
+
+Sprint 1 – Authentication Module
+
+Mengimplementasikan fitur registrasi, login, logout, dan validasi data pengguna dengan standar keamanan aplikasi web.
+
+📊 USE CASE DIAGRAM – ScheApp
+Aktor:
+
+User
+
+Use Case:
+
+Register Account
+
+Login
+
+Logout
+
+Access Dashboard
+
+📐 Use Case Diagram (PlantUML)
+
+Dapat digunakan untuk generate diagram UML secara otomatis.
+
+@startuml
+left to right direction
+
+actor User
+
+rectangle "ScheApp" {
+  User --> (Register Account)
+  User --> (Login)
+  User --> (Logout)
+  User --> (Access Dashboard)
+
+  (Register Account) --> (Encrypt Password with Bcrypt)
+  (Login) --> (Verify Password)
+}
+@enduml
+
+📝 Deskripsi Use Case Singkat
+Use Case	Deskripsi
+Register Account	Proses pendaftaran akun baru oleh pengguna
+Login	Proses autentikasi pengguna
+Logout	Proses mengakhiri sesi pengguna
+Access Dashboard	Mengakses halaman utama aplikasi
