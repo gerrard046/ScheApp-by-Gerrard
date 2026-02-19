@@ -4,44 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Models\Schedule;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
-    public function index()
-    {
-        // Ambil semua data
-        $schedules = Schedule::orderBy('date', 'asc')->get();
-        
-        // Hitung Statistik
-        $stats = [
+    public function index() {
+        return response()->json([
+            'status' => 'success',
             'total' => Schedule::count(),
-            'today' => Schedule::whereDate('date', Carbon::today())->count(),
-            'groups' => Schedule::distinct('group_name')->count('group_name')
-        ];
-
-        return view('schedules.index', compact('schedules', 'stats'));
+            'data' => Schedule::orderBy('date', 'asc')->orderBy('time', 'asc')->get()
+        ], 200);
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_name' => 'required|string|max:255',
-            'group_name' => 'required|string|max:255',
-            'activity_name' => 'required|string|max:255',
-            'category' => 'required|in:Belajar,Kerja,Meeting,Santai',
-            'date' => 'required|date',
-            'time' => 'nullable',
+    public function store(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'activity_name' => 'required|string|min:3',
+            'category'      => 'required',
+            'date'          => 'required|date',
+            'group_name'    => 'required'
         ]);
 
-        Schedule::create($validated);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        return redirect('/schedules')->with('success', 'Jadwal berhasil ditambahkan!');
+        $schedule = Schedule::create($request->all());
+        return response()->json(['status' => 'success', 'data' => $schedule], 201);
     }
 
-    public function destroy($id)
-    {
-        Schedule::findOrFail($id)->delete();
-        return redirect('/schedules')->with('success', 'Jadwal berhasil dihapus!');
+    // FITUR KECE: Hapus Jadwal
+    public function destroy($id) {
+        $schedule = Schedule::find($id);
+        if (!$schedule) {
+            return response()->json(['status' => 'error', 'message' => 'Data tidak ditemukan'], 404);
+        }
+        $schedule->delete();
+        return response()->json(['status' => 'success', 'message' => 'Jadwal berhasil dihapus'], 200);
     }
 }

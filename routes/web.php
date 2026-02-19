@@ -1,22 +1,25 @@
 <?php
 
+use App\Models\Schedule;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\AuthController;
 
-// Halaman utama langsung ke login
-Route::get('/', function () { return redirect('/login'); });
-
-// Fitur Auth (Bisa diakses siapa saja)
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'showRegister']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
-
-// Fitur Jadwal (Harus Login)
-Route::middleware('auth')->group(function () {
-    Route::get('/schedules', [ScheduleController::class, 'index']);
-    Route::post('/schedules', [ScheduleController::class, 'store']);
-    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+// Halaman Depan langsung ke daftar
+Route::get('/', function () {
+    return redirect('/schedules');
 });
+
+// Tampilan Web (Tanpa Auth agar tidak error)
+Route::get('/schedules', function () {
+    // Kita pakai try-catch agar jika database error, web tidak putih polos
+    try {
+        $schedules = Schedule::orderBy('date', 'asc')->get();
+    } catch (\Exception $e) {
+        $schedules = collect([]); // Data kosong jika db error
+    }
+    
+    $stats = ['total' => $schedules->count(), 'today' => 0, 'groups' => 0];
+    return view('schedules.index', compact('schedules', 'stats'));
+});
+
+// Hapus baris Auth::routes() di bawah ini!

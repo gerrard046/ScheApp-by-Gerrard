@@ -3,21 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScheApp - Laravel</title>
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <title>ScheApp - Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Tambahan CSS darurat agar layout tidak berantakan jika style.css belum terbaca */
-        .main-layout { display: flex; gap: 20px; padding: 20px; font-family: sans-serif; }
-        .sidebar { flex: 1; border: 1px solid #ddd; padding: 20px; border-radius: 10px; background: #f9f9f9; }
-        .content { flex: 3; }
-        .stats-container { display: flex; gap: 15px; margin-bottom: 20px; }
-        .stat-card { flex: 1; padding: 15px; background: #007bff; color: white; border-radius: 8px; text-align: center; }
-        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
-        .schedule-card { border: 1px solid #eee; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        /* CSS RESET UNTUK MEMATIKAN BOOTSTRAP LAMA */
+        html, body { 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            background-color: #f4f7fe !important;
+        }
+        * { box-sizing: border-box; }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
+    <nav class="navbar-custom">
+        <div style="font-weight: 800; font-size: 22px; color: #6366f1;">SCHEAPP</div>
+        <div style="font-size: 12px; color: #64748b; font-weight: 600;">DASHBOARD V2</div>
+    </nav>
     @yield('content')
 </body>
 </html>
