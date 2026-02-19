@@ -12,7 +12,9 @@
 ## 📸 Tampilan Aplikasi
 
 | Dashboard Statistik | Daftar Agenda |
-| :---: | :---: |
+| <img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/bd181655-d841-47ba-9ae1-76f10f3c263d" />
+<img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/bd181655-d841-47ba-9ae1-76f10f3c263d" />
+| :---: |
 | ![Dashboard](https://raw.githubusercontent.com/google/gemini-assets/main/dashboard-placeholder.png) | ![List](https://raw.githubusercontent.com/google/gemini-assets/main/list-placeholder.png) |
 
 ---
