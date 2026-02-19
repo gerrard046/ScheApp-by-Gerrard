@@ -12,10 +12,15 @@
 ## 📸 Tampilan Aplikasi
 
 | Dashboard Statistik | Daftar Agenda |
-| <img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/bd181655-d841-47ba-9ae1-76f10f3c263d" />
-<img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/bd181655-d841-47ba-9ae1-76f10f3c263d" />
-| :---: |
-| ![Dashboard](https://raw.githubusercontent.com/google/gemini-assets/main/dashboard-placeholder.png) | ![List](https://raw.githubusercontent.com/google/gemini-assets/main/list-placeholder.png) |
+<img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/4c4c9163-c49a-46a8-8ade-cda26efaccee" />
+<img width="1827" height="248" alt="image" src="https://github.com/user-attachments/assets/4c4c9163-c49a-46a8-8ade-cda26efaccee" />
+<img width="712" height="790" alt="image" src="https://github.com/user-attachments/assets/3f12fbe1-8ac9-4505-900e-47f45679386f" />
+<img width="712" height="790" alt="image" src="https://github.com/user-attachments/assets/3f12fbe1-8ac9-4505-900e-47f45679386f" />
+<img width="1840" height="561" alt="image" src="https://github.com/user-attachments/assets/c8645591-4a2b-4cc7-93dc-8ebe17fd12e6" />
+<img width="1840" height="561" alt="image" src="https://github.com/user-attachments/assets/c8645591-4a2b-4cc7-93dc-8ebe17fd12e6" />
+
+
+
 
 ---
 
