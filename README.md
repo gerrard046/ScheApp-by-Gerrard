@@ -1,33 +1,48 @@
-<img width="1228" height="1346" alt="image" src="https://github.com/user-attachments/assets/eece1aa5-6007-42be-935b-a7b5c64dadf7" />
-<img width="1228" height="1346" alt="image" src="https://github.com/user-attachments/assets/eece1aa5-6007-42be-935b-a7b5c64dadf7" />
-a# 📊 ScheApp: Modern Task Management & Analytics
+# ✨ ScheApp: Modern Task & Analytics Dashboard 🚀
 
-[![Laravel Version](https://img.shields.io/badge/Laravel-v12-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
-[![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/)
+[![Laravel v12](https://img.shields.io/badge/Laravel-v12-FF2D20?style=for-the-badge&logo=laravel)](https://laravel.com)
+[![SQLite Database](https://img.shields.io/badge/Database-SQLite-003B57?style=for-the-badge&logo=sqlite)](https://www.sqlite.org/)
+[![Vite JS/CSS Bundler](https://img.shields.io/badge/Bundler-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
 
-**ScheApp** adalah platform manajemen tugas modern yang menggabungkan efisiensi operasional dengan analitik performa pengguna dalam satu antarmuka *Glassmorphism*.
-
----
-
-## ✨ Fitur Utama
-
-### 1. Manajemen Agenda Dinamis
-- **Klasifikasi Tugas**: Pengelompokan agenda berdasarkan kategori (Olahraga, Belajar, Rapat).
-- **Sistem Prioritas**: Indikator visual untuk skala prioritas tugas.
-- **Smart Tracker**: Pelacakan otomatis tugas yang selesai atau terlewati.
-
-### 2. Dashboard Analitik
-- **Visualisasi Data**: Grafik interaktif menggunakan Chart.js.
-- **Statistik Real-time**: Kalkulasi otomatis tingkat produktivitas.
-- **Modern UI**: Desain responsif dengan efek blur transparan.
+**ScheApp** adalah aplikasi manajemen agenda harian yang menggabungkan efisiensi operasional dengan analitik performa dalam antarmuka *Glassmorphism* yang elegan.
 
 ---
 
-## 🚀 Panduan Instalasi
+## 📸 Tampilan Aplikasi
 
-Ikuti langkah-langkah di bawah untuk menjalankan proyek secara lokal:
+| Dashboard Statistik | Daftar Agenda |
+| :---: | :---: |
+| ![Dashboard](https://raw.githubusercontent.com/google/gemini-assets/main/dashboard-placeholder.png) | ![List](https://raw.githubusercontent.com/google/gemini-assets/main/list-placeholder.png) |
 
-### 1. Kloning Repositori
-```bash
-git clone [https://github.com/gerrard046/ScheApp-by-Gerrard.git](https://github.com/gerrard046/ScheApp-by-Gerrard.git)
-cd ScheApp-by-Gerrard
+---
+
+## ✨ Fitur Unggulan
+
+### 📊 Dashboard Analitik
+* **Visualisasi Produktivitas**: Menggunakan *Doughnut Chart* (Chart.js) untuk memantau progres tugas secara visual.
+* **Statistik Real-time**: Kalkulasi otomatis total agenda, tugas selesai, dan skor produktivitas.
+* **Glassmorphism UI**: Antarmuka transparan dengan efek blur yang modern dan responsif.
+
+### 📅 Manajemen Agenda
+* **Smart Tracking**: Klasifikasi tugas berdasarkan kategori (Olahraga, Belajar, Rapat) dan prioritas.
+* **Live Interaction**: Tandai tugas selesai secara instan menggunakan sistem AJAX tanpa *reload* halaman.
+* **Search Engine**: Pencarian agenda
+
+2. Setup Database
+Bash
+touch database/database.sqlite
+php artisan migrate
+
+3. Menjalankan Aplikasi
+Buka dua terminal terpisah:
+
+Terminal 1 (Vite Assets):
+
+Bash
+npm install
+npm run dev
+Terminal 2 (Laravel Server):
+
+Bash
+php artisan serve
