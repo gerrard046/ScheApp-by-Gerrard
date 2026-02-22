@@ -163,15 +163,45 @@ PUT /api/tasks/{id} : Memperbarui status tugas.
 
 DELETE /api/tasks/{id} : Menghapus tugas.
 
-📐 11. SDLC & UML Diagrams
-Metodologi Waterfall
-Analisis: Identifikasi kendala jadwal mahasiswa Poltek SSN.
+📐 12. SDLC (Software Development Life Cycle)
+Pengembangan aplikasi ScheApp mengikuti model Waterfall. Metodologi ini dipilih karena setiap tahapan harus diselesaikan secara berurutan agar pengembangan tetap terstruktur, terutama dalam memastikan aspek keamanan (Bcrypt) dan integrasi database telah matang sebelum lanjut ke tahap berikutnya.
 
-Desain: Skema database MySQL & wireframe Glassmorphism.
+1. Tahap Perencanaan & Analisis (Requirements Analysis)
+Pada tahap awal, dilakukan observasi terhadap ritme kegiatan di Poltek SSN. Ditemukan masalah utama yaitu banyaknya kegiatan mendadak (PBB, kunjungan pejabat, organisasi) yang menyebabkan mahasiswa sulit melacak tugas akademik.
 
-Koding: Implementasi Laravel 11.
+Kebutuhan Fungsional: Sistem harus bisa melakukan CRUD jadwal, autentikasi Bcrypt, login Google, dan menampilkan statistik dashboard.
 
-Testing: Black box testing & UAT.
+Kebutuhan Non-fungsional: Keamanan data kredensial, antarmuka yang responsif (Mobile-friendly), dan performa yang cepat.
+
+2. Tahap Desain Sistem (System Design)
+Tahap ini menerjemahkan kebutuhan menjadi cetak biru teknis sebelum proses koding dimulai.
+
+Arsitektur: Menggunakan pola MVC (Model-View-Controller) dari Laravel 11.
+
+Database: Perancangan skema database MySQL untuk tabel users dan tasks.
+
+UI/UX: Perancangan antarmuka dengan konsep Glassmorphism menggunakan Tailwind CSS untuk memberikan kesan modern dan bersih.
+
+3. Tahap Implementasi (Coding/Construction)
+Tahap di mana desain diubah menjadi baris kode program.
+
+Backend: Membangun logika autentikasi menggunakan Laravel Breeze dan enkripsi Bcrypt. Mengintegrasikan Laravel Socialite untuk fitur Login Google.
+
+Frontend: Implementasi Blade Templates dan Tailwind CSS. Menambahkan interaktivitas menggunakan Alpine.js agar aplikasi terasa ringan tanpa banyak reload halaman.
+
+4. Tahap Pengujian (Testing)
+Sebelum diserahkan, aplikasi diuji secara menyeluruh menggunakan metode Black Box Testing.
+
+Unit Testing: Memastikan fungsi hashing Bcrypt bekerja (password tidak tersimpan dalam teks biasa).
+
+Functional Testing: Mencoba input jadwal dengan berbagai kondisi (data kosong, format tanggal salah, dll) untuk memastikan validasi sistem berjalan.
+
+User Acceptance: Memastikan dashboard menampilkan jumlah "tanggungan" yang akurat sesuai data di database.
+
+5. Tahap Deployment & Pemeliharaan (Maintenance)
+Aplikasi di-deploy ke server lokal (Localhost) atau hosting untuk digunakan.
+
+Maintenance: Melakukan update berkala pada library/dependencies melalui Composer dan NPM untuk menambal celah keamanan dan memastikan kompatibilitas framework tetap terjaga.
 
 State Diagram - Task Flow
 🛡 12. Keamanan Sistem (Bcrypt Analysis)
