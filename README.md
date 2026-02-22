@@ -1,6 +1,15 @@
 📋 ScheApp - Dashboard Manajemen Tugas Poltek SSN
 Platform manajemen tugas (Task Management) berbasis Laravel dengan desain modern Glassmorphism untuk membantu mahasiswa Poltek SSN mengelola beban kegiatan kedinasan dan akademik yang dinamis secara efisien.
 
+💻 Bahasa & Teknologi yang Digunakan:
+PHP 8.2+ (Bahasa pemrograman utama/Backend)
+
+JavaScript (Interaktivitas frontend dengan Alpine.js)
+
+SQL (Manajemen database MySQL)
+
+HTML5 & CSS3 (Struktur dan styling dengan Tailwind CSS)
+
 📖 Daftar Isi
 
 1.1 Latar Belakang Masalah
