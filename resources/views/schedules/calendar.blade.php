@@ -117,6 +117,23 @@
             eventDrop: function(info) {
                 // Feature for future update: AJAX update date
                 alert('Jadwal "' + info.event.title + '" dipindahkan ke ' + info.event.start.toISOString().split('T')[0]);
+            },
+            eventClick: function(info) {
+                if (confirm('Tandai / Batalkan Selesai untuk: "' + info.event.title + '"?')) {
+                    // Create a dynamic form to submit the toggle request
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/schedules/' + info.event.id + '/toggle';
+                    
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = '{{ csrf_token() }}';
+                    
+                    form.appendChild(csrfToken);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
             }
         });
         calendar.render();

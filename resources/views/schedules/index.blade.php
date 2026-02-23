@@ -278,66 +278,56 @@
             </div>
         </div>
 
-        <!-- Task Grid -->
-        <div id="list" style="display: grid; gap: 15px;">
-            @foreach($schedules as $item)
-            @php $done = $item->is_completed; @endphp
-            <div class="zen-card card-item" data-text="{{ strtolower($item->activity_name.' '.$item->group_name) }}" style="padding: 20px; opacity: {{ $done ? '0.6' : '1' }}; border-left: 6px solid {{ $item->priority === 'high' ? '#EF4444' : '#1E88E5' }};">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-                            <span style="font-size: 10px; font-weight: 800; background: var(--soft-bg); color: var(--text-muted); padding: 4px 10px; border-radius: 5px;">{{ $item->category }}</span>
-                            @if($item->priority === 'high')
-                            <span style="font-size: 10px; font-weight: 800; background: #FFEFEE; color: #EF4444; padding: 4px 10px; border-radius: 5px;">URGENT</span>
-                            @endif
+        <!-- Task Sections -->
+        <div id="list" style="display: grid; gap: 35px;">
+            
+            <!-- 1. AGENDA HARI INI -->
+            <div>
+                <h3 style="font-size: 16px; font-weight: 800; color: #1E88E5; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span>⚡</span> Agenda Hari Ini & Mendesak
+                </h3>
+                <div style="display: grid; gap: 15px;">
+                    @php 
+                        $todayTasks = $schedules->filter(fn($item) => !$item->is_completed && ($item->date == date('Y-m-d') || $item->is_missed));
+                    @endphp
+                    @forelse($todayTasks as $item)
+                        @include('schedules.partials.task_card', ['item' => $item])
+                    @empty
+                        <div class="zen-card" style="text-align: center; padding: 40px; background: rgba(255,255,255,0.5); border: 1px dashed var(--border-color);">
+                            <p style="color: var(--text-muted); font-size: 14px; font-weight: 700;">Tidak ada agenda mendesak hari ini. Santai dulu! 🧊</p>
                         </div>
-                        <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; {{ $done ? 'text-decoration: line-through;' : '' }}">{{ $item->activity_name }}</h4>
-                        <p style="font-size: 13px; color: var(--text-muted); font-weight: 600;">🤝 {{ $item->group_name }} • ⏰ {{ $item->time }}</p>
-                    </div>
-                    
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        @if(auth()->check() && $item->user_id === auth()->id() && !$done)
-                        <form action="/schedules/{{ $item->id }}/toggle" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <label for="proof-{{ $item->id }}" style="cursor: pointer; font-size: 20px;" title="Upload Bukti">📸</label>
-                            <input type="file" name="proof_image" id="proof-{{ $item->id }}" style="display: none;" onchange="this.form.submit()">
-                        </form>
-                        @endif
-                        <form action="/schedules/{{ $item->id }}/toggle" method="POST">
-                            @csrf
-                            <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 28px;">
-                                {{ $done ? '✅' : '⬜' }}
-                            </button>
-                        </form>
-                    </div>
+                    @endforelse
                 </div>
+            </div>
 
-                <!-- Sub-tasks Section -->
-                @if($item->subTasks->count() > 0)
-                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
-                    @foreach($item->subTasks as $sub)
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                        <form action="/sub-tasks/{{ $sub->id }}/toggle" method="POST">
-                            @csrf
-                            <input type="checkbox" {{ $sub->is_completed ? 'checked' : '' }} onchange="this.form.submit()" style="cursor: pointer;">
-                        </form>
-                        <span style="font-size: 13px; font-weight: 600; color: var(--text-main); {{ $sub->is_completed ? 'text-decoration: line-through; opacity: 0.5;' : '' }}">{{ $sub->title }}</span>
-                    </div>
+            <!-- 2. RENCANA MENDATANG (Lakukan Lebih Awal) -->
+            <div>
+                <h3 style="font-size: 16px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span>📅</span> Persiapan Masa Depan (Lakukan Lebih Awal)
+                </h3>
+                <div style="display: grid; gap: 15px;">
+                    @php 
+                        $futureTasks = $schedules->filter(fn($item) => !$item->is_completed && $item->date > date('Y-m-d'));
+                    @endphp
+                    @forelse($futureTasks as $item)
+                        @include('schedules.partials.task_card', ['item' => $item, 'is_future' => true])
+                    @empty
+                        <p style="color: var(--text-muted); font-size: 13px; font-style: italic; padding-left: 10px;">Belum ada rencana masa depan. Tambahkan sekarang?</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- 3. RIWAYAT SELESAI -->
+            <div x-data="{ showDone: false }">
+                <button @click="showDone = !showDone" style="background: none; border: none; font-size: 14px; font-weight: 800; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                    <span x-text="showDone ? '🔽' : '▶️'"></span> Lihat Tugas Selesai ({{ $schedules->where('is_completed', true)->count() }})
+                </button>
+                <div x-show="showDone" x-transition style="display: grid; gap: 15px;">
+                    @foreach($schedules->where('is_completed', true) as $item)
+                        @include('schedules.partials.task_card', ['item' => $item])
                     @endforeach
                 </div>
-                @endif
-                
-                @if(!auth()->check() || (auth()->check() && $item->user_id === auth()->id()) || auth()->user()->role === 'admin')
-                    @if(!$done)
-                    <form action="/schedules/{{ $item->id }}/sub-tasks" method="POST" style="margin-top: 15px; display: flex; gap: 10px;">
-                        @csrf
-                        <input type="text" name="title" placeholder="Checklist baru..." required style="flex-grow: 1; min-height: 0; padding: 8px 15px; border-radius: 10px; font-size: 12px;" class="arctic-input">
-                        <button type="submit" class="btn-arctic" style="width: auto; padding: 0 15px; height: 35px; font-size: 18px; margin-top: 0;">+</button>
-                    </form>
-                    @endif
-                @endif
             </div>
-            @endforeach
         </div>
     </main>
 
