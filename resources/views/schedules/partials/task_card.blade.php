@@ -10,6 +10,9 @@
                 @if(isset($is_future) && $is_future)
                 <span style="font-size: 10px; font-weight: 800; background: #E0F2FE; color: #0369A1; padding: 4px 10px; border-radius: 5px;">FUTURE: {{ \Carbon\Carbon::parse($item->date)->format('d M') }}</span>
                 @endif
+                @if($item->parentTask)
+                <span style="font-size: 10px; font-weight: 800; background: #FEF3C7; color: #B45309; padding: 4px 10px; border-radius: 5px;">⛓️ Prasyarat: {{ $item->parentTask->activity_name }}</span>
+                @endif
             </div>
             <h4 style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; {{ $done ? 'text-decoration: line-through;' : '' }}">{{ $item->activity_name }}</h4>
             <p style="font-size: 13px; color: var(--text-muted); font-weight: 600;">🤝 {{ $item->group_name }} • ⏰ {{ $item->time }}</p>

@@ -220,6 +220,7 @@
         <nav>
             <a href="/schedules" class="nav-link active"><span>🏠</span> Dashboard</a>
             <a href="/calendar" class="nav-link"><span>📅</span> Kalender</a>
+            <a href="/kanban" class="nav-link"><span>📋</span> Kanban Board</a>
             <a href="/groups" class="nav-link"><span>🤝</span> Tim Grup</a>
             @if(auth()->user()->role === 'admin')
             <a href="/admin/insights" class="nav-link"><span>📈</span> Insights</a>
@@ -249,21 +250,33 @@
             </div>
         </header>
 
+        <!-- AI Briefing Section -->
+        <div class="zen-card" style="margin-bottom: 40px; border-left: 6px solid #1E88E5; background: linear-gradient(to right, #ffffff, #F0F7FF);">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="font-size: 32px;">🤖</div>
+                <div>
+                    <h4 style="font-size: 11px; font-weight: 800; color: #1E88E5; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px;">AI Daily Briefing</h4>
+                    <p style="font-size: 14px; font-weight: 600; color: var(--text-main); line-height: 1.5;">{{ $stats['briefing'] }}</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Stats Grid -->
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px;">
             <div class="zen-card" style="padding: 25px; text-align: center; background: var(--primary-gradient); color: white; border: none;">
                 <h4 style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">FOCUS SCORE</h4>
                 <div style="font-size: 42px; font-weight: 900;">{{ $stats['completion_rate'] }}%</div>
+                <div style="font-size: 10px; opacity: 0.7; margin-top: 5px;">Efisiensi: {{ $stats['zen_correlation']['efficiency'] }} tugas / jam Zen</div>
             </div>
             <div class="zen-card" style="padding: 25px; text-align: center;">
                 <h4 style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">DAILY STREAK</h4>
                 <div style="font-size: 42px; font-weight: 900; color: var(--text-main);">{{ $stats['streak'] }} 🔥</div>
             </div>
-            <div class="zen-card" style="padding: 25px; text-align: center;">
-                <h4 style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">WEEKLY PRODUCTIVITY</h4>
-                <div style="display: flex; gap: 8px; justify-content: center; margin-top: 10px;">
+            <div class="zen-card" style="padding: 25px;">
+                <h4 style="font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 15px; text-align: center;">Activity Heatmap (90 Days)</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; max-width: 250px; margin: 0 auto;">
                     @foreach($stats['heatmap'] as $day)
-                    <div style="width: 14px; height: 14px; border-radius: 4px; background: {{ $day['count'] > 0 ? '#1E88E5' : 'var(--soft-bg)' }};" title="{{ $day['date'] }}"></div>
+                    <div style="width: 10px; height: 10px; border-radius: 2px; background: {{ $day['count'] > 0 ? ($day['count'] > 2 ? '#1E88E5' : '#93C5FD') : 'var(--soft-bg)' }};" title="{{ $day['date'] }}: {{ $day['count'] }} tugas"></div>
                     @endforeach
                 </div>
             </div>
@@ -360,6 +373,15 @@
                         @endforeach
                     </select>
                 </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="font-size: 11px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 8px;">TUGAS PRASYARAT (OPTIONAL)</label>
+                    <select name="dependency_id" class="arctic-input">
+                        <option value="">-- Tanpa Prasyarat --</option>
+                        @foreach($schedules->where('is_completed', false) as $t)
+                        <option value="{{ $t->id }}">⛓️ {{ $t->activity_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div style="background: var(--soft-bg); padding: 15px; border-radius: 15px; margin-bottom: 25px; border: 1px dashed var(--border-color);">
                     <label style="font-size: 11px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 10px;">FILE LAMPIRAN (PDF/IMAGE)</label>
                     <input type="file" name="attachment_file" style="font-size: 12px;">
@@ -385,10 +407,24 @@
                 </div>
                 
                 <div style="display: flex; gap: 20px; justify-content: center;">
-                    <button class="btn-arctic" @click="toggleTimer()" x-text="timerActive ? 'JEDA' : 'MULAI'" style="padding: 20px 60px; border-radius: 50px; font-size: 14px; letter-spacing: 2px; width: auto; margin-top: 0;"></button>
+                    <button class="btn-arctic" @click="toggleTimer(); if(!timerActive && focusMinutes < 25) logZen()" x-text="timerActive ? 'JEDA' : 'MULAI'" style="padding: 20px 60px; border-radius: 50px; font-size: 14px; letter-spacing: 2px; width: auto; margin-top: 0;"></button>
                     <button class="btn-arctic" @click="focusMinutes = 25; focusSeconds = 0; if(timerActive) toggleTimer()" style="background: var(--soft-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: none; padding: 20px 40px; border-radius: 50px; width: auto; margin-top: 0;">RESET</button>
                 </div>
             </div>
+
+            <script>
+                function logZen() {
+                    // Simple logging on pause/finish
+                    fetch('/zen/log', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ minutes: 5 }) // Log per chunk for demo
+                    });
+                }
+            </script>
             
             <div style="margin-top: 60px; display: flex; align-items: center; justify-content: center; gap: 15px;">
                 <div style="width: 40px; height: 1px; background: var(--border-color);"></div>

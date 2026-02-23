@@ -9,14 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
+use App\Models\ZenSession;
+use Illuminate\Support\Facades\DB;
+
 class ScheduleController extends Controller
 {
-    // 1. Ambil Semua Data + Statistik Ringkas & AI Sorting
     public function index(Request $request) {
         $now = Carbon::now();
-        $user = auth()->user();
+        $user = auth()->user()->load(['zenSessions']);
         
-        $query = Schedule::with(['subTasks', 'group']);
+        $query = Schedule::with(['subTasks', 'group', 'parentTask']);
         
         // Filter by user OR group member
         if ($user->role !== 'admin') {
@@ -30,30 +32,29 @@ class ScheduleController extends Controller
             });
         }
 
-        // Admin Insight Filter (if requested)
-        if ($request->has('needs_verification') && $user->role === 'admin') {
-            $query->where('is_completed', true)->where('is_verified', false);
-        }
-        
         $allSchedules = $query->get();
         
-        // Memetakan data agar punya status 'is_missed' dan hitung bobot prioritas
+        // AI Briefing Logic
+        $todayTasks = $allSchedules->where('date', date('Y-m-d'))->where('is_completed', false);
+        $briefing = $this->generateAIBriefing($todayTasks, $user);
+
+        // Heatmap Data (Advanced GitHub Style)
+        $heatmap = $this->getAdvancedHeatmap($user);
+
+        // Analytics: Deep Work Correlation
+        $zenCorrelation = $this->getZenCorrelation($user);
+
+        // Map data with status and score
         $dataWithStatus = $allSchedules->map(function ($item) use ($now) {
             $scheduleTime = Carbon::parse($item->date . ' ' . $item->time);
-            
-            // Terlewat jika: Waktu sudah lewat DAN belum selesai
             $item->is_missed = $scheduleTime->isPast() && !$item->is_completed;
             
-            // Hitung bobot AI Priority Score
             $score = 0;
             if (!$item->is_completed && !$item->is_missed) {
                 $priorityScores = ['high' => 50, 'med' => 30, 'low' => 10];
                 $score += $priorityScores[$item->priority] ?? 0;
-                
                 $hoursLeft = $now->diffInHours($scheduleTime, false);
-                if ($hoursLeft >= 0 && $hoursLeft <= 24) {
-                    $score += (24 - $hoursLeft) * 2;
-                }
+                if ($hoursLeft >= 0 && $hoursLeft <= 24) $score += (24 - $hoursLeft) * 2;
             }
             $item->ai_score = $score;
             return $item;
@@ -65,35 +66,17 @@ class ScheduleController extends Controller
             return $item->ai_score;
         })->values();
 
-        // Stats for Analytics
-        $totalSchedules = $allSchedules->count();
-        $completedSchedules = $allSchedules->where('is_completed', true)->count();
-        $completionRate = $totalSchedules > 0 ? round(($completedSchedules / $totalSchedules) * 100) : 0;
-        
-        // Heatmap Data (Last 7 days)
-        $heatmap = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = Carbon::today()->subDays($i)->format('Y-m-d');
-            $heatmap[] = [
-                'date' => $date,
-                'count' => $allSchedules->where('date', $date)->where('is_completed', true)->count()
-            ];
-        }
-
-        $insightMessage = null;
-        if ($allSchedules->where('is_missed', true)->count() >= 3) {
-            $insightMessage = "⚠ Burnout Alert: Kamu punya banyak tugas terlewat. Fokus dulu ya!";
-        }
-
         $stats = [
-            'total' => $totalSchedules,
-            'today' => $allSchedules->where('date', date('Y-m-d'))->where('is_completed', false)->count(),
-            'completion_rate' => $completionRate,
+            'total' => $allSchedules->count(),
+            'today' => $todayTasks->count(),
+            'completion_rate' => $allSchedules->count() > 0 ? round(($allSchedules->where('is_completed', true)->count() / $allSchedules->count()) * 100) : 0,
             'xp' => $user->xp,
             'level' => $user->level,
             'streak' => $user->streak,
             'xp_next' => $user->level * 100,
-            'heatmap' => $heatmap
+            'heatmap' => $heatmap,
+            'zen_correlation' => $zenCorrelation,
+            'briefing' => $briefing
         ];
         
         $groups = $user->administeredGroups->merge($user->groups)->unique('id');
@@ -101,12 +84,150 @@ class ScheduleController extends Controller
         return view('schedules.index', [
             'schedules' => $sortedSchedules, 
             'stats' => $stats,
-            'insightMessage' => $insightMessage,
             'groups' => $groups
         ]);
     }
 
-    // 3. Simpan Jadwal Baru (Support Broadcasting)
+    public function kanban()
+    {
+        $user = auth()->user();
+        $query = Schedule::with(['group', 'parentTask']);
+        
+        if ($user->role !== 'admin') {
+            $query->where('user_id', $user->id);
+        }
+
+        $tasks = $query->get();
+        
+        $board = [
+            'todo' => $tasks->where('is_completed', false)->filter(fn($t) => Carbon::parse($t->date)->isFuture() || Carbon::parse($t->date)->isToday()),
+            'missed' => $tasks->where('is_completed', false)->filter(fn($t) => Carbon::parse($t->date)->isPast() && !Carbon::parse($t->date)->isToday()),
+            'done' => $tasks->where('is_completed', true),
+        ];
+
+        return view('schedules.kanban', compact('board'));
+    }
+
+    public function toggleComplete(Request $request, $id)
+    {
+        $schedule = Schedule::findOrFail($id);
+        $user = auth()->user();
+        
+        // --- Dependency Check ---
+        if ($schedule->dependency_id) {
+            $parent = Schedule::find($schedule->dependency_id);
+            if ($parent && !$parent->is_completed) {
+                return redirect()->back()->with('error', "🚨 Tugas ini prasyarat dari '" . $parent->activity_name . "'. Selesaikan itu dulu!");
+            }
+        }
+
+        if ($schedule->user_id === $user->id) {
+            if ($request->hasFile('proof_image')) {
+                $path = $request->file('proof_image')->store('proofs', 'public');
+                $schedule->proof_image = $path;
+            }
+
+            $schedule->is_completed = !$schedule->is_completed;
+            $schedule->is_verified = false;
+            $schedule->save();
+
+            if ($schedule->is_completed) {
+                $user->xp += 10;
+                $today = date('Y-m-d');
+                $yesterday = date('Y-m-d', strtotime('-1 day'));
+                
+                if ($user->last_activity_date == $yesterday) $user->streak += 1;
+                elseif ($user->last_activity_date != $today) $user->streak = 1;
+                $user->last_activity_date = $today;
+
+                if ($user->xp >= ($user->level * 100)) {
+                    $user->level += 1;
+                    $user->save();
+                    return redirect()->back()->with('levelup', 'Level Up! LVL ' . $user->level);
+                }
+                $user->save();
+                return redirect()->back()->with('success', 'Tugas selesai!');
+            } else {
+                $user->xp = max(0, $user->xp - 10);
+                $user->save();
+            }
+            return redirect()->back()->with('success', 'Status diperbarui.');
+        }
+
+        // Admin verification logic...
+        if ($user->role === 'admin' && $schedule->is_completed) {
+            $schedule->is_verified = !$schedule->is_verified;
+            $schedule->save();
+            if ($schedule->is_verified) {
+                $taskOwner = $schedule->user;
+                if ($taskOwner) { $taskOwner->xp += 5; $taskOwner->save(); }
+                return redirect()->back()->with('success', 'Diverifikasi!');
+            }
+        }
+
+        return redirect()->back()->with('error', 'Akses ditolak.');
+    }
+
+    public function logZenSession(Request $request)
+    {
+        $request->validate(['minutes' => 'required|integer']);
+        ZenSession::create([
+            'user_id' => auth()->id(),
+            'duration_minutes' => $request->minutes,
+            'date' => date('Y-m-d')
+        ]);
+        return response()->json(['success' => true]);
+    }
+
+    private function generateAIBriefing($tasks, $user)
+    {
+        $count = $tasks->count();
+        if ($count == 0) return "Hari ini jadwalmu kosong. Waktunya eksplorasi atau istirahat total! 🧊";
+        
+        $high = $tasks->where('priority', 'high')->count();
+        $msg = "Ada $count tugas hari ini. ";
+        if ($high > 0) $msg .= "$high di antaranya bersifat kritikal ⚡. ";
+        
+        $avgZen = $user->zenSessions()->where('date', '>=', Carbon::today()->subDays(7))->avg('duration_minutes') ?? 0;
+        if ($avgZen > 30) $msg .= "Fokusmu minggu ini luar biasa, pertahankan ritme Zen-mu!";
+        else $msg .= "Ingat gunakan Zen Mode untuk tugas yang butuh konsentrasi tinggi.";
+        
+        return $msg;
+    }
+
+    private function getAdvancedHeatmap($user)
+    {
+        $data = Schedule::where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->where('date', '>=', Carbon::today()->subMonths(3))
+            ->select('date', DB::raw('count(*) as count'))
+            ->groupBy('date')
+            ->get()
+            ->pluck('count', 'date');
+
+        $heatmap = [];
+        for ($i = 90; $i >= 0; $i--) {
+            $date = Carbon::today()->subDays($i)->format('Y-m-d');
+            $heatmap[] = [
+                'date' => $date,
+                'count' => $data[$date] ?? 0
+            ];
+        }
+        return $heatmap;
+    }
+
+    private function getZenCorrelation($user)
+    {
+        // Simple correlation logic for demo
+        $zenTime = $user->zenSessions()->sum('duration_minutes');
+        $tasksDone = Schedule::where('user_id', $user->id)->where('is_completed', true)->count();
+        
+        return [
+            'zen_total' => $zenTime,
+            'efficiency' => $zenTime > 0 ? round($tasksDone / ($zenTime / 60), 1) : 0
+        ];
+    }
+
     public function store(Request $request) {
         $request->validate([
             'activity_name' => 'required|string|min:3',
@@ -115,7 +236,8 @@ class ScheduleController extends Controller
             'time'          => 'required',
             'group_id'      => 'nullable|exists:groups,id',
             'attachment_file'=> 'nullable|file|max:5120', // Max 5MB
-            'attachment_type'=> 'nullable|string'
+            'attachment_type'=> 'nullable|string',
+            'dependency_id' => 'nullable|exists:schedules,id'
         ]);
 
         $data = $request->except(['attachment_file']);
@@ -123,13 +245,10 @@ class ScheduleController extends Controller
         $data['user_name'] = auth()->user()->name;
         $data['is_completed'] = false;
 
-        // Handle File Upload for Attachment
         if ($request->hasFile('attachment_file')) {
             $file = $request->file('attachment_file');
             $path = $file->store('attachments', 'public');
             $data['attachment_file'] = $path;
-            
-            // Auto-detect type if not provided
             if (!$request->attachment_type) {
                 $ext = strtolower($file->getClientOriginalExtension());
                 if (in_array($ext, ['pdf'])) $data['attachment_type'] = 'PDF';
@@ -141,7 +260,6 @@ class ScheduleController extends Controller
 
         $schedule = Schedule::create($data);
 
-        // --- Broadcasting Logic ---
         if ($request->group_id) {
             $group = \App\Models\Group::find($request->group_id);
             foreach ($group->members as $member) {
@@ -150,96 +268,12 @@ class ScheduleController extends Controller
                     $clone->user_id = $member->id;
                     $clone->user_name = $member->name;
                     $clone->save();
-
-                    // Notify clones
-                    $member->notify(new GeneralNotification(
-                        "🤝 Tugas Grup Baru",
-                        "Admin " . auth()->user()->name . " menambahkan tugas '" . $schedule->activity_name . "' ke grup.",
-                        "🤝"
-                    ));
+                    $member->notify(new \App\Notifications\GeneralNotification("🤝 Tugas Grup Baru", "Admin " . auth()->user()->name . " menambahkan tugas '" . $schedule->activity_name . "' ke grup.", "🤝"));
                 }
             }
         }
 
         return redirect()->back()->with('success', 'Jadwal berhasil ditambahkan!');
-    }
-
-    // 4. Update Status & Verification Flow
-    public function toggleComplete(Request $request, $id)
-    {
-        $schedule = Schedule::findOrFail($id);
-        $user = auth()->user();
-        
-        // If User toggles their own task
-        if ($schedule->user_id === $user->id) {
-            
-            // Handle Proof Image Upload
-            if ($request->hasFile('proof_image')) {
-                $path = $request->file('proof_image')->store('proofs', 'public');
-                $schedule->proof_image = $path;
-            }
-
-            $schedule->is_completed = !$schedule->is_completed;
-            $schedule->is_verified = false; // Reset verification on toggle
-            $schedule->save();
-
-            if ($schedule->is_completed) {
-                // Tugas Selesai: +10 XP
-                $user->xp += 10;
-                
-                // Streak Logic
-                $today = date('Y-m-d');
-                $yesterday = date('Y-m-d', strtotime('-1 day'));
-                
-                if ($user->last_activity_date == $yesterday) {
-                    $user->streak += 1;
-                } elseif ($user->last_activity_date != $today) {
-                    $user->streak = 1;
-                }
-                $user->last_activity_date = $today;
-
-                // Level Up Logic (Every 100 XP)
-                if ($user->xp >= ($user->level * 100)) {
-                    $user->level += 1;
-                    $user->save();
-                    return redirect()->back()->with('levelup', 'Selamat! Level Anda naik ke level ' . $user->level . '! Menunggu verifikasi Admin (+10 XP)');
-                }
-                
-                $user->save();
-                return redirect()->back()->with('success', 'Tugas selesai! Menunggu verifikasi Admin (+10 XP)');
-            } else {
-                // Tugas dibatalkan: -10 XP
-                $user->xp = max(0, $user->xp - 10);
-                $user->save();
-            }
-            return redirect()->back()->with('success', 'Status jadwal diperbarui.');
-        }
-
-        // If Admin verifies a user's task
-        if ($user->role === 'admin' && $schedule->is_completed) {
-            $schedule->is_verified = !$schedule->is_verified;
-            $schedule->save();
-
-            if ($schedule->is_verified) {
-                $taskOwner = $schedule->user;
-                if ($taskOwner) {
-                    $taskOwner->xp += 5; // Bonus XP for verified task
-                    $taskOwner->save();
-                }
-
-                // Notify User
-                $taskOwner->notify(new GeneralNotification(
-                    "✅ Tugas Diverifikasi",
-                    "Admin telah memverifikasi tugas '" . $schedule->activity_name . "'. Berhasil dapat +5 XP Bonus!",
-                    "✅"
-                ));
-
-                return redirect()->back()->with('success', 'Tugas berhasil diverifikasi! User mendapatkan +5 XP Bonus.');
-            }
-            return redirect()->back()->with('success', 'Verifikasi dibatalkan.');
-        }
-
-        return redirect()->back()->with('error', 'Akses ditolak.');
     }
 
     // 5. Hapus Jadwal

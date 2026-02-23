@@ -25,6 +25,7 @@ class Schedule extends Model
         'proof_image',
         'attachment_file',
         'attachment_type',
+        'dependency_id',
     ];
 
     public function user()
@@ -40,5 +41,15 @@ class Schedule extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function parentTask()
+    {
+        return $this->belongsTo(Schedule::class, 'dependency_id');
+    }
+
+    public function dependentTasks()
+    {
+        return $this->hasMany(Schedule::class, 'dependency_id');
     }
 }

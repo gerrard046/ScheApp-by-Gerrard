@@ -29,9 +29,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/calendar', [ScheduleController::class, 'calendar']);
     Route::get('/groups', [GroupController::class, 'index']);
+    Route::get('/kanban', [ScheduleController::class, 'kanban']);
 
     // Notifications
     Route::post('/notifications/read-all', [ScheduleController::class, 'markNotificationsAsRead']);
+    Route::post('/zen/log', [ScheduleController::class, 'logZenSession']);
 
     // --- Core Schedule Management (Available to All Users) ---
     Route::post('/schedules', [ScheduleController::class, 'store']);
