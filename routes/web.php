@@ -33,22 +33,22 @@ Route::middleware(['auth'])->group(function () {
     // Notifications
     Route::post('/notifications/read-all', [ScheduleController::class, 'markNotificationsAsRead']);
 
+    // --- Core Schedule Management (Available to All Users) ---
+    Route::post('/schedules', [ScheduleController::class, 'store']);
+    Route::post('/schedules/{id}/toggle', [ScheduleController::class, 'toggleComplete']);
+    Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
+    Route::get('/schedules/suggest', [ScheduleController::class, 'suggestTime']);
+    
     // Sub-Task Routes (Users can manage their own)
     Route::post('/schedules/{schedule}/sub-tasks', [\App\Http\Controllers\SubTaskController::class, 'store']);
     Route::post('/sub-tasks/{id}/toggle', [\App\Http\Controllers\SubTaskController::class, 'toggle']);
     Route::delete('/sub-tasks/{id}', [\App\Http\Controllers\SubTaskController::class, 'destroy']);
 
-    // Rute manipulasi jadwal hanya untuk ADMIN
+    // --- Admin-Only Powerful Features ---
     Route::middleware([IsAdmin::class])->group(function () {
-        Route::get('/schedules/suggest', [ScheduleController::class, 'suggestTime']);
-        Route::post('/schedules', [ScheduleController::class, 'store']);
         Route::post('/schedules/snooze', [ScheduleController::class, 'snoozeAllToday']);
-        Route::post('/schedules/{id}/toggle', [ScheduleController::class, 'toggleComplete']);
-        Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
         
-        // Sub-Task methods removed from ScheduleController
-
-        // Group Management
+        // Group Management (System-wide Admin)
         Route::post('/groups', [GroupController::class, 'store']);
         Route::post('/groups/{id}/add-member', [GroupController::class, 'addMember']);
 
