@@ -27,20 +27,22 @@
         margin-bottom: 5px;
         transition: all 0.2s;
     }
-    .nav-item:hover { background: #f1f5f9; color: #1e293b; }
-    .nav-item.active { background: #6366f1; color: white; }
+    .nav-item:hover { background: #FFF5E6; color: #FF8C00; }
+    .nav-item.active { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(255,140,0,0.3); }
 
     main { flex-grow: 1; padding: 40px; }
 
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
     .stat-card {
         background: white;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        border: 1px solid #f1f5f9;
+        padding: 30px;
+        border-radius: var(--card-radius);
+        box-shadow: var(--vibrant-shadow);
+        border: 2px solid #FFEDCC;
         text-align: center;
+        transition: transform 0.3s;
     }
+    .stat-card:hover { transform: translateY(-5px); }
     .stat-card h1 { margin: 10px 0 0; font-size: 32px; color: #1e293b; }
     .stat-card p { margin: 0; color: #64748b; font-size: 13px; font-weight: bold; text-transform: uppercase; }
 
@@ -56,8 +58,19 @@
     .insight-table th { text-align: left; padding: 15px; color: #64748b; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
     .insight-table td { padding: 15px; color: #1e293b; border-bottom: 1px solid #f8fafc; }
 
-    .rank-badge { background: #6366f1; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 10px; }
-    .risk-alert { background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-left: 5px solid #ef4444; }
+    .rank-badge { background: var(--primary-gradient); color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; margin-right: 10px; box-shadow: 0 4px 8px rgba(255,140,0,0.3); }
+    .risk-alert { 
+        background: linear-gradient(135deg, #FF8C00, #FF6B6B); 
+        color: white; 
+        padding: 20px 25px; 
+        border-radius: var(--card-radius); 
+        margin-bottom: 25px; 
+        display: flex; 
+        align-items: center; 
+        gap: 15px; 
+        font-weight: 700;
+        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+    }
 </style>
 
 <div class="main-wrapper">
@@ -81,7 +94,10 @@
     </aside>
 
     <main>
-        <h1 style="font-weight: 800; letter-spacing: -1px; margin-bottom: 30px;">Master Analytics Dashboard</h1>
+        <div class="animate-cheerful" style="background: white; padding: 25px 35px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid #FFEDCC; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="font-weight: 800; letter-spacing: -1.5px; margin: 0; color: #FF8C00;">📊 Pantauan Admin Pro</h1>
+            <div style="font-size: 12px; color: #64748b; font-weight: 800; text-transform: uppercase; background: #FFF5E6; padding: 5px 15px; border-radius: 20px; border: 1px solid #FFEDCC;">Real-time Insights ⚡</div>
+        </div>
 
         <div class="stats-grid">
             <div class="stat-card">

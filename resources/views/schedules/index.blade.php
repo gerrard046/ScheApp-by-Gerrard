@@ -3,10 +3,11 @@
 @section('content')
 <style>
     :root {
-        --primary: #6366f1;
-        --success: #10b981;
-        --danger: #ef4444;
-        --bg: #f4f7fe;
+        --primary: #FF8C00;
+        --success: #4ECDC4;
+        --danger: #FF6B6B;
+        --bg: #FFF9F0;
+        --gold: #FFD700;
     }
 
     .main-wrapper.admin-layout {
@@ -27,28 +28,35 @@
     /* Sidebar Form */
     .form-card {
         background: white;
-        border-radius: 24px;
+        border-radius: var(--card-radius);
         padding: 30px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        box-shadow: var(--vibrant-shadow);
         position: sticky;
         top: 100px;
         height: fit-content;
-        border: 1px solid #e2e8f0;
+        border: 2px solid #FFEDCC;
     }
 
     /* Modern Cards */
     .schedule-card {
         background: white;
-        border-radius: 20px;
+        border-radius: var(--card-radius);
         padding: 25px;
-        border: 1px solid #f1f5f9;
-        transition: 0.3s;
+        border: none;
+        box-shadow: 0 5px 15px rgba(255, 140, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
+    }
+    
+    .schedule-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(255, 140, 0, 0.1);
     }
 
     .is-completed {
-        border-left: 8px solid var(--success) !important;
-        background: #f0fff4 !important;
+        border-right: 8px solid var(--success) !important;
+        background: #F0FFFD !important;
+        opacity: 0.9;
     }
 
     /* AI Prioritizer Pulse Effect */
@@ -61,21 +69,22 @@
     .top-priority {
         border-left: 8px solid var(--danger) !important;
         animation: pulse-border 2s infinite;
+        background: #FFF5F5 !important;
     }
 
     /* Burnout Alert */
     .insight-alert {
-        background: linear-gradient(135deg, #1e293b, #0f172a);
+        background: linear-gradient(135deg, #FF8C00, #FF6B6B);
         color: white;
-        padding: 15px 25px;
-        border-radius: 16px;
+        padding: 20px 30px;
+        border-radius: var(--card-radius);
         margin-bottom: 25px;
         display: flex;
         align-items: center;
         gap: 15px;
-        font-weight: 500;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255,255,255,0.1);
+        font-weight: 700;
+        box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+        border: none;
     }
 
     /* Focus Mode Overlay */
@@ -289,15 +298,19 @@
                 <a href="/schedules" class="nav-item active">
                     <span>🏠</span> Dashboard
                 </a>
-                <a href="/calendar" class="nav-item">
-                    <span>📅</span> Calendar View
+            <nav style="display: flex; flex-direction: column; gap: 8px;">
+                <a href="/schedules" class="nav-item active" style="background: var(--primary-gradient); color: white; border: none; box-shadow: 0 4px 12px rgba(255,140,0,0.3);">
+                    <span>🏠</span> Dashboard Utama
                 </a>
-                <a href="/groups" class="nav-item">
-                    <span>🤝</span> Team Groups
+                <a href="/calendar" class="nav-item" style="color: #4A4A4A; font-weight: 600; padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s;">
+                    <span>📅</span> View Kalender
+                </a>
+                <a href="/groups" class="nav-item" style="color: #4A4A4A; font-weight: 600; padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s;">
+                    <span>🤝</span> Grup Kerjasama
                 </a>
                 @if(auth()->user()->role === 'admin')
-                <a href="/admin/insights" class="nav-item">
-                    <span>📈</span> Admin Insights
+                <a href="/admin/insights" class="nav-item" style="color: #4A4A4A; font-weight: 600; padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: 0.3s;">
+                    <span>📈</span> Pantauan Admin
                 </a>
                 @endif
             </nav>
@@ -345,7 +358,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">⚡ Simpan Jadwal</button>
+                <button type="submit" class="btn-cheerful" style="width: 100%; margin-top: 10px; font-size: 16px;">⚡ Simpan Jadwal Seru!</button>
             </form>
 
             <hr style="margin: 25px 0; border: 1px solid #edf2f7;">
@@ -357,35 +370,35 @@
                 </button>
             </form>
 
-            <hr style="margin: 25px 0; border: 1px solid #edf2f7;">
-            <h3 style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Filter Khusus Admin</h3>
-            <a href="/schedules?needs_verification=1" class="btn-submit" style="background: #6366f1; color: white; display: block; text-decoration: none; text-align: center; margin-bottom: 5px;">⏳ Butuh Verifikasi</a>
-            <a href="/schedules" class="btn-submit" style="background: #f1f5f9; color: #64748b; display: block; text-decoration: none; text-align: center; border: 1px solid #e2e8f0;">Semua Jadwal</a>
+            <hr style="margin: 25px 0; border: 1px solid #FFEDCC;">
+            <h3 style="font-size: 13px; color: #FF8C00; margin-bottom: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">🕹️ Kontrol Admin</h3>
+            <a href="/schedules?needs_verification=1" class="btn-cheerful" style="background: var(--secondary-gradient); color: white; display: block; text-decoration: none; text-align: center; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(255,107,107,0.3);">⏳ Butuh Verifikasi</a>
+            <a href="/schedules" class="btn-cheerful" style="background: white; color: #FF8C00; display: block; text-decoration: none; text-align: center; border: 2px solid #FF8C00; box-shadow: none;">Semua Jadwal</a>
         @endif
     </aside>
 
     <main>
         <!-- Header Info -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 20px 25px; border-radius: 16px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); border: 1px solid #f1f5f9;">
+        <div class="animate-cheerful" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 25px 30px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid #FFEDCC;">
             <div>
-                <h3 style="margin: 0; color: #1e293b;">Halo, {{ auth()->user()->name ?? 'Guest' }}! <span style="font-size: 14px; background: #6366f1; color: white; padding: 3px 10px; border-radius: 20px; margin-left: 10px;">LVL {{ $stats['level'] }}</span></h3>
-                <p style="margin: 5px 0 0; color: #64748b; font-size: 12px;">🔥 <b>{{ $stats['streak'] }} Day Streak</b> | 🎯 <b>{{ $stats['completion_rate'] }}% Selesai</b></p>
+                <h3 style="margin: 0; color: #1e293b; font-size: 20px;">Halo, {{ auth()->user()->name ?? 'Guest' }}! 🌟 <span style="font-size: 14px; background: var(--primary-gradient); color: white; padding: 5px 15px; border-radius: 20px; margin-left: 10px; font-weight: 800; box-shadow: 0 4px 10px rgba(255,140,0,0.3);">LVL {{ $stats['level'] }}</span></h3>
+                <p style="margin: 8px 0 0; color: #64748b; font-size: 13px;">🔥 <b>{{ $stats['streak'] }} Day Streak</b> | 🎯 <b>{{ $stats['completion_rate'] }}% Selesai</b></p>
             </div>
             
             <div style="flex-grow: 1; max-width: 250px; margin: 0 30px;">
-                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 5px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: #FF8C00; margin-bottom: 8px;">
                     <span>XP: {{ $stats['xp'] }}</span>
                     <span>NEXT: {{ $stats['xp_next'] }}</span>
                 </div>
-                <div class="xp-bar-container">
-                    <div class="xp-bar-fill" style="width: {{ ($stats['xp'] / $stats['xp_next']) * 100 }}%"></div>
+                <div class="xp-bar-container" style="background: #FFF5E6; height: 12px; border-radius: 10px; border: 1px solid #FFEDCC; overflow: hidden;">
+                    <div class="xp-bar-fill" style="width: {{ ($stats['xp'] / $stats['xp_next']) * 100 }}%; background: var(--secondary-gradient); height: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);"></div>
                 </div>
             </div>
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;">
-                    👋 Log Out
+                <button type="submit" class="btn-cheerful" style="background: rgba(255, 107, 107, 0.1); color: #FF6B6B; border: 2px solid #FF6B6B; box-shadow: none;">
+                    👋 Keluar
                 </button>
             </form>
         </div>

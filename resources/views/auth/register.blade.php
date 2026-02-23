@@ -3,11 +3,11 @@
 @section('content')
 <style>
     body {
-        /* Animated gradient background */
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        /* Warmer, cheerfuller sunset gradient */
+        background: linear-gradient(-45deg, #FF8C00, #FFD700, #FF6B6B, #FF8E53);
         background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        animation: gradientBG 10s ease infinite;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
         margin: 0;
         height: 100vh;
         overflow: hidden;
@@ -28,7 +28,7 @@
     .shape:nth-child(1) {
         height: 400px;
         width: 400px;
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 215, 0, 0.4);
         top: -100px;
         left: -100px;
         border-radius: 50%;
@@ -36,7 +36,7 @@
     .shape:nth-child(2) {
         height: 500px;
         width: 500px;
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(255, 140, 0, 0.3);
         bottom: -150px;
         right: -100px;
         border-radius: 50%;
@@ -56,15 +56,15 @@
     .glass-card {
         width: 100%;
         max-width: 420px;
-        padding: 30px 35px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 24px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px 40px;
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 35px;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
         color: white;
-        transition: transform 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .glass-card:hover {

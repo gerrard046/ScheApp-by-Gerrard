@@ -27,21 +27,21 @@
         margin-bottom: 5px;
         transition: all 0.2s;
     }
-    .nav-item:hover { background: #f1f5f9; color: #1e293b; }
-    .nav-item.active { background: #6366f1; color: white; }
+    .nav-item:hover { background: #FFF5E6; color: #FF8C00; }
+    .nav-item.active { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(255,140,0,0.3); }
 
     main { flex-grow: 1; padding: 40px; }
 
     .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
     .group-card {
         background: white;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        border: 1px solid #f1f5f9;
-        transition: transform 0.2s;
+        padding: 30px;
+        border-radius: var(--card-radius);
+        box-shadow: var(--vibrant-shadow);
+        border: 2px solid #FFEDCC;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .group-card:hover { transform: translateY(-5px); }
+    .group-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(255,140,0,0.15); }
 
     .input-style {
         width: 100%;
@@ -54,17 +54,20 @@
     }
     .btn-submit {
         width: 100%;
-        padding: 12px;
+        padding: 14px;
         border-radius: 12px;
         border: none;
-        background: #6366f1;
+        background: var(--primary-gradient);
         color: white;
-        font-weight: bold;
+        font-weight: 800;
         cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(255,140,0,0.3);
     }
+    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255,140,0,0.4); }
 
-    .badge-admin { background: #6366f1; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
-    .badge-member { background: #f1f5f9; color: #64748b; padding: 2px 8px; border-radius: 10px; font-size: 10px; }
+    .badge-admin { background: var(--secondary-gradient); color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; }
+    .badge-member { background: #FFE6E6; color: #FF6B6B; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
 </style>
 
 <div class="main-wrapper">
@@ -90,11 +93,11 @@
     </aside>
 
     <main>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h1 style="font-weight: 800; letter-spacing: -1px; margin: 0;">Kolaborasi Tim</h1>
+        <div class="animate-cheerful" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: white; padding: 25px 35px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid #FFEDCC;">
+            <h1 style="font-weight: 800; letter-spacing: -1.5px; margin: 0; color: #FF8C00;">🤝 Kerjasama Tim Seru</h1>
             @if(auth()->user()->role === 'admin')
-            <button onclick="document.getElementById('createGroupModal').style.display='flex'" style="background: #6366f1; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;">
-                + Buat Grup Baru
+            <button onclick="document.getElementById('createGroupModal').style.display='flex'" class="btn-cheerful" style="padding: 12px 25px; font-size: 15px;">
+                🚀 Buat Grup Baru
             </button>
             @endif
         </div>
