@@ -57,20 +57,25 @@ Dengan antarmuka **Glassmorphism** yang mewah dan responsif, ScheApp memberikan 
 ### Use Case Diagram
 Peta fungsionalitas utama antara Mahasiswa dan Admin:
 
-```mermaid
-usecaseDiagram
-    actor "Mahasiswa (User)" as U
-    actor "Administrator" as A
+### Use Case Diagram
+Peta fungsionalitas utama antara Mahasiswa dan Admin:
 
-    package "ScheApp System" {
-        usecase "Manage Personal Task" as UC1
-        usecase "Join Team Group" as UC2
-        usecase "Earn XP & Level Up" as UC3
-        usecase "Create & Manage Group" as UC4
-        usecase "Broadcast Schedule" as UC5
-        usecase "Verify User Task" as UC6
-        usecase "View Admin Insights" as UC7
-    }
+```mermaid
+graph TD
+    subgraph Actors
+        U["Mahasiswa (User)"]
+        A["Administrator"]
+    end
+
+    subgraph "ScheApp System"
+        UC1([Manage Personal Task])
+        UC2([Join Team Group])
+        UC3([Earn XP & Level Up])
+        UC4([Create & Manage Group])
+        UC5([Broadcast Schedule])
+        UC6([Verify User Task])
+        UC7([View Admin Insights])
+    end
 
     U --> UC1
     U --> UC2
@@ -80,7 +85,7 @@ usecaseDiagram
     A --> UC5
     A --> UC6
     A --> UC7
-    A --|> U : "Inheritance Role"
+    A -.-> U
 ```
 
 ### Task Management Flow (CRUD & Verification)
