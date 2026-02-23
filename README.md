@@ -10,12 +10,15 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 - [📊 User Flow & Use Case](#-user-flow--use-case)
 - [🏗️ Arsitektur & SDLC](#-arsitektur--sdlc)
 - [🛠 Tech Stack](#-tech-stack)
-- [� Struktur Project](#-struktur-project)
+- [📁 Struktur Project](#-struktur-project)
 - [🔗 Database Schema](#-database-schema)
-- [�📱 Mobile App Integration](#-mobile-app-integration)
-- [🚀 Instalasi & Konfigurasi](#-instalasi--konfigurasi)
+- [� Instalasi - Web](#-instalasi---web)
+- [� Instalasi - Mobile](#-instalasi---mobile)
 - [🔌 API Endpoints](#-api-endpoints)
-- [🤝 Kontribusi](#-kontribusi)
+- [📋 User Stories](#-user-stories)
+- [� Testing](#-testing)
+- [📊 Development Workflow](#-development-workflow)
+- [�🤝 Kontribusi](#-kontribusi)
 - [📄 Lisensi](#-lisensi)
 
 ---
@@ -351,60 +354,182 @@ ScheApp-by-Gerrard/
 
 ---
 
-## 📱 Mobile App Integration
-ScheApp kini tersedia dalam versi Android melalui pendekatan **WebView Native Wrapper**.
+## � Instalasi - Web
 
-### Prasyarat Mobile
-- Android Studio Jellyfish (atau lebih baru)
-- Android Device / Emulator (API 24+)
+### Prerequisites
+- PHP 8.2+
+- MySQL 8.0+
+- Node.js 18+ (Vite support)
+- Composer 2.0+
 
-### Dokumentasi Source Code
-Source code untuk Android Studio tersedia di folder:
-📁 `android_studio_kotlin_template`
-
----
-
-## 🚀 Instalasi & Konfigurasi
-
-### Step 1: Clone & Setup
+### Step 1: Clone & Setup Project
 ```bash
-git clone https://github.com/gerrard046/ScheApp-by-Gerrard
+# Clone repository
+git clone https://github.com/gerrard046/ScheApp-by-Gerrard.git
 cd ScheApp-by-Gerrard
+
+# Install dependencies
 composer install
 npm install
 ```
 
 ### Step 2: Konfigurasi Environment
-Salin file `.env.example` menjadi `.env` dan sesuaikan database serta API Key Google:
+```bash
+# Copy .env file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+### Step 3: Database Setup
+Edit `.env` untuk konfigurasi database:
 ```env
 DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
 DB_DATABASE=scheapp
-GOOGLE_CLIENT_ID=your_id
-GOOGLE_CLIENT_SECRET=your_secret
+DB_USERNAME=root
+DB_PASSWORD=
 ```
-
-### Step 3: Database & Key
+Jalankan migrations:
 ```bash
-php artisan key:generate
 php artisan migrate
+php artisan db:seed
 ```
 
-### Step 4: Menjalankan Server
+### Step 4: Build Frontend Assets
 ```bash
-# Agar bisa diakses dari HP di jaringan yang sama
+npm run build
+# atau untuk development dengan hot reload:
+npm run dev
+```
+
+### Step 5: Jalankan Server
+```bash
+# Gunakan host 0.0.0.0 agar bisa diakses App Mobile
 php artisan serve --host=0.0.0.0
+```
+Server akan berjalan di: `http://localhost:8000`
+
+---
+
+## 📱 Instalasi - Mobile
+
+### Prerequisites
+- Android Studio (Jellyfish atau lebih baru)
+- Android SDK 31+
+- Kotlin 1.9+ / JDK 17+
+
+### Step 1: Setup Template
+Source code mobile tersedia di folder khusus:
+📁 `android_studio_kotlin_template`
+
+### Step 2: Open in Android Studio
+1. Buka Android Studio.
+2. Pilih **File > New > Project from Existing Sources**.
+3. Navigasi ke folder project ScheApp.
+4. Android Studio akan otomatis download dependencies.
+
+### Step 3: Configure API Endpoint
+Edit `MainActivity.kt` untuk menghubungkan ke server laptop:
+```kotlin
+// Gunakan IP Laptop jika pakai physical device
+// Gunakan 10.0.2.2 jika pakai emulator
+val serverUrl = "http://10.0.2.2:8000/schedules"
+```
+
+### Step 4: Build & Run
+- **Via Android Studio**: Klik tombol "Run" atau `Shift+F10`.
+- **Via Command Line**:
+```bash
+./gradlew assembleDebug
+./gradlew installDebug
 ```
 
 ---
 
 ## 🔌 API Endpoints
-Base URL: `http://localhost:8000/api`
 
+### Authentication
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/tasks` | Mengambil semua daftar tugas |
-| POST | `/api/tasks` | Menambahkan tugas baru |
-| PUT | `/api/tasks/{id}` | Memperbarui status tugas |
+| POST | `/register` | Register new user |
+| POST | `/login` | Login user session |
+| POST | `/logout` | Terminate session |
+| GET | `/auth/google` | OAuth via Google |
+
+### Tasks Management
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/schedules` | View all tasks |
+| POST | `/schedules` | Create new schedule |
+| GET | `/schedules/{id}/edit` | Get specific task details |
+| POST | `/schedules/{id}/toggle` | Toggle completion & verification |
+| DELETE | `/schedules/{id}` | Delete specific task |
+
+### Admin & Groups
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/admin/insights` | Global analytics dashboard |
+| GET | `/groups` | Manage team groups |
+| POST | `/groups` | Create new team |
+
+---
+
+## 📋 User Stories
+
+### Web Platform
+- **Sebagai mahasiswa**, saya ingin login dengan Google agar bisa langsung akses dashboard tanpa ribet.
+- **Sebagai pengguna**, saya ingin melihat visualisasi produktivitas 7 hari terakhir agar bisa memantau performa.
+- **Sebagai admin**, saya ingin mem-broadcast tugas grup agar tim saya tidak ketinggalan jadwal penting.
+
+### Mobile Platform
+- **Sebagai mahasiswa**, saya ingin cek tugas lewat HP agar tetap produktif meski sedang di luar ksatrian.
+- **Sebagai pengguna**, saya ingin aplikasi terasa ringan (WebView) agar memori HP tidak cepat penuh.
+- **Sebagai admin**, saya ingin melakukan verifikasi tugas anggota langsung dari HP.
+
+---
+
+## 🧪 Testing
+
+### Web Testing
+```bash
+# Run all tests
+php artisan test
+
+# Run with coverage (Xdebug required)
+php artisan test --coverage
+```
+
+### Mobile Testing
+```bash
+# Run unit tests
+./gradlew test
+
+# Run instrumentation tests
+./gradlew connectedAndroidTest
+```
+
+---
+
+## 📊 Development Workflow
+
+### Git Branch Strategy
+```text
+main           (Stable production code)
+  ↑
+develop        (Integration branch)
+  ↑
+feature/XYZ    (Individual feature development)
+```
+
+### Contribution Guide
+1. **Fork** repository ini.
+2. Buat branch fitur baru: `git checkout -b feature/nama-fitur`.
+3. **Commit** perubahan: `git commit -m "Add: Penjelasan fitur"`.
+4. **Push** ke branch: `git push origin feature/nama-fitur`.
+5. Buka **Pull Request**.
 
 ---
 
