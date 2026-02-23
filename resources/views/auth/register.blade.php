@@ -3,211 +3,148 @@
 @section('content')
 <style>
     body {
-        /* Warmer, cheerfuller sunset gradient */
-        background: linear-gradient(-45deg, #FF8C00, #FFD700, #FF6B6B, #FF8E53);
-        background-size: 400% 400%;
-        animation: gradientBG 10s ease infinite;
+        background: var(--soft-bg);
         font-family: 'Plus Jakarta Sans', sans-serif !important;
         margin: 0;
         height: 100vh;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    /* Decorative circles behind the glass */
-    .shape {
+    /* Arctic decorative elements */
+    .arctic-blob {
         position: absolute;
-        filter: blur(60px);
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(30, 136, 229, 0.05) 0%, rgba(30, 136, 229, 0) 70%);
+        border-radius: 50%;
         z-index: 0;
     }
-    .shape:nth-child(1) {
-        height: 400px;
-        width: 400px;
-        background: rgba(255, 215, 0, 0.4);
-        top: -100px;
-        left: -100px;
-        border-radius: 50%;
-    }
-    .shape:nth-child(2) {
-        height: 500px;
-        width: 500px;
-        background: rgba(255, 140, 0, 0.3);
-        bottom: -150px;
-        right: -100px;
-        border-radius: 50%;
-    }
+    .blob-1 { top: -200px; left: -200px; }
+    .blob-2 { bottom: -200px; right: -200px; }
 
-    .register-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
+    .register-wrapper {
         position: relative;
         z-index: 1;
+        width: 100%;
+        max-width: 440px;
         padding: 20px;
     }
 
-    /* Glassmorphism Card */
-    .glass-card {
-        width: 100%;
-        max-width: 420px;
-        padding: 40px 40px;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 2px solid rgba(255, 255, 255, 0.4);
+    .arctic-card {
+        background: var(--card-bg);
+        padding: 40px 45px;
         border-radius: 35px;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
-        color: white;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .glass-card:hover {
-        transform: translateY(-5px);
+        box-shadow: var(--vibrant-shadow);
+        border: 1px solid var(--border-color);
+        backdrop-filter: blur(20px);
     }
 
-    .glass-card h2 {
-        text-align: center;
-        margin: 0 0 10px 0;
+    .brand-logo {
         font-size: 32px;
-        font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .glass-card p {
+        font-weight: 900;
+        letter-spacing: -2px;
+        color: var(--text-main);
         text-align: center;
         margin-bottom: 25px;
-        font-size: 15px;
-        color: rgba(255, 255, 255, 0.9);
-        font-weight: 300;
     }
 
-    /* Alerts */
-    .alert {
-        padding: 12px 15px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-    }
+    .brand-logo span { color: #1E88E5; }
 
-    .alert-error {
-        background: rgba(231, 76, 60, 0.2);
-        border: 1px solid rgba(231, 76, 60, 0.5);
-        color: #fff;
-    }
-
-    /* Form Fields */
     .form-group {
         margin-bottom: 12px;
     }
 
     .form-group label {
         display: block;
-        font-weight: 500;
-        margin-bottom: 5px;
-        font-size: 13px;
-        letter-spacing: 0.5px;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        color: white;
-        font-size: 14px;
-        outline: none;
-        transition: all 0.3s ease;
-        box-sizing: border-box;
-    }
-    
-    .form-input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
-
-    .form-input:focus {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.5);
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-    }
-
-    /* Button */
-    .btn-submit {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-top: 10px;
+        margin-bottom: 5px;
+        padding-left: 5px;
     }
 
-    .btn-submit:hover {
-        background: rgba(255, 255, 255, 0.25);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    .arctic-input {
+        width: 100%;
+        padding: 12px 18px;
+        border-radius: 15px;
+        border: 1px solid var(--border-color);
+        background: var(--soft-bg);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-main);
+        transition: 0.3s;
+        box-sizing: border-box;
+    }
+
+    .arctic-input:focus {
+        border-color: #1E88E5;
+        box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.1);
+        outline: none;
+    }
+
+    .btn-arctic {
+        width: 100%;
+        padding: 14px;
+        border-radius: 15px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+        box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2);
+    }
+
+    .btn-arctic:hover {
         transform: translateY(-2px);
-    }
-
-    /* Footer / Divider */
-    .divider {
-        height: 1px;
-        background: rgba(255, 255, 255, 0.2);
-        margin: 20px 0;
+        box-shadow: 0 15px 30px rgba(30, 136, 229, 0.3);
     }
 
     .auth-footer {
+        margin-top: 25px;
         text-align: center;
-    }
-
-    .auth-footer p {
-        margin-bottom: 10px;
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.8);
+        color: var(--text-muted);
     }
 
-    .btn-login {
-        display: inline-block;
-        padding: 10px 20px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: white;
+    .auth-footer a {
+        color: #1E88E5;
+        font-weight: 800;
         text-decoration: none;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        margin-left: 5px;
     }
 
-    .btn-login:hover {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: #fff;
+    .alert {
+        padding: 12px;
+        border-radius: 15px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-align: center;
+        background: #FFF5F5;
+        color: #EF4444;
+        border: 1px solid rgba(239, 68, 68, 0.1);
     }
 </style>
 
-<div class="shape"></div>
-<div class="shape"></div>
+<div class="arctic-blob blob-1"></div>
+<div class="arctic-blob blob-2"></div>
 
-<div class="register-container">
-    <div class="glass-card">
-        <h2>Daftar ScheApp</h2>
-        <p>Gabung dan kelola jadwalmu secara cerdas.</p>
+<div class="register-wrapper">
+    <div class="arctic-card">
+        <div class="brand-logo">
+            <span>⚡</span> ScheApp
+        </div>
 
         @if($errors->any())
-            <div class="alert alert-error">
+            <div class="alert">
                 {{ $errors->first() }}
             </div>
         @endif
@@ -215,37 +152,32 @@
         <form action="/register" method="POST">
             @csrf
             <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="text" name="name" class="form-input" required placeholder="Masukkan nama..." value="{{ old('name') }}">
+                <label>Full Name</label>
+                <input type="text" name="name" class="arctic-input" required placeholder="John Doe" value="{{ old('name') }}">
             </div>
 
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" class="form-input" required placeholder="Masukkan email..." value="{{ old('email') }}">
+                <label>Email Address</label>
+                <input type="email" name="email" class="arctic-input" required placeholder="name@example.com" value="{{ old('email') }}">
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" class="form-input" required placeholder="Minimal 8 karakter...">
+                <input type="password" name="password" class="arctic-input" required placeholder="Min. 8 characters">
             </div>
 
             <div class="form-group">
-                <label>Konfirmasi Password</label>
-                <input type="password" name="password_confirmation" class="form-input" required placeholder="Ulangi password...">
+                <label>Confirm Password</label>
+                <input type="password" name="password_confirmation" class="arctic-input" required placeholder="Repeat password">
             </div>
 
-            <button type="submit" class="btn-submit">
-                Daftar Sekarang
+            <button type="submit" class="btn-arctic">
+                Create Account
             </button>
         </form>
 
-        <div class="divider"></div>
-
         <div class="auth-footer">
-            <p>Sudah punya akun?</p>
-            <a href="/login" class="btn-login">
-                Masuk di Sini
-            </a>
+            Already have an account? <a href="/login">Sign In</a>
         </div>
     </div>
 </div>

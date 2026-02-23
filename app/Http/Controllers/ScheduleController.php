@@ -165,7 +165,7 @@ class ScheduleController extends Controller
     }
 
     // 4. Update Status & Verification Flow
-    public function toggleComplete($id)
+    public function toggleComplete(Request $request, $id)
     {
         $schedule = Schedule::findOrFail($id);
         $user = auth()->user();
@@ -222,8 +222,10 @@ class ScheduleController extends Controller
 
             if ($schedule->is_verified) {
                 $taskOwner = $schedule->user;
-                $taskOwner->xp += 5; // Bonus XP for verified task
-                $taskOwner->save();
+                if ($taskOwner) {
+                    $taskOwner->xp += 5; // Bonus XP for verified task
+                    $taskOwner->save();
+                }
 
                 // Notify User
                 $taskOwner->notify(new GeneralNotification(

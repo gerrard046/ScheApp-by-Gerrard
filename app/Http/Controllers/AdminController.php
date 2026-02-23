@@ -27,11 +27,23 @@ class AdminController extends Controller
         $riskUsers = User::whereHas('schedules', function($q) use ($sevenDaysAgo) {
             $q->where('date', '>=', $sevenDaysAgo)
               ->where('is_completed', false)
-              ->whereRaw("date || ' ' || time < ?", [now()]);
+              ->where(function($sq) {
+                  $sq->where('date', '<', date('Y-m-d'))
+                    ->orWhere(function($ssq) {
+                        $ssq->where('date', date('Y-m-d'))
+                           ->where('time', '<', date('H:i:s'));
+                    });
+              });
         })->withCount(['schedules' => function($q) use ($sevenDaysAgo) {
             $q->where('date', '>=', $sevenDaysAgo)
               ->where('is_completed', false)
-              ->whereRaw("date || ' ' || time < ?", [now()]);
+              ->where(function($sq) {
+                $sq->where('date', '<', date('Y-m-d'))
+                  ->orWhere(function($ssq) {
+                      $ssq->where('date', date('Y-m-d'))
+                         ->where('time', '<', date('H:i:s'));
+                  });
+              });
         }])->get()->filter(fn($u) => $u->schedules_count >= 3);
 
         return view('schedules.insights', compact(

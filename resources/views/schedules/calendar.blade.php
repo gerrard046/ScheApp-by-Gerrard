@@ -19,7 +19,7 @@
         backdrop-filter: blur(10px);
     }
 
-    .nav-item {
+    .nav-link {
         display: flex;
         align-items: center;
         gap: 15px;
@@ -32,8 +32,8 @@
         margin-bottom: 5px;
         font-size: 15px;
     }
-    .nav-item:hover { background: var(--soft-bg); transform: translateX(5px); }
-    .nav-item.active { background: var(--primary-gradient); color: white; box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2); }
+    .nav-link:hover { background: var(--soft-bg); transform: translateX(5px); }
+    .nav-link.active { background: var(--primary-gradient); color: white; box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2); }
 
     main { flex-grow: 1; padding: 50px; }
 
@@ -70,17 +70,17 @@
         </div>
         
         <nav>
-            <a href="/schedules" class="nav-item">
+            <a href="/schedules" class="nav-link">
                 <span>🏠</span> Dashboard
             </a>
-            <a href="/calendar" class="nav-item active">
+            <a href="/calendar" class="nav-link active">
                 <span>📅</span> Kalender
             </a>
-            <a href="/groups" class="nav-item">
+            <a href="/groups" class="nav-link">
                 <span>🤝</span> Tim Grup
             </a>
             @if(auth()->user()->role === 'admin')
-            <a href="/admin/insights" class="nav-item">
+            <a href="/admin/insights" class="nav-link">
                 <span>📈</span> Admin Insights
             </a>
             @endif

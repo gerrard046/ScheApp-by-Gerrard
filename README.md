@@ -28,42 +28,33 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain ce
 ---
 
 ## 🎯 Deskripsi
-**ScheApp Pro** lahir dari kebutuhan mendesak mahasiswa **Politeknik Siber dan Sandi Negara (Poltek SSN)**. Dengan dinamika kegiatan ksatrian dan akademik yang sangat padat, seringkali tugas atau rencana kegiatan yang sudah tersusun rapi menjadi keteteran atau terlupakan. 
+**ScheApp Pro: Arctic Zen Edition** adalah evolusi tertinggi dari manajemen jadwal personal. Lahir dari kebutuhan ksatria **Politeknik Siber dan Sandi Negara (Poltek SSN)**, aplikasi ini kini mengusung tema **Arctic Breeze** yang menenangkan dengan paduan warna *Blue Light White* dan *Arctic Blue* untuk fokus maksimal.
 
-Aplikasi ini merupakan evolusi dari manajemen jadwal personal menjadi sistem kolaborasi tim yang lengkap. ScheApp memungkinkan pengguna untuk tidak hanya mengatur jadwal pribadi, tetapi juga bekerja dalam grup, menerima broadcast tugas dari admin, dan berkompetisi secara sehat lewat sistem **Gamification (XP & Leveling)** demi menjaga produktivitas di tengah kesibukan yang tinggi.
-
-Dengan antarmuka **Cheerful Glassmorphism (Sunset Sunshine Theme)** yang mewah, ceria, dan responsif, ScheApp memberikan pengalaman pengguna yang premium baik di browser desktop maupun di layar smartphone melalui wrapper Android Native. Perpaduan warna oranye dan emas memberikan energi positif bagi para ksatria Poltek SSN dalam mengelola tugas harian. Kini didukung dengan mode **Midnight Sunset** untuk penggunaan malam hari.
+Aplikasi ini beralih dari sekadar pengingat menjadi ekosistem produktivitas. Dengan antarmuka **Minimalist Glassmorphism** yang mewah, ScheApp memberikan ketenangan visual di tengah jadwal yang padat. Kini didukung dengan **Zen Mode** untuk sesi kerja mendalam (*deep work*) dan **Admin Insights** untuk pemantauan performa tim secara real-time.
 
 ---
 
-### ✨ Fitur Utama (Titan Edition)
+### ✨ Fitur Utama (Arctic Zen Edition)
 
-#### 🔐 Autentikasi & Keamanan
-- **Bcrypt Security**: Enkripsi password tingkat tinggi.
-- **Google OAuth**: Login sekali klik via akun Google (Laravel Socialite).
-- **IsAdmin Middleware**: Proteksi rute khusus untuk level Administrator.
+#### 🧊 Estetika Arctic Breeze
+- **Blue-Light-White Palette**: Desain yang memanjakan mata untuk penggunaan jangka panjang.
+- **Glassmorphism UI**: Antarmuka transparan yang modern dan bersih.
+- **Floating Action Buttons**: Akses cepat ke fitur utama tanpa mengganggu konten.
 
-#### 🤝 Kolaborasi Tim & Lampiran
-- **Group Management**: Admin dapat membuat grup dan mengelola anggota tim.
-- **Schedule Broadcasting**: Admin membuat satu agenda, otomatis masuk ke kalender seluruh anggota grup.
-- **Real File Attachments**: Upload file (PDF, Gambar, Video) langsung dari file explorer ke setiap agenda.
+#### 🧘 Zen Mode (Deep Work Engine)
+- **Pomodoro Timer**: Sesi fokus 25 menit yang terintegrasi.
+- **Urgent Task Sync**: Fokus otomatis pada tugas paling mendesak.
+- **Arctic Lo-fi Beats**: Integrasi musik latar untuk meningkatkan konsentrasi.
 
-#### 📈 Admin Insights & Notifications
-- **Global Overview**: Pantau total tugas selesai seluruh user.
-- **Top Performance**: Peringkat user berdasarkan perolehan XP.
-- **Burnout Risk Detection**: Deteksi dini user yang kelelahan.
-- **Smart Notification Center**: Alert real-time untuk verifikasi tugas dan update grup baru.
+#### 📈 Admin Insights (Stability Optimized)
+- **Cross-Database Support**: Optimal untuk SQLite dan MySQL.
+- **Burnout Risk Detection**: Algoritma cerdas untuk mendeteksi kelelahan pengguna.
+- **Global Leaderboard**: Kompetisi sehat berdasarkan perolehan XP.
 
-#### ✅ Verification & Sub-Tasks
-- **Checklist Sub-Tasks**: Pecah agenda besar menjadi langkah-langkah kecil.
-- **Photo Evidence**: Upload bukti foto 📸 saat tugas selesai.
-- **Task Approval**: Admin memverifikasi bukti foto sebelum XP dicairkan.
-
-#### 🎮 Gamification & Aesthetics
-- **Dynamic XP & Leveling**: Naik level setiap 100 XP.
-- **Productivity Heatmap & Reports**: Visualisasi 7 hari terakhir dan export PDF report.
-- **Midnight Sunset**: Tema Dark Mode premium untuk kenyamanan mata.
-- **Lo-Fi Focus Mode**: Sesi Pomodoro dengan pilihan musik Lo-Fi Beats.
+#### 🤝 Collaboration & sub-Tasks
+- **Checklist Sub-Tasks**: Dekomposisi tugas besar menjadi langkah kecil.
+- **Evidence Verification**: Sistem upload bukti foto dengan verifikasi admin.
+- **Real File Attachments**: Dukungan penuh untuk lampiran PDF dan Gambar.
 
 ---
 

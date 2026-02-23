@@ -74,20 +74,77 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        .btn-cheerful {
+        /* Arctic Breeze Consolidated Design System */
+        .btn-arctic {
             background: var(--primary-gradient);
             border: none;
-            border-radius: 12px;
+            border-radius: 18px;
             color: white;
-            font-weight: 700;
-            padding: 10px 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            font-weight: 800;
+            padding: 12px 25px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        .btn-cheerful:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        .btn-arctic:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(30, 136, 229, 0.3);
         }
+
+        .arctic-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 18px;
+            border: 1px solid var(--border-color);
+            background: var(--soft-bg);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: 0.3s;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .arctic-input:focus {
+            border-color: #1E88E5;
+            box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.1);
+        }
+
+        .zen-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--vibrant-shadow);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .zen-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(30, 136, 229, 0.1);
+        }
+
+        .arctic-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Legacy compatibility alias */
+        .btn-cheerful { @extend .btn-arctic; }
+
         .btn-theme-toggle {
             background: var(--soft-bg);
             border: 2px solid var(--border-color);
@@ -107,7 +164,9 @@
 </head>
 <body x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
     <nav class="navbar-custom">
-        <div style="font-weight: 800; font-size: 22px; color: #FF8C00; letter-spacing: -1.5px;">SCHEAPP <span style="color: var(--secondary-gradient)">PRO</span></div>
+        <div style="font-weight: 900; font-size: 24px; color: var(--text-main); letter-spacing: -2px; display: flex; align-items: center; gap: 8px;">
+            <span style="color: #1E88E5;">⚡</span> SCHEAPP <span style="color: #1E88E5; font-weight: 500; font-size: 14px; letter-spacing: 2px; margin-left: 5px;">PRO</span>
+        </div>
         
         <div style="display: flex; gap: 15px; align-items: center;" x-data="{ openNotifications: false }">
             <div style="position: relative; cursor: pointer;" title="Notifikasi" @click="openNotifications = !openNotifications">

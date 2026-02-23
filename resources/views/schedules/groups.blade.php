@@ -62,6 +62,35 @@
 
     .badge-admin { background: var(--primary-gradient); color: white; padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
     .badge-member { background: var(--soft-bg); color: var(--text-muted); padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; border: 1px solid var(--border-color); }
+
+    .arctic-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-arctic {
+        width: 100%;
+        padding: 16px;
+        border-radius: 18px;
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        font-size: 16px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2);
+    }
+    .btn-arctic:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(30, 136, 229, 0.3); }
 </style>
 
 <div class="main-wrapper">
@@ -97,18 +126,21 @@
     </aside>
 
     <main>
-        <div class="animate-cheerful" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: white; padding: 25px 35px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid #FFEDCC;">
-            <h1 style="font-weight: 800; letter-spacing: -1.5px; margin: 0; color: #FF8C00;">🤝 Kerjasama Tim Seru</h1>
-            @if(auth()->user()->role === 'admin')
-            <button onclick="document.getElementById('createGroupModal').style.display='flex'" class="btn-cheerful" style="padding: 12px 25px; font-size: 15px;">
-                🚀 Buat Grup Baru
-            </button>
-            @endif
-        </div>
+        <header style="margin-bottom: 50px;">
+            <p style="font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px;">TEAM COLLABORATION</p>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--text-main);">Kerjasama Tim Seru 🤝</h2>
+                @if(auth()->user()->role === 'admin')
+                <button onclick="document.getElementById('createGroupModal').style.display='flex'" class="btn-arctic">
+                    🚀 Buat Grup Baru
+                </button>
+                @endif
+            </div>
+        </header>
 
         @if(session('success'))
-            <div style="background: #dcfce7; color: #15803d; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-                ✅ {{ session('success') }}
+            <div style="background: #F0FDF4; color: #10B981; padding: 18px 25px; border-radius: 18px; margin-bottom: 30px; border: 1px solid rgba(16, 185, 129, 0.1); font-weight: 700;">
+                <span style="margin-right: 10px;">✅</span> {{ session('success') }}
             </div>
         @endif
 
@@ -163,17 +195,17 @@
     </main>
 </div>
 
-<!-- Simple Modal for Create Group -->
-<div id="createGroupModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-    <div style="background: white; padding: 30px; border-radius: 20px; width: 400px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
-        <h2 style="margin-top: 0;">Buat Grup Baru</h2>
+<!-- Creative Modal for Create Group -->
+<div id="createGroupModal" class="arctic-overlay" style="display: none;">
+    <div class="group-card" style="width: 400px; padding: 40px; border: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h2 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -1px; color: var(--text-main);">Grup Baru</h2>
+            <button onclick="document.getElementById('createGroupModal').style.display='none'" style="background: none; border: none; font-size: 30px; cursor: pointer; color: var(--text-muted);">&times;</button>
+        </div>
         <form action="/groups" method="POST">
             @csrf
-            <input type="text" name="name" class="input-style" placeholder="Nama Grup (ex: Tim Proyek A)" required>
-            <div style="display: flex; gap: 10px;">
-                <button type="button" onclick="this.parentElement.parentElement.parentElement.parentElement.style.display='none'" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; cursor: pointer;">Batal</button>
-                <button type="submit" class="btn-submit" style="flex: 1;">Buat Grup</button>
-            </div>
+            <input type="text" name="name" class="arctic-input" placeholder="Nama Grup (ex: Tim Proyek A)" required>
+            <button type="submit" class="btn-arctic">Buat Grup Pro</button>
         </form>
     </div>
 </div>

@@ -117,10 +117,12 @@
         background: rgba(15, 23, 42, 0.4);
         backdrop-filter: blur(12px);
         z-index: 20000;
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
     }
 
     .zen-overlay {
@@ -130,12 +132,16 @@
         width: 100%;
         height: 100%;
         background: var(--soft-bg);
-        z-index: 30000;
+        z-index: 20000;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
+
+    .card-item {
+        transition: 0.3s;
+    }
+    .card-item:hover { transform: scale(1.01); }
 
     /* Input Styles Refinement */
     .arctic-input {
@@ -326,7 +332,7 @@
                     <form action="/schedules/{{ $item->id }}/sub-tasks" method="POST" style="margin-top: 15px; display: flex; gap: 10px;">
                         @csrf
                         <input type="text" name="title" placeholder="Checklist baru..." required style="flex-grow: 1; min-height: 0; padding: 8px 15px; border-radius: 10px; font-size: 12px;" class="arctic-input">
-                        <button type="submit" class="btn-cheerful" style="width: auto; padding: 0 15px; height: 35px; font-size: 18px; margin-top: 0;">+</button>
+                        <button type="submit" class="btn-arctic" style="width: auto; padding: 0 15px; height: 35px; font-size: 18px; margin-top: 0;">+</button>
                     </form>
                     @endif
                 @endif
@@ -368,7 +374,7 @@
                     <label style="font-size: 11px; font-weight: 800; color: var(--text-muted); display: block; margin-bottom: 10px;">FILE LAMPIRAN (PDF/IMAGE)</label>
                     <input type="file" name="attachment_file" style="font-size: 12px;">
                 </div>
-                <button type="submit" class="btn-cheerful" style="width: 100%; padding: 18px; background: var(--primary-gradient); border: none; font-size: 16px; margin-top: 0;">Simpan Agenda Arctic</button>
+                <button type="submit" class="btn-arctic" style="width: 100%; padding: 18px; background: var(--primary-gradient); border: none; font-size: 16px; margin-top: 0;">Simpan Agenda Arctic</button>
             </form>
         </div>
     </div>
@@ -389,8 +395,8 @@
                 </div>
                 
                 <div style="display: flex; gap: 20px; justify-content: center;">
-                    <button class="btn-cheerful" @click="toggleTimer()" x-text="timerActive ? 'JEDA' : 'MULAI'" style="padding: 20px 60px; border-radius: 50px; font-size: 14px; letter-spacing: 2px; width: auto; margin-top: 0;"></button>
-                    <button class="btn-cheerful" @click="focusMinutes = 25; focusSeconds = 0; if(timerActive) toggleTimer()" style="background: var(--soft-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: none; padding: 20px 40px; border-radius: 50px; width: auto; margin-top: 0;">RESET</button>
+                    <button class="btn-arctic" @click="toggleTimer()" x-text="timerActive ? 'JEDA' : 'MULAI'" style="padding: 20px 60px; border-radius: 50px; font-size: 14px; letter-spacing: 2px; width: auto; margin-top: 0;"></button>
+                    <button class="btn-arctic" @click="focusMinutes = 25; focusSeconds = 0; if(timerActive) toggleTimer()" style="background: var(--soft-bg); color: var(--text-main); border: 1px solid var(--border-color); box-shadow: none; padding: 20px 40px; border-radius: 50px; width: auto; margin-top: 0;">RESET</button>
                 </div>
             </div>
             
