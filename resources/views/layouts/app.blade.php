@@ -110,29 +110,40 @@
         <div style="display: flex; gap: 15px; align-items: center;" x-data="{ openNotifications: false }">
             <div style="position: relative; cursor: pointer;" title="Notifikasi" @click="openNotifications = !openNotifications">
                 <span style="font-size: 22px;">🔔</span>
-                <span style="position: absolute; top: -5px; right: -5px; background: #FF6B6B; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--card-bg);">3</span>
+                @if(auth()->check() && auth()->user()->unreadNotifications->count() > 0)
+                <span style="position: absolute; top: -5px; right: -5px; background: #FF6B6B; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 2px solid var(--card-bg);">
+                    {{ auth()->user()->unreadNotifications->count() }}
+                </span>
+                @endif
                 
                 <!-- Notifications Dropdown -->
                 <div x-show="openNotifications" @click.away="openNotifications = false" x-transition x-cloak
-                    style="position: absolute; top: 40px; right: 0; width: 300px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; box-shadow: var(--vibrant-shadow); padding: 15px; z-index: 10000; color: var(--text-main);">
+                    style="position: absolute; top: 40px; right: 0; width: 320px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 20px; box-shadow: var(--vibrant-shadow); padding: 15px; z-index: 10000; color: var(--text-main);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h4 style="margin: 0; font-size: 14px; font-weight: 800; text-transform: uppercase;">Pusat Notifikasi</h4>
-                        <span style="font-size: 10px; color: #FF8C00; font-weight: 800; cursor: pointer;">Tandai Dibaca</span>
+                        @if(auth()->check() && auth()->user()->unreadNotifications->count() > 0)
+                        <form action="/notifications/read-all" method="POST">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; font-size: 10px; color: #FF8C00; font-weight: 800; cursor: pointer; padding: 0;">Tandai Dibaca</button>
+                        </form>
+                        @endif
                     </div>
                     
-                    <div style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto;">
-                        <div style="padding: 10px; border-radius: 12px; background: var(--soft-bg); font-size: 12px; border-left: 4px solid var(--primary-gradient);">
-                            <strong>✅ Tugas Diverifikasi</strong>
-                            <p style="margin: 5px 0 0; color: var(--text-muted);">Admin telah memverifikasi tugas 'Lari Pagi'. Kamu dapet +5 XP!</p>
-                        </div>
-                        <div style="padding: 10px; border-radius: 12px; background: var(--soft-bg); font-size: 12px; border-left: 4px solid var(--secondary-gradient);">
-                            <strong>🤝 Tugas Grup Baru</strong>
-                            <p style="margin: 5px 0 0; color: var(--text-muted);">Admin 'Reiza' mengirim tugas grup ke 'Tim Siber 1'.</p>
-                        </div>
-                        <div style="padding: 10px; border-radius: 12px; background: var(--soft-bg); font-size: 12px;">
-                            <strong>🔥 Streak Bertahan!</strong>
-                            <p style="margin: 5px 0 0; color: var(--text-muted);">Bagus! Streak produktivitas kamu mencapai 3 hari.</p>
-                        </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px; max-height: 350px; overflow-y: auto;">
+                        @if(auth()->check())
+                            @forelse(auth()->user()->unreadNotifications as $notification)
+                            <div style="padding: 12px; border-radius: 12px; background: var(--soft-bg); font-size: 12px; border-left: 4px solid var(--primary-gradient);">
+                                <strong>{{ $notification->data['icon'] ?? '🔔' }} {{ $notification->data['title'] ?? 'Notifikasi' }}</strong>
+                                <p style="margin: 5px 0 0; color: var(--text-muted); line-height: 1.4;">{{ $notification->data['message'] ?? '' }}</p>
+                                <small style="display: block; margin-top: 5px; opacity: 0.6; font-size: 10px;">{{ $notification->created_at->diffForHumans() }}</small>
+                            </div>
+                            @empty
+                            <div style="padding: 30px 10px; text-align: center; color: var(--text-muted);">
+                                <p style="font-size: 24px; margin-bottom: 10px;">📭</p>
+                                <p style="font-size: 11px; font-weight: 800; text-transform: uppercase;">Belum ada kabar baru</p>
+                            </div>
+                            @endforelse
+                        @endif
                     </div>
                 </div>
             </div>

@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/calendar', [ScheduleController::class, 'calendar']);
     Route::get('/groups', [GroupController::class, 'index']);
 
+    // Notifications
+    Route::post('/notifications/read-all', [ScheduleController::class, 'markNotificationsAsRead']);
+
     // Sub-Task Routes (Users can manage their own)
     Route::post('/schedules/{schedule}/sub-tasks', [\App\Http\Controllers\SubTaskController::class, 'store']);
     Route::post('/sub-tasks/{id}/toggle', [\App\Http\Controllers\SubTaskController::class, 'toggle']);

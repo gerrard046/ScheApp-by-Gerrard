@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
+use App\Models\User;
+use App\Notifications\GeneralNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -148,6 +150,13 @@ class ScheduleController extends Controller
                     $clone->user_id = $member->id;
                     $clone->user_name = $member->name;
                     $clone->save();
+
+                    // Notify clones
+                    $member->notify(new GeneralNotification(
+                        "🤝 Tugas Grup Baru",
+                        "Admin " . auth()->user()->name . " menambahkan tugas '" . $schedule->activity_name . "' ke grup.",
+                        "🤝"
+                    ));
                 }
             }
         }
@@ -215,6 +224,14 @@ class ScheduleController extends Controller
                 $taskOwner = $schedule->user;
                 $taskOwner->xp += 5; // Bonus XP for verified task
                 $taskOwner->save();
+
+                // Notify User
+                $taskOwner->notify(new GeneralNotification(
+                    "✅ Tugas Diverifikasi",
+                    "Admin telah memverifikasi tugas '" . $schedule->activity_name . "'. Berhasil dapat +5 XP Bonus!",
+                    "✅"
+                ));
+
                 return redirect()->back()->with('success', 'Tugas berhasil diverifikasi! User mendapatkan +5 XP Bonus.');
             }
             return redirect()->back()->with('success', 'Verifikasi dibatalkan.');
@@ -300,5 +317,10 @@ class ScheduleController extends Controller
             return response()->json($events);
         }
         return view('schedules.calendar');
+    }
+
+    public function markNotificationsAsRead() {
+        auth()->user()->unreadNotifications->markAsRead();
+        return redirect()->back()->with('success', 'Semua notifikasi ditandai dibaca.');
     }
 }
