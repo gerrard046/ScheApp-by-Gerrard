@@ -2,87 +2,85 @@
 
 @section('content')
 <style>
-    body { background: #f8fafc; font-family: 'Inter', sans-serif; }
-    .main-wrapper { display: flex; min-height: 100vh; }
+    /* Arctic Breeze Groups Theme */
+    .main-wrapper { display: flex; min-height: 100vh; background: var(--soft-bg); }
     
     aside {
         width: 280px;
-        background: white;
-        padding: 30px 20px;
-        border-right: 1px solid #e2e8f0;
+        background: var(--card-bg);
+        border-right: 1px solid var(--border-color);
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
         position: sticky;
         top: 0;
         height: 100vh;
+        backdrop-filter: blur(10px);
     }
 
     .nav-item {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 15px;
-        border-radius: 12px;
-        color: #64748b;
+        gap: 15px;
+        padding: 12px 18px;
+        border-radius: 15px;
+        color: var(--text-main);
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 700;
+        transition: 0.3s;
         margin-bottom: 5px;
-        transition: all 0.2s;
+        font-size: 15px;
     }
-    .nav-item:hover { background: #FFF5E6; color: #FF8C00; }
-    .nav-item.active { background: var(--primary-gradient); color: white; box-shadow: 0 4px 12px rgba(255,140,0,0.3); }
+    .nav-item:hover { background: var(--soft-bg); transform: translateX(5px); }
+    .nav-item.active { background: var(--primary-gradient); color: white; box-shadow: 0 10px 20px rgba(30, 136, 229, 0.2); }
 
-    main { flex-grow: 1; padding: 40px; }
+    main { flex-grow: 1; padding: 50px; }
 
-    .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+    .group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
     .group-card {
-        background: white;
+        background: var(--card-bg);
         padding: 30px;
-        border-radius: var(--card-radius);
+        border-radius: 24px;
         box-shadow: var(--vibrant-shadow);
-        border: 2px solid #FFEDCC;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid var(--border-color);
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .group-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(255,140,0,0.15); }
+    .group-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(30, 136, 229, 0.1); }
 
-    .input-style {
+    .arctic-input {
         width: 100%;
-        padding: 12px 15px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
+        padding: 14px 18px;
+        border-radius: 15px;
+        border: 1px solid var(--border-color);
+        background: var(--soft-bg);
         margin-bottom: 15px;
         font-size: 14px;
         outline: none;
+        color: var(--text-main);
+        font-weight: 600;
     }
-    .btn-submit {
-        width: 100%;
-        padding: 14px;
-        border-radius: 12px;
-        border: none;
-        background: var(--primary-gradient);
-        color: white;
-        font-weight: 800;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(255,140,0,0.3);
-    }
-    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(255,140,0,0.4); }
 
-    .badge-admin { background: var(--secondary-gradient); color: white; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; }
-    .badge-member { background: #FFE6E6; color: #FF6B6B; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-admin { background: var(--primary-gradient); color: white; padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+    .badge-member { background: var(--soft-bg); color: var(--text-muted); padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; border: 1px solid var(--border-color); }
 </style>
 
 <div class="main-wrapper">
     <aside>
-        <h2 style="font-weight: 800; letter-spacing: -1px; margin-bottom: 30px; color: #1e293b;">ScheApp Pro</h2>
+        <div style="margin-bottom: 50px;">
+            <h1 style="font-size: 28px; font-weight: 900; letter-spacing: -2px; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
+                <span style="color: #1E88E5;">⚡</span> ScheApp
+            </h1>
+        </div>
         
         <nav>
             <a href="/schedules" class="nav-item">
                 <span>🏠</span> Dashboard
             </a>
             <a href="/calendar" class="nav-item">
-                <span>📅</span> Calendar View
+                <span>📅</span> Kalender
             </a>
             <a href="/groups" class="nav-item active">
-                <span>🤝</span> Team Groups
+                <span>🤝</span> Tim Grup
             </a>
             @if(auth()->user()->role === 'admin')
             <a href="/admin/insights" class="nav-item">
@@ -90,6 +88,12 @@
             </a>
             @endif
         </nav>
+
+        <div style="margin-top: auto; padding: 25px; background: var(--soft-bg); border-radius: 24px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 32px; margin-bottom: 10px;">🌟</div>
+            <h4 style="font-size: 13px; font-weight: 800; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px;">Kolaborasi</h4>
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.5;">Bersama kita lebih kuat dan produktif.</p>
+        </div>
     </aside>
 
     <main>

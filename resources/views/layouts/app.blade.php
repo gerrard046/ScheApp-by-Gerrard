@@ -12,27 +12,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #FF8C00 0%, #FFD700 100%);
-            --secondary-gradient: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-            --accent-mint: #4ECDC4;
-            --soft-bg: #FFF9F0;
-            --card-radius: 1.5rem;
-            --vibrant-shadow: 0 10px 30px rgba(255, 140, 0, 0.15);
-            --card-bg: #FFFFFF;
-            --text-main: #1E293B;
-            --text-muted: #64748B;
-            --border-color: #FFEDCC;
+            --primary-gradient: linear-gradient(135deg, #1E88E5, #1565C0); /* Arctic Blue */
+            --secondary-gradient: linear-gradient(135deg, #42A5F5, #1E88E5); /* Light Blue */
+            --soft-bg: #F0F7FF; /* Ice Tint */
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --border-color: rgba(30, 136, 229, 0.1);
+            --text-main: #2D3E50;
+            --text-muted: #64748b;
+            --success: #00BFA5;
+            --vibrant-shadow: 0 10px 40px rgba(30, 136, 229, 0.08);
+            --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            --glass-bg: rgba(255, 255, 255, 0.8);
         }
 
         [x-cloak] { display: none !important; }
 
         .dark {
-            --soft-bg: #0F172A;
+            --soft-bg: #0F172A; /* Deep Slate Blue */
             --card-bg: #1E293B;
-            --text-main: #F8FAFC;
+            --border-color: rgba(148, 163, 184, 0.1);
+            --text-main: #F1F5F9;
             --text-muted: #94A3B8;
-            --border-color: #334155;
-            --vibrant-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --vibrant-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --glass-bg: rgba(30, 41, 59, 0.8);
         }
 
         html, body { 
