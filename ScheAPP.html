@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScheApp - Aplikasi Penjadwalan Grup</title>
+    
+    <!-- Ikon & Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+</head>
+<body>
+    <!-- Container Utama -->
+    <div class="container">
+        <!-- =========== HEADER =========== -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-calendar-check"></i>
+                    <div class="logo-text">
+                        <h1>ScheApp</h1>
+                        <p class="tagline">Jadwalkan bersama, capai lebih</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button id="theme-toggle" class="btn-icon" title="Ubah tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="export-btn" class="btn-icon" title="Ekspor data">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="print-btn" class="btn-icon" title="Cetak jadwal">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    <button id="help-btn" class="btn-icon" title="Bantuan">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Info Hari Ini -->
+            <div class="today-header">
+                <div class="date-box">
+                    <i class="fas fa-calendar-day"></i>
+                    <div>
+                        <h3 id="current-day">Senin</h3>
+                        <p id="current-date">1 Januari 2024</p>
+                    </div>
+                </div>
+                
+                <div class="motivation-box">
+                    <p id="daily-motivation">"Hari ini adalah kesempatan emas!"</p>
+                    <button id="new-quote" class="btn-icon small">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- =========== MAIN CONTENT =========== -->
+        <main class="main-content">
+            <!-- Sidebar Kiri -->
+            <aside class="sidebar">
+                <!-- Form Input -->
+                <section class="form-section">
+                    <h2><i class="fas fa-plus"></i> Tambah Jadwal</h2>
+                    
+                    <form id="schedule-form">
+                        <div class="form-group">
+                            <label for="user-name">
+                                <i class="fas fa-user"></i> Nama Anda
+                            </label>
+                            <input type="text" id="user-name" placeholder="Masukkan nama" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="group-name">
+                                <i class="fas fa-users"></i> Nama Grup
+                            </label>
+                            <input type="text" id="group-name" placeholder="Nama grup/tim" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="activity-name">
+                                <i class="fas fa-tasks"></i> Kegiatan
+                            </label>
+                            <input type="text" id="activity-name" placeholder="Apa yang akan dilakukan?" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="category">
+                                    <i class="fas fa-tag"></i> Kategori
+                                </label>
+                                <select id="category" required>
+                                    <option value="Belajar">📚 Belajar</option>
+                                    <option value="Kerja">💼 Kerja</option>
+                                    <option value="Meeting">🤝 Meeting</option>
+                                    <option value="Santai">☕ Santai</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="date">
+                                    <i class="fas fa-calendar"></i> Tanggal
+                                </label>
+                                <input type="date" id="date" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="time">
+                                <i class="fas fa-clock"></i> Waktu (opsional)
+                            </label>
+                            <input type="time" id="time">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Tambah Jadwal
+                            </button>
+                            <button type="button" id="clear-form" class="btn btn-secondary">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                        
+                        <div id="form-message" class="form-message"></div>
+                    </form>
+                </section>
+                
+                <!-- Statistik Cepat -->
+                <section class="stats-section">
+                    <h3><i class="fas fa-chart-line"></i> Statistik</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="total-schedules">0</span>
+                                <span class="stat-label">Total</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="today-schedules-count">0</span>
+                                <span class="stat-label">Hari Ini</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-number" id="active-groups">0</span>
+                                <span class="stat-label">Grup</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Konten Utama -->
+            <div class="content-area">
+                <!-- Header Konten -->
+                <div class="content-header">
+                    <div class="title-section">
+                        <h2><i class="fas fa-calendar-alt"></i> Daftar Jadwal</h2>
+                        <div class="badge" id="schedule-count">0 jadwal</div>
+                    </div>
+                    
+                    <!-- Kontrol -->
+                    <div class="controls-section">
+                        <!-- Pencarian -->
+                        <div class="search-container">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="search-input" placeholder="Cari jadwal...">
+                                <button id="clear-search" class="btn-icon small">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Filter -->
+                            <div class="filter-container">
+                                <select id="filter-category" class="filter-select">
+                                    <option value="all">Semua Kategori</option>
+                                    <option value="Belajar">📚 Belajar</option>
+                                    <option value="Kerja">💼 Kerja</option>
+                                    <option value="Meeting">🤝 Meeting</option>
+                                    <option value="Santai">☕ Santai</option>
+                                </select>
+                                
+                                <select id="filter-sort" class="filter-select">
+                                    <option value="date-asc">Terdekat</option>
+                                    <option value="date-desc">Terjauh</option>
+                                    <option value="name-asc">A-Z</option>
+                                    <option value="name-desc">Z-A</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highlight Hari Ini -->
+                <section class="today-section">
+                    <div class="section-title">
+                        <h3><i class="fas fa-star"></i> Jadwal Hari Ini</h3>
+                        <div class="today-motivation">
+                            <p id="today-motivation">"Semangat! Waktunya beraksi! 🚀"</p>
+                        </div>
+                    </div>
+                    
+                    <div id="today-schedules-container" class="today-cards">
+                        <!-- Jadwal hari ini akan muncul di sini -->
+                    </div>
+                </section>
+
+                <!-- Semua Jadwal -->
+                <section class="schedules-section">
+                    <div class="section-title">
+                        <h3><i class="fas fa-list-ul"></i> Semua Jadwal</h3>
+                        <div class="view-toggle">
+                            <button class="view-btn active" data-view="grid" title="Grid View">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="view-btn" data-view="list" title="List View">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid View -->
+                    <div id="grid-view" class="view-content active">
+                        <div id="schedules-container" class="cards-grid">
+                            <!-- Card akan muncul di sini -->
+                        </div>
+                    </div>
+                    
+                    <!-- List View -->
+                    <div id="list-view" class="view-content">
+                        <div class="table-container">
+                            <table class="schedules-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Kegiatan</th>
+                                        <th>Grup</th>
+                                        <th>Kategori</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- Data tabel akan muncul di sini -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div id="empty-state" class="empty-state">
+                        <div class="empty-illustration">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <h3>Belum ada jadwal</h3>
+                        <p>Mulai tambahkan jadwal pertama Anda! ✨</p>
+                        <button id="add-sample" class="btn btn-outline">
+                            <i class="fas fa-magic"></i> Tambah Contoh
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- =========== FOOTER =========== -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>ScheApp</h4>
+                    <p>Aplikasi penjadwalan grup yang simpel & powerful</p>
+                    <div class="version">v2.0</div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Fitur</h4>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Local Storage</li>
+                        <li><i class="fas fa-check-circle"></i> Mode Gelap</li>
+                        <li><i class="fas fa-check-circle"></i> Ekspor/Impor</li>
+                        <li><i class="fas fa-check-circle"></i> Mobile Friendly</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>GitHub</h4>
+                    <p class="github-info">
+                        <i class="fab fa-github"></i>
+                        <span>Siap deploy ke GitHub Pages</span>
+                    </p>
+                    <button id="import-btn" class="btn btn-small">
+                        <i class="fas fa-file-import"></i> Impor Data
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2024</span> ScheApp • Dibuat dengan <i class="fas fa-heart"></i> untuk tim yang produktif</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Jadwal</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form">
+                    <div class="form-group">
+                        <label for="edit-user-name">Nama Anda</label>
+                        <input type="text" id="edit-user-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-group-name">Nama Grup</label>
+                        <input type="text" id="edit-group-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-activity-name">Kegiatan</label>
+                        <input type="text" id="edit-activity-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-category">Kategori</label>
+                        <select id="edit-category" required>
+                            <option value="Belajar">📚 Belajar</option>
+                            <option value="Kerja">💼 Kerja</option>
+                            <option value="Meeting">🤝 Meeting</option>
+                            <option value="Santai">☕ Santai</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-date">Tanggal</label>
+                        <input type="date" id="edit-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-time">Waktu (opsional)</label>
+                        <input type="time" id="edit-time">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal">Batal</button>
+                <button id="save-edit" class="btn btn-primary">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- File Input Hidden -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <!-- Script -->
+    <script src="script.js"></script>
+</body>
+</html>
