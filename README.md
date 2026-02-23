@@ -7,8 +7,8 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 ## 📋 Daftar Isi
 - [🎯 Deskripsi](#-deskripsi)
 - [✨ Fitur Utama](#-fitur-utama)
-- [📊 User Flow & Flowcharts](#-user-flow--flowcharts)
-- [🏗️ Arsitektur Sistem](#-arsitektur-sistem)
+- [📊 User Flow & Use Case](#-user-flow--use-case)
+- [🏗️ Arsitektur & SDLC](#-arsitektur--sdlc)
 - [🛠 Tech Stack](#-tech-stack)
 - [📱 Mobile App Integration](#-mobile-app-integration)
 - [🚀 Instalasi & Konfigurasi](#-instalasi--konfigurasi)
@@ -52,17 +52,59 @@ Dengan antarmuka **Glassmorphism** yang mewah dan responsif, ScheApp memberikan 
 
 ---
 
-## 📊 User Flow & Flowcharts
-*(Dokumentasi Flowchart akan diisi oleh pengguna)*
+## 📊 User Flow & Use Case
+
+### Use Case Diagram
+Berikut adalah diagram fungsionalitas utama ScheApp Pro:
+
+```mermaid
+usecaseDiagram
+    actor "Mahasiswa (User)" as U
+    actor "Administrator" as A
+
+    package "ScheApp System" {
+        usecase "Manage Personal Task" as UC1
+        usecase "Join Team Group" as UC2
+        usecase "Earn XP & Level Up" as UC3
+        usecase "Create & Manage Group" as UC4
+        usecase "Broadcast Schedule" as UC5
+        usecase "Verify User Task" as UC6
+        usecase "View Admin Insights" as UC7
+    }
+
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    
+    A --> UC4
+    A --> UC5
+    A --> UC6
+    A --> UC7
+    A --|> U : "Inheritance Role"
+```
+
+### Development Flow
+*(Dokumentasi Flowchart Tambahan dapat diisi oleh pengguna)*
 
 ---
 
-## 🏗️ Arsitektur Sistem
+## 🏗️ Arsitektur & SDLC
+
+### Arsitektur Sistem
 ScheApp menggunakan pola arsitektur **MVC (Model-View-Controller)** yang disediakan oleh Laravel 11. 
 
 - **Model**: Manajemen data via Eloquent ORM (User, Schedule, Group, SubTask).
 - **View**: Template mesin Blade dengan gabungan Vanilla CSS (Glassmorphism) & JavaScript (Alpine.js).
 - **Controller**: Logika bisnis yang memisahkan antara endpoint Web dan fungsionalitas Admin.
+
+### Metode Pengembangan (SDLC)
+Aplikasi ini dikembangkan menggunakan metode **Waterfall**, yang terdiri dari tahapan terstruktur:
+
+1.  **Requirement Analysis**: Identifikasi kebutuhan mahasiswa Poltek SSN terhadap manajemen waktu.
+2.  **System Design**: Perancangan skema database, UI Glassmorphism, dan alur kolaborasi tim.
+3.  **Implementation**: Koding backend (Laravel), frontend (Blade/CSS), dan mobile wrapper.
+4.  **Testing**: Pengujian fungsionalitas (Black Box) dan verifikasi alur verifikasi admin.
+5.  **Deployment**: Push ke GitHub dan persiapan template Android Studio.
 
 ---
 
