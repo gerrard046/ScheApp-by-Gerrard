@@ -10,7 +10,9 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 - [📊 User Flow & Use Case](#-user-flow--use-case)
 - [🏗️ Arsitektur & SDLC](#-arsitektur--sdlc)
 - [🛠 Tech Stack](#-tech-stack)
-- [📱 Mobile App Integration](#-mobile-app-integration)
+- [� Struktur Project](#-struktur-project)
+- [🔗 Database Schema](#-database-schema)
+- [�📱 Mobile App Integration](#-mobile-app-integration)
 - [🚀 Instalasi & Konfigurasi](#-instalasi--konfigurasi)
 - [🔌 API Endpoints](#-api-endpoints)
 - [🤝 Kontribusi](#-kontribusi)
@@ -137,40 +139,92 @@ sequenceDiagram
     S-->>U: Level Up + Bonus XP
 ```
 
-### Data Synchronization Flow (Web ↔ Mobile)
-```mermaid
-graph TD
-    subgraph "Client Side"
-        W[Web Browser]
-        M[Android WebView App]
-    end
-    
-    subgraph "Server Side (Laravel)"
-        C[Controller & Auth]
-        D[(MySQL Database)]
-    end
-    
-    W -- Session/Cookie --> C
-    M -- Session/Cookie --> C
-    C -- CRUD --> D
-    D -- Real-time Data --> C
-    C -- Render View --> W
-    C -- Render View --> M
+### Flow Interaksi Data
+```text
+┌─────────────┐
+│   User      │
+└──────┬──────┘
+       │
+       │ Opens App
+       ▼
+┌──────────────────┐
+│  Login/Register  │
+├──────────────────┤
+│ Email + Password │
+│   atau Google    │
+└────────┬─────────┘
+         │
+         │ Success ✓
+         ▼
+┌────────────────────┐
+│  Dashboard/Home    │
+├────────────────────┤
+│ Load User Tasks    │
+│ Display Analytics  │
+└────────┬───────────┘
+         │
+    ┌────┴────────────────┐
+    │                     │
+    ▼                     ▼
+┌─────────────┐    ┌────────────────┐
+│ Create Task │    │ View/Edit Task │
+│ POST /tasks │    │ GET /tasks/:id │
+└────┬────────┘    └────────┬───────┘
+     │                      │
+     │ Save to DB           │ Update DB
+     ▼                      ▼
+┌─────────────────────────────────┐
+│     MySQL Database              │
+│  (Persist Task Data)            │
+└─────────────────────────────────┘
 ```
-
-### Development Flow
-*(Dokumentasi Flowchart Tambahan dapat diisi oleh pengguna)*
 
 ---
 
 ## 🏗️ Arsitektur & SDLC
 
-### Arsitektur Sistem
-ScheApp menggunakan pola arsitektur **MVC (Model-View-Controller)** yang disediakan oleh Laravel 11. 
-
-- **Model**: Manajemen data via Eloquent ORM (User, Schedule, Group, SubTask).
-- **View**: Template mesin Blade dengan gabungan Vanilla CSS (Glassmorphism) & JavaScript (Alpine.js).
-- **Controller**: Logika bisnis yang memisahkan antara endpoint Web dan fungsionalitas Admin.
+### Diagram Arsitektur Keseluruhan
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    SCHEAPP PRO ENTERPRISE                   │
+├─────────────────────────────────────────────────────────────┤
+│                       Frontend Layer                        │
+│  ┌──────────────┐                          ┌──────────────┐ │
+│  │  Web App     │                          │  Mobile App  │ │
+│  │ (Blade +     │                          │  (Kotlin +   │ │
+│  │  Vanilla CSS)│                          │  WebView)    │ │
+│  └──────┬───────┘                          └──────┬───────┘ │
+└─────────┼──────────────────────────────────────────┼─────────┘
+          │                                          │
+          │          HTTP/REST API                   │
+          │         (Laravel Core)                   │
+          │                                          │
+┌─────────┴──────────────────────────────────────────┴─────────┐
+│                    Backend Layer (Web)                       │
+│              ┌─────────────────────────────────┐             │
+│              │      Laravel 11 Framework       │             │
+│              ├─────────────────────────────────┤             │
+│              │  ✓ Routing & Controllers        │             │
+│              │  ✓ Authentication (Socialite)   │             │
+│              │  ✓ Database ORM (Eloquent)      │             │
+│              │  ✓ Validation & Security        │             │
+│              │  ✓ Admin Insight Engine         │             │
+│              └─────────────────────────────────┘             │
+└┬────────────────────────────────────────────────────────────┬┘
+ │                                                            │
+ │                   Data Persistence Layer                  │
+ │                                                            │
+┌┴────────────────────────────────────────────────────────────┐
+│                  MySQL 8.0+ Database                        │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │  Tables:                                              │  │
+│  │  • users (auth & gamification)                        │  │
+│  │  • schedules (task management)                        │  │
+│  │  • groups & group_user (team system)                  │  │
+│  │  • sub_tasks (checklist items)                        │  │
+│  └───────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### Metode Pengembangan (SDLC)
 Aplikasi ini dikembangkan menggunakan metode **Waterfall**, yang terdiri dari tahapan terstruktur:
@@ -184,11 +238,114 @@ Aplikasi ini dikembangkan menggunakan metode **Waterfall**, yang terdiri dari ta
 ---
 
 ## 🛠 Tech Stack
-- **Backend**: Laravel 11 (PHP 8.2+)
-- **Database**: MySQL / SQLite (Development)
-- **Frontend Layer**: Blade Templates, Vanilla CSS, Alpine.js
-- **Mobile Layer**: Android Studio (Java & Kotlin Wrapper)
-- **Authentication**: Laravel Socialite & Custom Auth Middleware
+
+### Teknologi Web Frontend
+| Layer | Technology | Purpose |
+|---|---|---|
+| UI Framework | Blade Templates + Alpine.js | Server-side rendering & interactivity |
+| Styling | Vanilla CSS (Glassmorphism) | Luxury & modern responsive UI |
+| Build Tool | Vite 7 | Fast bundling & development |
+| Icons | Emoji & Custom Icons | Pure visual aesthetics |
+
+### Teknologi Web Backend
+| Component | Technology | Purpose |
+|---|---|---|
+| Framework | Laravel 11 | Core web framework |
+| Language | PHP 8.2+ | Modern server-side logic |
+| Auth System | Custom + Session | Multi-role authentication |
+| Database | MySQL 8.0+ | Persistent data storage |
+| OAuth | Socialite | Google login integration |
+| Testing | PHPUnit 11 | Business logic verification |
+
+### Teknologi Mobile
+| Component | Technology | Purpose |
+|---|---|---|
+| Language | Kotlin / Java | Android development |
+| SDK | Android 14.0+ | Contemporary API level support |
+| Container | WebView Native | Fast web-to-mobile conversion |
+| Networking | Android System WebView | Seamless local/host communication |
+
+---
+
+## 📁 Struktur Project
+```text
+ScheApp-by-Gerrard/
+├── app/                               # 🌐 Web Logic (Laravel)
+│   ├── Http/
+│   │   ├── Controllers/               # Business logic
+│   │   ├── Middleware/                # Auth & Role filtering
+│   │   └── Requests/                  # Form validation
+│   ├── Models/
+│   │   ├── User.php                   # User & XP logic
+│   │   ├── Schedule.php               # Core Task model
+│   │   └── Group.php                  # Team system logic
+├── android_studio_kotlin_template/    # 📱 Mobile App (Kotlin)
+│   ├── MainActivity.kt               # WebView entry point
+│   ├── build.gradle.kts              # Build configuration
+│   └── AndroidManifest.xml           # App permissions
+├── config/                            # Platform configuration
+├── database/
+│   ├── migrations/                    # Database schema
+│   ├── seeders/                       # Data seeding logic
+├── resources/
+│   ├── views/                         # Blade (UI) templates
+│   ├── css/                           # Styling assets
+│   └── js/                            # Frontend scripts
+├── routes/
+│   ├── web.php                        # Main web routes
+│   └── api.php                        # External API routes
+├── public/                            # Assets & Manifests
+├── storage/                           # System logs & cache
+├── README.md                          # Elite documentation
+└── .env                               # Environment variables
+```
+
+---
+
+## 🔗 Database Schema
+
+### Entity Relationship Diagram
+```text
+┌──────────────────────────────────┐
+│         USERS                    │
+├──────────────────────────────────┤
+│ • id (PK)                        │
+│ • name                           │
+│ • email (UNIQUE)                 │
+│ • password                       │
+│ • xp (gamification)              │
+│ • level                          │
+│ • streak                         │
+└────────────┬─────────────────────┘
+             │
+             │ 1:N relationship
+             │
+             ▼
+┌──────────────────────────────────┐
+│         SCHEDULES                │
+├──────────────────────────────────┤
+│ • id (PK)                        │
+│ • user_id (FK)                   │
+│ • group_id (FK - Nullable)       │
+│ • activity_name                  │
+│ • category                       │
+│ • priority                       │
+│ • is_completed                   │
+│ • is_verified                    │
+└──────────────────────────────────┘
+
+┌──────────────────────────────────┐
+│         GROUPS (Teams)           │
+├──────────────────────────────────┤
+│ • id (PK)                        │
+│ • name                           │
+│ • admin_id (FK to Users)         │
+└──────────────────────────────────┘
+```
+
+**Status & Priority Definitions:**
+- **Status:** `Waiting Verify`, `Verified`, `Selesai`, `Terlewat`.
+- **Priority:** `Low`, `Medium`, `High` (dengan penanda warna khusus).
 
 ---
 
