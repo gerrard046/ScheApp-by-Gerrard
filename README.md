@@ -41,55 +41,69 @@ Aplikasi ini beralih dari sekadar pengingat menjadi ekosistem produktivitas. Den
 - **Glassmorphism UI**: Antarmuka transparan yang modern dan bersih.
 - **Floating Action Buttons**: Akses cepat ke fitur utama tanpa mengganggu konten.
 
-#### 🧘 Zen Mode (Deep Work Engine)
-- **Pomodoro Timer**: Sesi fokus 25 menit yang terintegrasi.
-- **Urgent Task Sync**: Fokus otomatis pada tugas paling mendesak.
-- **Arctic Lo-fi Beats**: Integrasi musik latar untuk meningkatkan konsentrasi.
+# 📋 ScheApp Pro: Dynamic Scheduling System - Arctic Zen Edition
 
-#### 📈 Admin Insights (Stability Optimized)
-- **Cross-Database Support**: Optimal untuk SQLite dan MySQL.
-- **Burnout Risk Detection**: Algoritma cerdas untuk mendeteksi kelelahan pengguna.
-- **Global Leaderboard**: Kompetisi sehat berdasarkan perolehan XP.
-
-#### 🤝 Collaboration & sub-Tasks
-- **Checklist Sub-Tasks**: Dekomposisi tugas besar menjadi langkah kecil.
-- **Evidence Verification**: Sistem upload bukti foto dengan verifikasi admin.
-- **Real File Attachments**: Dukungan penuh untuk lampiran PDF dan Gambar.
+**ScheApp Pro** merupakan sistem manajemen penjadwalan dinamis berbasis web dan mobile yang dikembangkan menggunakan framework **Laravel 11**. Sistem ini mengimplementasikan prinsip *Arctic Minimalist Glassmorphism* untuk mengoptimalkan fokus pengguna dan efisiensi manajemen waktu. Penelitian dan pengembangan ini ditujukan untuk meminimalisir risiko kelalaian tugas dalam lingkungan akademik dan organisasi yang padat.
 
 ---
 
-## 📸 Visual Showcase (Arctic Zen Edition)
+> [!IMPORTANT]
+> **REVISI TERBARU (ARCTIC ZEN EDITION)**: Implementasi mencakup modul **Zen Mode (Deep Work Engine)**, **Analisis Performa Admin**, **Hierarki Sub-Tugas**, serta **Sistem Verifikasi Bukti Digital (Digital Evidence Verification)**.
 
-### 🧊 Login & Registration
-Antarmuka login yang bersih dengan tema Arctic Breeze, memberikan kesan profesional sejak detik pertama.
+---
+
+## 📸 Dokumentasi Antarmuka (Visual Showcase)
+
+### 🧊 Modul Autentikasi & Keamanan
+Implementasi antarmuka login yang menggunakan prinsip *User-Centered Design* dengan palet warna *Arctic Breeze* untuk memberikan impresi profesionalitas dan keamanan data.
 ![Login Page](public/img/screenshots/login.png)
 
-### 🚀 Dashboard Utama
-Pusat kontrol produktivitas dengan statistik real-time, grafik performa mingguan, dan daftar agenda yang diprioritaskan oleh AI.
+### 🚀 Dasbor Utama & Manajemen Prioritas
+Pusat kendali produktivitas yang mengintegrasikan algoritma prioritas tugas, statistik performa real-time, dan visualisasi aktivitas mingguan untuk pemantauan progres yang objektif.
 ![Dashboard](public/img/screenshots/dashboard.png)
 
-### 🧘 Zen Mode
-Fokus tanpa gangguan. Timer Pomodoro terintegrasi dengan musik lo-fi untuk mencapai status *deep work*.
+### 🧘 Zen Mode (Konsentrasi Mendalam)
+Modul khusus untuk mendukung metode *Deep Work* melalui integrasi pengatur waktu Pomodoro dan stimulan audio low-frequency (Lo-fi) guna menginduksi status fokus pengguna.
 ![Zen Mode](public/img/screenshots/zen_mode.png)
 
-### 📊 Admin Insights
-Dashboard analitik khusus admin untuk memantau kesehatan produktivitas tim dan risiko burnout secara global.
+### 📊 Analitik Manajemen (Admin Insights)
+Modul analitik terkonsolidasi bagi administrator untuk melakukan pengawasan terhadap tingkat penyelesaian tugas global serta deteksi risiko kelelahan (*burnout*) pada subjek pengguna.
 ![Admin Insights](public/img/screenshots/admin_insights.png)
 
-### 📅 Kalender Perjuangan
-Visualisasi jadwal bulanan yang intuitif dengan integrasi FullCalendar yang telah dikustomisasi.
+### 📅 Visualisasi Kalender Dinamis
+Implementasi kalender interaktif menggunakan pustaka *FullCalendar* yang telah disesuaikan untuk penyajian data jadwal secara kronologis dan sistematis.
 ![Calendar](public/img/screenshots/calendar.png)
 
-### 🤝 Kerjasama Tim
-Kelola grup, tambah anggota, dan pantau tugas kolektif dengan mudah dalam satu antarmuka terpadu.
+### 🤝 Kolaborasi Tim & Grup (Team Orchestration)
+Fasilitas manajemen grup yang memungkinkan orkestrasi tugas kolektif, manajemen anggota, dan distribusi tugas administratif secara efisien.
 ![Groups](public/img/screenshots/groups.png)
 
 ---
 
-## 📊 User Flow & Use Case
+## 🎯 Analisis Kebutuhan & Deskripsi Proyek
+**ScheApp Pro** dirancang sebagai solusi atas problematika manajemen waktu yang dialami oleh mahasiswa **Politeknik Siber dan Sandi Negara (Poltek SSN)**. Mengingat intensitas kegiatan akademik dan kedinasan yang tinggi, sistem ini hadir sebagai instrumen mitigasi terhadap risiko kelalaian tugas.
 
-### Use Case Diagram
-Peta fungsionalitas utama antara Mahasiswa dan Admin:
+Sistem telah bertransformasi dari sekadar aplikasi pengingat menjadi platform kolaborasi tim yang holistik. Melalui penerapan strategi **Gamification (XP & Leveling System)**, sistem ini berupaya mempertahankan motivasi pengguna dalam menjaga tingkat produktivitas secara berkelanjutan.
+
+---
+
+## ✨ Fungsionalitas Sistem
+
+### 1. Arsitektur UI/UX (Arctic Breeze Edition)
+- **Implementasi Glassmorphism**: Penggunaan elemen antarmuka transparan untuk meningkatkan estetika visual tanpa mengorbankan fungsionalitas.
+- **Optimasi Fokus**: Struktur navigasi minimalis guna mereduksi beban kognitif pengguna.
+
+### 2. Deep Work Engine (Zen Mode)
+- **Sinkronisasi Tugas Prioritas**: Pemilihan otomatis tugas dengan urgensi tertinggi selama sesi fokus.
+- **Stimulasi Audio Integratif**: Penyediaan audio ambient untuk mendukung stabilitas konsentrasi.
+
+### 3. Manajemen Tim & Akuntabilitas
+- **Digital Evidence Verification**: Sistem pengunggahan buktik fisik/digital sebagai syarat validasi penyelesaian tugas.
+- **Broadcasting Mechanism**: Distribusi jadwal oleh administrator ke seluruh anggota unit secara simultan.
+
+---
+
+## 📊 User Flow & Use Case
 
 ### Use Case Diagram
 Peta fungsionalitas utama antara Mahasiswa dan Admin:
@@ -213,89 +227,56 @@ sequenceDiagram
 
 ---
 
-## 🏗️ Arsitektur & SDLC
+## 🏗️ Arsitektur Sistem & Metodologi
 
-### Diagram Arsitektur Keseluruhan
+### Diagram Arsitektur
+Sistem mengadopsi struktur *Client-Server* dengan Laravel sebagai *Core Logic* dan MySQL sebagai sistem manajemen basis data.
+
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│                    SCHEAPP PRO ENTERPRISE                   │
+│                    SCHEAPP PRO ARCHITECTURE                 │
 ├─────────────────────────────────────────────────────────────┤
-│                       Frontend Layer                        │
+│                       Presentation Layer                    │
 │  ┌──────────────┐                          ┌──────────────┐ │
-│  │  Web App     │                          │  Mobile App  │ │
-│  │ (Blade +     │                          │  (Kotlin +   │ │
-│  │  Vanilla CSS)│                          │  WebView)    │ │
+│  │  Web Client   │                          │  Mobile App  │ │
+│  │ (Blade + CSS) │                          │  (WebView)   │ │
 │  └──────┬───────┘                          └──────┬───────┘ │
 └─────────┼──────────────────────────────────────────┼─────────┘
-          │                                          │
-          │          HTTP/REST API                   │
-          │         (Laravel Core)                   │
-          │                                          │
+          │          RESTful API communication       │
 ┌─────────┴──────────────────────────────────────────┴─────────┐
-│                    Backend Layer (Web)                       │
+│                    Application Layer (Backend)               │
 │              ┌─────────────────────────────────┐             │
-│              │      Laravel 11 Framework       │             │
-│              ├─────────────────────────────────┤             │
-│              │  ✓ Routing & Controllers        │             │
-│              │  ✓ Authentication (Socialite)   │             │
-│              │  ✓ Database ORM (Eloquent)      │             │
-│              │  ✓ Validation & Security        │             │
-│              │  ✓ Admin Insight Engine         │             │
+│              │      Laravel 11 Ecosystem       │             │
 │              └─────────────────────────────────┘             │
 └┬────────────────────────────────────────────────────────────┬┘
- │                                                            │
  │                   Data Persistence Layer                  │
- │                                                            │
 ┌┴────────────────────────────────────────────────────────────┐
-│                  MySQL 8.0+ Database                        │
-│  ┌───────────────────────────────────────────────────────┐  │
-│  │  Tables:                                              │  │
-│  │  • users (auth & gamification)                        │  │
-│  │  • schedules (task management)                        │  │
-│  │  • groups & group_user (team system)                  │  │
-│  │  • sub_tasks (checklist items)                        │  │
-│  └───────────────────────────────────────────────────────┘  │
+│                  MySQL 8.0 Management System                │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Metode Pengembangan (SDLC)
-Aplikasi ini dikembangkan menggunakan metode **Waterfall**, yang terdiri dari tahapan terstruktur:
-
-1.  **Requirement Analysis**: Identifikasi kebutuhan mahasiswa Poltek SSN terhadap manajemen waktu.
-2.  **System Design**: Perancangan skema database, UI Glassmorphism, dan alur kolaborasi tim.
-3.  **Implementation**: Koding backend (Laravel), frontend (Blade/CSS), dan mobile wrapper.
-4.  **Testing**: Pengujian fungsionalitas (Black Box) dan verifikasi alur verifikasi admin.
-5.  **Deployment**: Push ke GitHub dan persiapan template Android Studio.
+### Metodologi Pengembangan Perangkat Lunak (SDLC)
+Proyek ini dikembangkan menggunakan model **Waterfall** yang mencakup tahapan:
+1.  **Analisis Kebutuhan**: Identifikasi parameter produktivitas pengguna.
+2.  **Desain Sistem**: Perancangan skema relasional (ERD) dan skema UI.
+3.  **Implementasi**: Penulisan kode program (Encoding) pada sisi backend dan frontend.
+4.  **Uji Coba (Testing)**: Validasi fungsional menggunakan metode *Black-Box Testing*.
+5.  **Dokumentasi & Deployment**: Penulisan laporan teknis dan finalisasi deployment.
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Spesifikasi Teknologi (Tech Stack)
 
-### Teknologi Web Frontend
-| Layer | Technology | Purpose |
-|---|---|---|
-| UI Framework | Blade Templates + Alpine.js | Server-side rendering & interactivity |
-| Styling | Vanilla CSS (Glassmorphism) | Luxury & modern responsive UI |
-| Build Tool | Vite 7 | Fast bundling & development |
-| Icons | Emoji & Custom Icons | Pure visual aesthetics |
+### Komponen Backend & Middleware
+- **Framework**: Laravel 11.x
+- **Bahasa Pemrograman**: PHP 8.2+
+- **Manajemen Basis Data**: MySQL 8.0+
+- **Keamanan**: Bcrypt Password Hashing & Laravel Middleware.
 
-### Teknologi Web Backend
-| Component | Technology | Purpose |
-|---|---|---|
-| Framework | Laravel 11 | Core web framework |
-| Language | PHP 8.2+ | Modern server-side logic |
-| Auth System | Custom + Session | Multi-role authentication |
-| Database | MySQL 8.0+ | Persistent data storage |
-| OAuth | Socialite | Google login integration |
-| Testing | PHPUnit 11 | Business logic verification |
-
-### Teknologi Mobile
-| Component | Technology | Purpose |
-|---|---|---|
-| Language | Kotlin / Java | Android development |
-| SDK | Android 14.0+ | Contemporary API level support |
-| Container | WebView Native | Fast web-to-mobile conversion |
-| Networking | Android System WebView | Seamless local/host communication |
+### Komponen Frontend & Mobile
+- **Template Engine**: Laravel Blade.
+- **Pustaka Interaktivitas**: Alpine.js.
+- **Mobile Container**: Native Android WebView (Kotlin).
 
 ---
 
@@ -334,9 +315,10 @@ ScheApp-by-Gerrard/
 
 ---
 
-## 🔗 Database Schema
+## 🔗 Skema Relasi Basis Data (ERD)
 
-### Entity Relationship Diagram
+Sistem menggunakan skema basis data relasional untuk menjaga integritas data antar entitas pengguna, tugas, dan grup.
+
 ```text
 ┌──────────────────────────────────┐
 │         USERS                    │
@@ -375,104 +357,62 @@ ScheApp-by-Gerrard/
 └──────────────────────────────────┘
 ```
 
-**Status & Priority Definitions:**
+**Definisi Status & Prioritas:**
 - **Status:** `Waiting Verify`, `Verified`, `Selesai`, `Terlewat`.
 - **Priority:** `Low`, `Medium`, `High` (dengan penanda warna khusus).
 
 ---
 
-## � Instalasi - Web
+## 🚀 Prosedur Instalasi & Konfigurasi
 
-### Prerequisites
+### Prasyarat Sistem
 - PHP 8.2+
 - MySQL 8.0+
 - Node.js 18+ (Vite support)
 - Composer 2.0+
 
-### Step 1: Clone & Setup Project
-```bash
-# Clone repository
-git clone https://github.com/gerrard046/ScheApp-by-Gerrard.git
-cd ScheApp-by-Gerrard
+### Konfigurasi Web Environment
+1.  **Kloning Repositori**: `git clone https://github.com/gerrard046/ScheApp-by-Gerrard.git`
+    `cd ScheApp-by-Gerrard`
+2.  **Instalasi Dependensi**: `composer install` & `npm install`
+3.  **Konfigurasi Environment**: Duplikasi `.env.example` menjadi `.env` dan sesuaikan parameter `DB_DATABASE`.
+    `cp .env.example .env`
+    `php artisan key:generate`
+    Edit `.env` untuk konfigurasi database:
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=scheapp
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+4.  **Inisialisasi Skema**: `php artisan migrate --seed`
+5.  **Build Frontend Assets**: `npm run build` (atau `npm run dev` untuk development dengan hot reload)
+6.  **Eksekusi Server**: `php artisan serve --host=0.0.0.0` (Server akan berjalan di: `http://localhost:8000`)
 
-# Install dependencies
-composer install
-npm install
-```
+### Konfigurasi Mobile Wrapper
 
-### Step 2: Konfigurasi Environment
-```bash
-# Copy .env file
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
-```
-
-### Step 3: Database Setup
-Edit `.env` untuk konfigurasi database:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=scheapp
-DB_USERNAME=root
-DB_PASSWORD=
-```
-Jalankan migrations:
-```bash
-php artisan migrate
-php artisan db:seed
-```
-
-### Step 4: Build Frontend Assets
-```bash
-npm run build
-# atau untuk development dengan hot reload:
-npm run dev
-```
-
-### Step 5: Jalankan Server
-```bash
-# Gunakan host 0.0.0.0 agar bisa diakses App Mobile
-php artisan serve --host=0.0.0.0
-```
-Server akan berjalan di: `http://localhost:8000`
-
----
-
-## 📱 Instalasi - Mobile
-
-### Prerequisites
+### Prasyarat Sistem
 - Android Studio (Jellyfish atau lebih baru)
 - Android SDK 31+
 - Kotlin 1.9+ / JDK 17+
 
-### Step 1: Setup Template
-Source code mobile tersedia di folder khusus:
-📁 `android_studio_kotlin_template`
-
-### Step 2: Open in Android Studio
-1. Buka Android Studio.
-2. Pilih **File > New > Project from Existing Sources**.
-3. Navigasi ke folder project ScheApp.
-4. Android Studio akan otomatis download dependencies.
-
-### Step 3: Configure API Endpoint
-Edit `MainActivity.kt` untuk menghubungkan ke server laptop:
-```kotlin
-// Gunakan IP Laptop jika pakai physical device
-// Gunakan 10.0.2.2 jika pakai emulator
-val serverUrl = "http://10.0.2.2:8000/schedules"
-```
-
-### Step 4: Build & Run
-- **Via Android Studio**: Klik tombol "Run" atau `Shift+F10`.
-- **Via Command Line**:
-```bash
-./gradlew assembleDebug
-./gradlew installDebug
-```
+### Prosedur Instalasi
+1.  Buka direktori `android_studio_kotlin_template` melalui Android Studio.
+2.  Konfigurasi `BASE_URL` pada file `MainActivity.kt` menuju alamat IP server host.
+    ```kotlin
+    // Gunakan IP Laptop jika pakai physical device
+    // Gunakan 10.0.2.2 jika pakai emulator
+    val serverUrl = "http://10.0.2.2:8000/schedules"
+    ```
+3.  Lakukan proses *Build & Run* pada emulator atau perangkat keras Android.
+    - **Via Android Studio**: Klik tombol "Run" atau `Shift+F10`.
+    - **Via Command Line**:
+    ```bash
+    ./gradlew assembleDebug
+    ./gradlew installDebug
+    ```
 
 ---
 
@@ -553,10 +493,9 @@ feature/XYZ    (Individual feature development)
 
 ---
 
-## 📄 Lisensi
-Projek ini dibuat untuk memenuhi tugas akademik (UAS). Lisensi: **MIT**.
+## 📑 Penutup & Lisensi
+Proyek ini dikembangkan dalam rangka pemenuhan persyaratan akademik studi kasus Manajemen Proyek Teknologi Informasi.
 
----
-
-**Dibuat oleh:** [Reiza Gerrard](https://github.com/gerrard046) 
-**Project Info:** Pengembangan Aplikasi Penjadwalan Dinamis Poltek SSN.
+**Lisensi**: MIT License
+**Pengembang**: [Reiza Gerrard](https://github.com/gerrard046)
+**Afiliasi**: Pengembangan Sistem Penjadwalan Dinamis Poltek SSN.
