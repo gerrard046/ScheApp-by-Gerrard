@@ -341,7 +341,7 @@
         @if(auth()->check() && auth()->user()->role === 'admin')
         <div class="form-card">
             <h2 style="margin-bottom: 25px; font-weight: 800; letter-spacing: -1px;">🎯 Buat Agenda</h2>
-            <form action="/schedules" method="POST">
+            <form action="/schedules" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="text" name="activity_name" class="input-style" placeholder="Nama Kegiatan (ex: Lari Pagi)" required>
                 <input type="text" name="group_name" class="input-style" placeholder="Grup / Lokasi" required>
@@ -369,12 +369,14 @@
                 </div>
 
                 <div style="margin-bottom: 15px;">
-                    <input type="url" name="attachment_url" class="input-style" placeholder="🔗 Link Lampiran (Drive/Materi)" style="margin: 0;">
+                    <label style="font-size: 11px; font-weight: bold; color: var(--text-muted); display: block; margin-bottom: 5px;">📁 Upload Lampiran</label>
+                    <input type="file" name="attachment_file" class="input-style" style="margin: 0; padding: 10px;">
                     <select name="attachment_type" class="input-style" style="margin-top: 10px;">
-                        <option value="">📁 Tipe Lampiran</option>
+                        <option value="">⚙️ Auto-Detect Tipe</option>
                         <option value="PDF">📄 PDF Dokumen</option>
+                        <option value="Gambar">🖼️ Foto/Gambar</option>
                         <option value="Video">🎥 Video Materi</option>
-                        <option value="Link">🌐 Website Link</option>
+                        <option value="Dokumen">📄 Dokumen Lain</option>
                     </select>
                 </div>
 
@@ -557,11 +559,11 @@
                 @endif
                 @endif
 
-                @if($item->attachment_url)
-                <div style="margin-top: 15px; background: #FFF9F0; border: 1px dashed #FFD700; border-radius: 12px; padding: 10px;">
-                    <a href="{{ $item->attachment_url }}" target="_blank" style="text-decoration: none; color: #FF8C00; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                        <span>{{ $item->attachment_type === 'PDF' ? '📄' : ($item->attachment_type === 'Video' ? '🎥' : '🌐') }}</span>
-                        {{ $item->attachment_type }} Materi: Lihat Lampiran
+                @if($item->attachment_file)
+                <div style="margin-top: 15px; background: var(--soft-bg); border: 1px dashed var(--border-color); border-radius: 12px; padding: 10px;">
+                    <a href="{{ asset('storage/' . $item->attachment_file) }}" target="_blank" style="text-decoration: none; color: #FF8C00; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        <span>{{ $item->attachment_type === 'PDF' ? '📄' : ($item->attachment_type === 'Gambar' ? '🖼️' : ($item->attachment_type === 'Video' ? '🎥' : '📁')) }}</span>
+                        {{ $item->attachment_type }}: Lihat Lampiran
                     </a>
                 </div>
                 @endif

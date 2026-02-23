@@ -23,7 +23,7 @@ class Schedule extends Model
         'is_completed',
         'is_verified',
         'proof_image',
-        'attachment_url',
+        'attachment_file',
         'attachment_type',
     ];
 

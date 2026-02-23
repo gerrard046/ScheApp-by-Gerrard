@@ -112,14 +112,30 @@ class ScheduleController extends Controller
             'date'          => 'required|date',
             'time'          => 'required',
             'group_id'      => 'nullable|exists:groups,id',
-            'attachment_url'=> 'nullable|url',
+            'attachment_file'=> 'nullable|file|max:5120', // Max 5MB
             'attachment_type'=> 'nullable|string'
         ]);
 
-        $data = $request->all();
+        $data = $request->except(['attachment_file']);
         $data['user_id'] = auth()->id();
         $data['user_name'] = auth()->user()->name;
         $data['is_completed'] = false;
+
+        // Handle File Upload for Attachment
+        if ($request->hasFile('attachment_file')) {
+            $file = $request->file('attachment_file');
+            $path = $file->store('attachments', 'public');
+            $data['attachment_file'] = $path;
+            
+            // Auto-detect type if not provided
+            if (!$request->attachment_type) {
+                $ext = strtolower($file->getClientOriginalExtension());
+                if (in_array($ext, ['pdf'])) $data['attachment_type'] = 'PDF';
+                elseif (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])) $data['attachment_type'] = 'Gambar';
+                elseif (in_array($ext, ['mp4', 'mov', 'avi'])) $data['attachment_type'] = 'Video';
+                else $data['attachment_type'] = 'Dokumen';
+            }
+        }
 
         $schedule = Schedule::create($data);
 
