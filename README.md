@@ -58,6 +58,34 @@ Aplikasi ini beralih dari sekadar pengingat menjadi ekosistem produktivitas. Den
 
 ---
 
+## 📸 Visual Showcase (Arctic Zen Edition)
+
+### 🧊 Login & Registration
+Antarmuka login yang bersih dengan tema Arctic Breeze, memberikan kesan profesional sejak detik pertama.
+![Login Page](public/img/screenshots/login.png)
+
+### 🚀 Dashboard Utama
+Pusat kontrol produktivitas dengan statistik real-time, grafik performa mingguan, dan daftar agenda yang diprioritaskan oleh AI.
+![Dashboard](public/img/screenshots/dashboard.png)
+
+### 🧘 Zen Mode
+Fokus tanpa gangguan. Timer Pomodoro terintegrasi dengan musik lo-fi untuk mencapai status *deep work*.
+![Zen Mode](public/img/screenshots/zen_mode.png)
+
+### 📊 Admin Insights
+Dashboard analitik khusus admin untuk memantau kesehatan produktivitas tim dan risiko burnout secara global.
+![Admin Insights](public/img/screenshots/admin_insights.png)
+
+### 📅 Kalender Perjuangan
+Visualisasi jadwal bulanan yang intuitif dengan integrasi FullCalendar yang telah dikustomisasi.
+![Calendar](public/img/screenshots/calendar.png)
+
+### 🤝 Kerjasama Tim
+Kelola grup, tambah anggota, dan pantau tugas kolektif dengan mudah dalam satu antarmuka terpadu.
+![Groups](public/img/screenshots/groups.png)
+
+---
+
 ## 📊 User Flow & Use Case
 
 ### Use Case Diagram
