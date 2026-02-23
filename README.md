@@ -21,7 +21,9 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 ---
 
 ## 🎯 Deskripsi
-**ScheApp Pro** adalah evolusi dari aplikasi manajemen jadwal personal menjadi sistem kolaborasi tim yang lengkap. Aplikasi ini memungkinkan pengguna untuk tidak hanya mengatur jadwal pribadi, tetapi juga bekerja dalam grup, menerima broadcast tugas dari admin, dan berkompetisi secara sehat lewat sistem **Gamification (XP & Leveling)**.
+**ScheApp Pro** lahir dari kebutuhan mendesak mahasiswa **Politeknik Siber dan Sandi Negara (Poltek SSN)**. Dengan dinamika kegiatan ksatrian dan akademik yang sangat padat, seringkali tugas atau rencana kegiatan yang sudah tersusun rapi menjadi keteteran atau terlupakan. 
+
+Aplikasi ini merupakan evolusi dari manajemen jadwal personal menjadi sistem kolaborasi tim yang lengkap. ScheApp memungkinkan pengguna untuk tidak hanya mengatur jadwal pribadi, tetapi juga bekerja dalam grup, menerima broadcast tugas dari admin, dan berkompetisi secara sehat lewat sistem **Gamification (XP & Leveling)** demi menjaga produktivitas di tengah kesibukan yang tinggi.
 
 Dengan antarmuka **Glassmorphism** yang mewah dan responsif, ScheApp memberikan pengalaman pengguna yang premium baik di browser desktop maupun di layar smartphone melalui wrapper Android Native.
 
