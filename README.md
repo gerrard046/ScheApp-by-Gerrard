@@ -55,7 +55,7 @@ Dengan antarmuka **Glassmorphism** yang mewah dan responsif, ScheApp memberikan 
 ## 📊 User Flow & Use Case
 
 ### Use Case Diagram
-Berikut adalah diagram fungsionalitas utama ScheApp Pro:
+Peta fungsionalitas utama antara Mahasiswa dan Admin:
 
 ```mermaid
 usecaseDiagram
@@ -81,6 +81,76 @@ usecaseDiagram
     A --> UC6
     A --> UC7
     A --|> U : "Inheritance Role"
+```
+
+### Task Management Flow (CRUD & Verification)
+```mermaid
+graph TD
+    A[Start] --> B{Login Success?}
+    B -- No --> C[Auth Page]
+    B -- Yes --> D[Dashboard]
+    D --> E[Create Task]
+    E --> F[Task Stored in DB]
+    F --> G[Mark Task Complete]
+    G --> H{Need Admin Verify?}
+    H -- Yes --> I[Status: Waiting Verification]
+    I --> J[Admin Approves]
+    J --> K[XP +5 & Status: Verified]
+    H -- No --> L[XP +10 & Status: Finished]
+    K --> M[End]
+    L --> M
+```
+
+### Dashboard & Analytics Flow
+```mermaid
+graph LR
+    A[User Activity] --> B[(Database)]
+    B --> C[Admin Insights Controller]
+    C --> D{Process Data}
+    D --> E[Global Completion Rate]
+    D --> F[Top XP Users]
+    D --> G[Burnout Risk Detection]
+    E --> H[Visual Dashboard]
+    F --> H
+    G --> H
+```
+
+### Complete User Journey (End-to-End)
+```mermaid
+sequenceDiagram
+    participant U as Mahasiswa
+    participant S as ScheApp (Web/Mobile)
+    participant A as Admin
+    
+    U->>S: Register / Login (Google OAuth)
+    S-->>U: Access Dashboard
+    A->>S: Create & Broadcast Group Task
+    S-->>U: Task Appears in Calendar
+    U->>S: Marks Sub-tasks & Main Task Done
+    S-->>A: Notify Verification Needed
+    A->>S: Review & Verify Task
+    S-->>U: Level Up + Bonus XP
+```
+
+### Data Synchronization Flow (Web ↔ Mobile)
+```mermaid
+graph TD
+    subgraph "Client Side"
+        W[Web Browser]
+        M[Android WebView App]
+    end
+    
+    subgraph "Server Side (Laravel)"
+        C[Controller & Auth]
+        D[(MySQL Database)]
+    end
+    
+    W -- Session/Cookie --> C
+    M -- Session/Cookie --> C
+    C -- CRUD --> D
+    D -- Real-time Data --> C
+    C -- Render View --> W
+    C -- Render View --> M
 ```
 
 ### Development Flow
