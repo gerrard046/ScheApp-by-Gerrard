@@ -22,4 +22,9 @@ class Group extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function resources()
+    {
+        return $this->hasMany(GroupResource::class);
+    }
 }

@@ -5,18 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     public function insights()
     {
+        $data = $this->getInsightsData();
+        return view('schedules.insights', $data);
+    }
+
+    public function exportPdf()
+    {
+        $data = $this->getInsightsData();
+        $data['export_date'] = Carbon::now()->format('d F Y, H:i');
+        
+        $pdf = Pdf::loadView('admin.insights_pdf', $data);
+        return $pdf->download('ScheApp_Pro_Insights_Report.pdf');
+    }
+
+    private function getInsightsData()
+    {
         $totalUsers = User::count();
         $totalSchedules = Schedule::count();
         $completedSchedules = Schedule::where('is_completed', true)->count();
         $globalCompletionRate = $totalSchedules > 0 ? round(($completedSchedules / $totalSchedules) * 100) : 0;
 
-        $topUsers = User::orderByDesc('xp')->take(5)->get();
+        $topUsers = User::orderByDesc('xp')->take(10)->get();
 
         $today = date('Y-m-d');
         $todaySchedules = Schedule::where('date', $today)->count();
@@ -46,9 +62,14 @@ class AdminController extends Controller
               });
         }])->get()->filter(fn($u) => $u->schedules_count >= 3);
 
-        return view('schedules.insights', compact(
-            'totalUsers', 'totalSchedules', 'globalCompletionRate', 
-            'topUsers', 'todaySchedules', 'todayDone', 'riskUsers'
-        ));
+        return [
+            'totalUsers' => $totalUsers,
+            'totalSchedules' => $totalSchedules,
+            'globalCompletionRate' => $globalCompletionRate,
+            'topUsers' => $topUsers,
+            'todaySchedules' => $todaySchedules,
+            'todayDone' => $todayDone,
+            'riskUsers' => $riskUsers
+        ];
     }
 }

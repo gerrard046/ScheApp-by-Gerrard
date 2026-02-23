@@ -94,9 +94,14 @@
     </aside>
 
     <main>
-        <header style="margin-bottom: 50px;">
-            <p style="font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px;">GLOBAL ANALYTICS</p>
-            <h2 style="font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--text-main);">Pantauan Admin Pro ⚡</h2>
+        <header style="margin-bottom: 50px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <p style="font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px;">GLOBAL ANALYTICS</p>
+                <h2 style="font-size: 36px; font-weight: 900; letter-spacing: -1.5px; color: var(--text-main);">Pantauan Admin Pro ⚡</h2>
+            </div>
+            <a href="{{ route('admin.insights.export') }}" class="nav-link" style="background: white; border: 1px solid var(--border-color); color: var(--text-main); font-size: 13px; padding: 10px 20px;">
+                <span>📄</span> Export Laporan PDF
+            </a>
         </header>
 
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px;">

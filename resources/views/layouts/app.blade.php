@@ -169,6 +169,11 @@
         </div>
         
         <div style="display: flex; gap: 15px; align-items: center;" x-data="{ openNotifications: false }">
+            <!-- Notification Permission Button -->
+            <button id="enable-notifications" style="display: none; background: #FFD700; border: none; padding: 5px 10px; border-radius: 10px; font-size: 10px; font-weight: 900; cursor: pointer; color: #2D3E50;">
+                🔔 Enable Alerts
+            </button>
+
             <div style="position: relative; cursor: pointer;" title="Notifikasi" @click="openNotifications = !openNotifications">
                 <span style="font-size: 22px;">🔔</span>
                 @if(auth()->check() && auth()->user()->unreadNotifications->count() > 0)
@@ -218,5 +223,35 @@
         </div>
     </nav>
     @yield('content')
+
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('SW Registered!', reg))
+                    .catch(err => console.log('SW registration failed!', err));
+            });
+        }
+
+        // Web Notification Logic
+        const notifyBtn = document.getElementById('enable-notifications');
+        if (notifyBtn && 'Notification' in window) {
+            if (Notification.permission === 'default') {
+                notifyBtn.style.display = 'block';
+                notifyBtn.addEventListener('click', () => {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            notifyBtn.style.display = 'none';
+                            new Notification("ScheApp Pro", {
+                                body: "Notifikasi berhasil diaktifkan! Anda akan menerima update jadwal di sini.",
+                                icon: "/icons/icon-192x192.png"
+                            });
+                        }
+                    });
+                });
+            }
+        }
+    </script>
 </body>
 </html>

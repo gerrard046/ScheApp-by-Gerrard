@@ -144,7 +144,7 @@
             </div>
         @endif
 
-        <h3 style="color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Grup yang Saya Kelola</h3>
+                <h3 style="color: #64748b; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;">Grup yang Saya Kelola</h3>
         <div class="group-grid" style="margin-bottom: 40px;">
             @forelse($administeredGroups as $group)
             <div class="group-card">
@@ -160,10 +160,40 @@
                     @endforeach
                 </div>
 
+                <!-- Resource Section -->
+                <div style="background: var(--soft-bg); padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid var(--border-color);">
+                    <h4 style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                        <span>📚</span> Materi & Referensi Akademik
+                    </h4>
+                    
+                    <ul style="list-style: none; padding: 0; margin: 0 0 15px 0;">
+                        @forelse($group->resources as $res)
+                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 14px;">{{ $res->file_type == 'pdf' ? '📕' : '📄' }}</span>
+                                <a href="{{ route('groups.resources.download', $res->id) }}" style="text-decoration: none; color: var(--text-main); font-size: 13px; font-weight: 700;">{{ $res->title }}</a>
+                            </div>
+                            <span style="font-size: 9px; color: var(--text-muted); background: white; padding: 2px 6px; border-radius: 4px;">{{ strtoupper($res->file_type) }}</span>
+                        </li>
+                        @empty
+                        <li style="font-size: 12px; color: var(--text-muted); font-style: italic;">Belum ada materi instruksional.</li>
+                        @endforelse
+                    </ul>
+
+                    <form action="{{ route('groups.resources.store', $group->id) }}" method="POST" enctype="multipart/form-data" style="border-top: 1px dashed var(--border-color); padding-top: 15px;">
+                        @csrf
+                        <input type="text" name="title" placeholder="Judul Materi..." class="arctic-input" style="padding: 10px; margin-bottom: 8px; font-size: 12px; height: auto;" required>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="file" name="file" class="arctic-input" style="padding: 10px; margin-bottom: 0; font-size: 11px; height: auto;" required>
+                            <button type="submit" class="btn-arctic" style="width: auto; padding: 0 20px; font-size: 12px;">Upload</button>
+                        </div>
+                    </form>
+                </div>
+
                 <form action="/groups/{{ $group->id }}/add-member" method="POST">
                     @csrf
                     <div style="display: flex; gap: 5px;">
-                        <select name="user_id" class="input-style" style="margin: 0; padding: 8px;">
+                        <select name="user_id" class="input-style" style="margin: 0; padding: 8px; font-size: 12px;">
                             <option value="">Tambah Anggota...</option>
                             @foreach($allUsers as $u)
                                 @if(!$group->members->contains($u->id))
@@ -184,9 +214,32 @@
         <div class="group-grid">
             @forelse($joinedGroups as $group)
             <div class="group-card">
-                <h2 style="margin: 0 0 10px; font-size: 20px;">{{ $group->name }}</h2>
-                <p style="color: #64748b; font-size: 13px;">Admin: <b>{{ $group->admin->name }}</b></p>
-                <p style="color: #94a3b8; font-size: 12px;">Data jadwal dari grup ini akan muncul otomatis di dashboard Anda.</p>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                    <h2 style="margin: 0; font-size: 20px;">{{ $group->name }}</h2>
+                    <span class="badge-member">Anggota</span>
+                </div>
+                <p style="color: #64748b; font-size: 13px; margin-bottom: 20px;">Admin: <b>{{ $group->admin->name }}</b></p>
+                
+                <!-- Resource Section for Members -->
+                <div style="background: var(--soft-bg); padding: 15px; border-radius: 15px; border: 1px solid var(--border-color);">
+                    <h4 style="font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                        <span>📚</span> Materi & Referensi Akademik
+                    </h4>
+                    
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        @forelse($group->resources as $res)
+                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 14px;">{{ $res->file_type == 'pdf' ? '📕' : '📄' }}</span>
+                                <a href="{{ route('groups.resources.download', $res->id) }}" style="text-decoration: none; color: var(--text-main); font-size: 13px; font-weight: 700;">{{ $res->title }}</a>
+                            </div>
+                            <span style="font-size: 9px; color: var(--text-muted);"> {{ strtoupper($res->file_type) }}</span>
+                        </li>
+                        @empty
+                        <li style="font-size: 12px; color: var(--text-muted); font-style: italic;">Belum ada materi dari admin.</li>
+                        @endforelse
+                    </ul>
+                </div>
             </div>
             @empty
             <p style="color: #94a3b8; font-style: italic;">Anda belum tergabung dalam grup manapun.</p>

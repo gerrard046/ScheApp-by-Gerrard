@@ -51,8 +51,11 @@ Route::middleware(['auth'])->group(function () {
         // Group Management (System-wide Admin)
         Route::post('/groups', [GroupController::class, 'store']);
         Route::post('/groups/{id}/add-member', [GroupController::class, 'addMember']);
+        Route::post('/groups/{id}/resources', [GroupController::class, 'storeResource'])->name('groups.resources.store');
+        Route::get('/groups/resources/{id}/download', [GroupController::class, 'downloadResource'])->name('groups.resources.download');
 
         // Master Analytics
         Route::get('/admin/insights', [AdminController::class, 'insights']);
+        Route::get('/admin/insights/export', [AdminController::class, 'exportPdf'])->name('admin.insights.export');
     });
 });
