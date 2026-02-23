@@ -30,17 +30,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/calendar', [ScheduleController::class, 'calendar']);
     Route::get('/groups', [GroupController::class, 'index']);
 
+    // Sub-Task Routes (Users can manage their own)
+    Route::post('/schedules/{schedule}/sub-tasks', [\App\Http\Controllers\SubTaskController::class, 'store']);
+    Route::post('/sub-tasks/{id}/toggle', [\App\Http\Controllers\SubTaskController::class, 'toggle']);
+    Route::delete('/sub-tasks/{id}', [\App\Http\Controllers\SubTaskController::class, 'destroy']);
+
     // Rute manipulasi jadwal hanya untuk ADMIN
     Route::middleware([IsAdmin::class])->group(function () {
         Route::get('/schedules/suggest', [ScheduleController::class, 'suggestTime']);
         Route::post('/schedules', [ScheduleController::class, 'store']);
         Route::post('/schedules/snooze', [ScheduleController::class, 'snoozeAllToday']);
-        Route::patch('/schedules/{id}/toggle', [ScheduleController::class, 'toggleComplete']);
+        Route::post('/schedules/{id}/toggle', [ScheduleController::class, 'toggleComplete']);
         Route::delete('/schedules/{id}', [ScheduleController::class, 'destroy']);
         
-        // Sub-Task Routes
-        Route::post('/sub-tasks', [ScheduleController::class, 'storeSubTask']);
-        Route::post('/sub-tasks/{id}/toggle', [ScheduleController::class, 'toggleSubTask']);
+        // Sub-Task methods removed from ScheduleController
 
         // Group Management
         Route::post('/groups', [GroupController::class, 'store']);

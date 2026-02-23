@@ -22,6 +22,9 @@ class Schedule extends Model
         'priority',
         'is_completed',
         'is_verified',
+        'proof_image',
+        'attachment_url',
+        'attachment_type',
     ];
 
     public function user()

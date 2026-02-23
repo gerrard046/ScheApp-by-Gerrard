@@ -27,30 +27,32 @@
 
     /* Sidebar Form */
     .form-card {
-        background: white;
+        background: var(--card-bg);
         border-radius: var(--card-radius);
         padding: 30px;
         box-shadow: var(--vibrant-shadow);
         position: sticky;
         top: 100px;
         height: fit-content;
-        border: 2px solid #FFEDCC;
+        border: 2px solid var(--border-color);
+        color: var(--text-main);
     }
 
     /* Modern Cards */
     .schedule-card {
-        background: white;
+        background: var(--card-bg);
         border-radius: var(--card-radius);
         padding: 25px;
-        border: none;
-        box-shadow: 0 5px 15px rgba(255, 140, 0, 0.05);
+        border: 2px solid var(--border-color);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
+        color: var(--text-main);
     }
     
     .schedule-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(255, 140, 0, 0.1);
+        box-shadow: var(--vibrant-shadow);
     }
 
     .is-completed {
@@ -137,21 +139,22 @@
 
     /* Search Bar */
     .search-box {
-        background: white;
+        background: var(--card-bg);
         padding: 15px 25px;
         border-radius: 20px;
         margin-bottom: 25px;
         display: flex;
         gap: 15px;
-        border: 2px solid #edf2f7;
+        border: 2px solid var(--border-color);
     }
 
     .input-style {
         width: 100%;
         padding: 12px 15px;
         border-radius: 12px;
-        border: 2px solid #f1f5f9;
-        background: #f8fafc;
+        border: 2px solid var(--border-color);
+        background: var(--soft-bg);
+        color: var(--text-main);
         margin-bottom: 15px;
         outline: none;
         font-family: inherit;
@@ -198,9 +201,10 @@
     /* Sub-task styles */
     .sub-task-list {
         margin-top: 15px;
-        background: rgba(241, 245, 249, 0.5);
+        background: var(--soft-bg);
         border-radius: 10px;
         padding: 10px;
+        border: 1px solid var(--border-color);
     }
     .sub-task-item {
         display: flex;
@@ -234,7 +238,13 @@
         cursor: pointer;
         margin-top: 5px;
     }
-    .btn-add-sub:hover { background: #f8fafc; color: #6366f1; border-color: #6366f1; }
+    .btn-add-sub:hover { background: var(--soft-bg); color: #FF8C00; border-color: #FF8C00; }
+
+    /* Dark Mode Sidebar Overrides */
+    .dark aside { background: var(--card-bg) !important; color: var(--text-main); }
+    .dark .nav-item { color: var(--text-muted); }
+    .dark .nav-item:hover { background: var(--soft-bg); color: var(--text-main); }
+    .dark .btn-focus-toggle { background: #334155; }
 
     /* Analytics Section */
     .analytics-panel {
@@ -282,12 +292,24 @@
     }
 
     .heatmap-cell.active { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+
+    /* Print Styles for PDF Report */
+    @media print {
+        aside, .navbar-custom, .search-box, .btn-focus-toggle, .btn-cheerful, form, hr, .sub-task-list button { display: none !important; }
+        .main-wrapper { display: block !important; padding: 0 !important; }
+        main { width: 100% !important; padding: 0 !important; }
+        .schedule-card { break-inside: avoid; border: 1px solid #ccc !important; box-shadow: none !important; }
+        .analytics-panel { background: #f1f5f9 !important; color: black !important; border: 2px solid #ccc !important; }
+        .xp-bar-container { background: #eee !important; border: 1px solid #ccc !important; }
+        .xp-bar-fill { background: #444 !important; }
+        body { background: white !important; color: black !important; }
+    }
 </style>
 
 <!-- Confetti & Sound -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <audio id="focusAudio" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    <source src="https://stream.zeno.fm/0r0xa792kwzuv" type="audio/mpeg"> <!-- Lo-Fi Radio Alternative -->
 </audio>
 
 <div class="main-wrapper {{ auth()->check() ? 'admin-layout' : 'user-layout' }}">
@@ -346,6 +368,16 @@
                     </select>
                 </div>
 
+                <div style="margin-bottom: 15px;">
+                    <input type="url" name="attachment_url" class="input-style" placeholder="🔗 Link Lampiran (Drive/Materi)" style="margin: 0;">
+                    <select name="attachment_type" class="input-style" style="margin-top: 10px;">
+                        <option value="">📁 Tipe Lampiran</option>
+                        <option value="PDF">📄 PDF Dokumen</option>
+                        <option value="Video">🎥 Video Materi</option>
+                        <option value="Link">🌐 Website Link</option>
+                    </select>
+                </div>
+
                 <div style="display: flex; gap: 10px; align-items: flex-end;">
                     <div style="flex-grow: 1;">
                         <label style="font-size: 11px; font-weight: bold; color: #64748b;">📅 Tanggal</label>
@@ -379,10 +411,10 @@
 
     <main>
         <!-- Header Info -->
-        <div class="animate-cheerful" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 25px 30px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid #FFEDCC;">
+        <div class="animate-cheerful" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: var(--card-bg); padding: 25px 30px; border-radius: var(--card-radius); box-shadow: var(--vibrant-shadow); border: 2px solid var(--border-color);">
             <div>
-                <h3 style="margin: 0; color: #1e293b; font-size: 20px;">Halo, {{ auth()->user()->name ?? 'Guest' }}! 🌟 <span style="font-size: 14px; background: var(--primary-gradient); color: white; padding: 5px 15px; border-radius: 20px; margin-left: 10px; font-weight: 800; box-shadow: 0 4px 10px rgba(255,140,0,0.3);">LVL {{ $stats['level'] }}</span></h3>
-                <p style="margin: 8px 0 0; color: #64748b; font-size: 13px;">🔥 <b>{{ $stats['streak'] }} Day Streak</b> | 🎯 <b>{{ $stats['completion_rate'] }}% Selesai</b></p>
+                <h3 style="margin: 0; color: var(--text-main); font-size: 20px;">Halo, {{ auth()->user()->name ?? 'Guest' }}! 🌟 <span style="font-size: 14px; background: var(--primary-gradient); color: white; padding: 5px 15px; border-radius: 20px; margin-left: 10px; font-weight: 800; box-shadow: 0 4px 10px rgba(255,140,0,0.3);">LVL {{ $stats['level'] }}</span></h3>
+                <p style="margin: 8px 0 0; color: var(--text-muted); font-size: 13px;">🔥 <b>{{ $stats['streak'] }} Day Streak</b> | 🎯 <b>{{ $stats['completion_rate'] }}% Selesai</b></p>
             </div>
             
             <div style="flex-grow: 1; max-width: 250px; margin: 0 30px;">
@@ -405,15 +437,14 @@
 
         <!-- Heatmap Analytics -->
         <div class="analytics-panel">
-            <div>
-                <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Papan Produktivitas (7 Hari)</h4>
-                <div class="heatmap-grid">
+                <div class="heatmap-grid" style="margin-bottom: 10px;">
                     @foreach($stats['heatmap'] as $day)
                     <div class="heatmap-cell {{ $day['count'] > 0 ? 'active' : '' }}" title="{{ $day['date'] }}: {{ $day['count'] }} tugas">
                         {{ substr(\Carbon\Carbon::parse($day['date'])->format('D'), 0, 1) }}
                     </div>
                     @endforeach
                 </div>
+                <button onclick="window.print()" class="btn-cheerful" style="font-size: 10px; padding: 5px 15px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); box-shadow: none;">📄 Cetak Laporan Produktivitas</button>
             </div>
             <div style="text-align: right;">
                 <h1 style="margin: 0; font-size: 32px;">{{ $stats['completion_rate'] }}%</h1>
@@ -466,12 +497,24 @@
                     <span style="font-size: 10px; font-weight: 800; color: #64748b; background: #f1f5f9; padding: 4px 10px; border-radius: 6px;">
                         {{ strtoupper($item->category) }}
                     </span>
-                    @if(auth()->check() && auth()->user()->role === 'admin')
+                    @php 
+                        $isOwner = auth()->check() && $item->user_id === auth()->id();
+                        $isAdmin = auth()->check() && auth()->user()->role === 'admin';
+                    @endphp
+
+                    @if($isOwner && !$done)
+                    <form action="/schedules/{{ $item->id }}/toggle" method="POST" enctype="multipart/form-data" id="form-complete-{{ $item->id }}">
+                        @csrf
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label for="proof-{{ $item->id }}" style="cursor: pointer; font-size: 16px;" title="Upload Bukti">📸</label>
+                            <input type="file" name="proof_image" id="proof-{{ $item->id }}" style="display: none;" onchange="this.form.submit()">
+                            <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 18px;">⬜</button>
+                        </div>
+                    </form>
+                    @elseif($isOwner && $done)
                     <form action="/schedules/{{ $item->id }}/toggle" method="POST">
-                        @csrf @method('PATCH')
-                        <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 18px;">
-                            {{ $done ? '✅' : '⬜' }}
-                        </button>
+                        @csrf
+                        <button type="submit" style="background: none; border: none; cursor: pointer; font-size: 18px;">✅</button>
                     </form>
                     @else
                     <span style="font-size: 18px;">{{ $done ? '✅' : '⏳' }}</span>
@@ -504,13 +547,23 @@
                 </div>
                 @endif
 
-                @if(auth()->check() && auth()->user()->role === 'admin' && !$done)
-                <form action="/sub-tasks" method="POST" style="margin-top: 10px; display: flex; gap: 5px;">
+                @if(!auth()->check() || (auth()->check() && $item->user_id === auth()->id()) || auth()->user()->role === 'admin')
+                @if(!$done)
+                <form action="/schedules/{{ $item->id }}/sub-tasks" method="POST" style="margin-top: 10px; display: flex; gap: 5px;">
                     @csrf
-                    <input type="hidden" name="schedule_id" value="{{ $item->id }}">
-                    <input type="text" name="title" placeholder="Checklist baru..." required style="flex-grow: 1; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 8px; font-size: 11px;">
-                    <button type="submit" style="background: #6366f1; color: white; border: none; border-radius: 6px; padding: 0 10px; font-size: 11px; cursor: pointer;">+</button>
+                    <input type="text" name="title" placeholder="Checklist baru..." required style="flex-grow: 1; border: 2px solid #FFEDCC; border-radius: 6px; padding: 5px 12px; font-size: 11px; outline: none;">
+                    <button type="submit" class="btn-cheerful" style="padding: 5px 12px; font-size: 11px;">+</button>
                 </form>
+                @endif
+                @endif
+
+                @if($item->attachment_url)
+                <div style="margin-top: 15px; background: #FFF9F0; border: 1px dashed #FFD700; border-radius: 12px; padding: 10px;">
+                    <a href="{{ $item->attachment_url }}" target="_blank" style="text-decoration: none; color: #FF8C00; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                        <span>{{ $item->attachment_type === 'PDF' ? '📄' : ($item->attachment_type === 'Video' ? '🎥' : '🌐') }}</span>
+                        {{ $item->attachment_type }} Materi: Lihat Lampiran
+                    </a>
+                </div>
                 @endif
 
                 <div style="font-size: 13px; color: #64748b; margin-top: 15px;">
@@ -530,17 +583,21 @@
                         @endif
                     </div>
                     <div style="display: flex; gap: 10px;">
-                        @if(auth()->check() && auth()->user()->role === 'admin')
+                        @if($item->proof_image)
+                        <a href="{{ asset('storage/' . $item->proof_image) }}" target="_blank" style="background: #FFF5E6; padding: 4px 8px; border-radius: 6px; font-size: 10px; text-decoration: none; color: #FF8C00; font-weight: 800; border: 1px solid #FFEDCC;">🖼️ LIHAT BUKTI</a>
+                        @endif
+
+                        @if($isAdmin)
                             @if($done && !$item->is_verified)
                             <form action="/schedules/{{ $item->id }}/toggle" method="POST">
-                                @csrf @method('PATCH')
-                                <button type="submit" style="background: #10b981; color: white; border: none; border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: bold; cursor: pointer;">VERIFIKASI</button>
+                                @csrf
+                                <button type="submit" style="background: var(--success); color: white; border: none; border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(78,205,196,0.3);">VERIFIKASI</button>
                             </form>
                             @endif
                             
                             <form action="/schedules/{{ $item->id }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 11px;">Hapus</button>
+                                <button style="background: none; border: none; color: #FF6B6B; cursor: pointer; font-size: 11px; font-weight: 800;">Hapus</button>
                             </form>
                         @endif
                     </div>
@@ -558,6 +615,14 @@
         <h1 id="focusTaskName" style="font-size: 32px; margin: 15px 0;">Tidak ada tugas prioritas mendesak.</h1>
         
         <div class="pomodoro-timer" id="pomodoroTimer">25:00</div>
+        
+        <div style="margin: 20px 0;">
+            <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px; font-weight: 800; text-transform: uppercase;">pilih beats 🎵</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="changeTrack('https://stream.zeno.fm/0r0xa792kwzuv')" class="btn-theme-toggle" style="font-size: 12px; width: auto; padding: 0 15px; border-radius: 10px;">Chill Hop</button>
+                <button onclick="changeTrack('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3')" class="btn-theme-toggle" style="font-size: 12px; width: auto; padding: 0 15px; border-radius: 10px;">Jazz Lofi</button>
+            </div>
+        </div>
         
         <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
             <button onclick="startTimer()" style="padding: 12px 25px; background: var(--success); border: none; border-radius: 8px; color: white; cursor: pointer; font-weight: bold;">Mulai</button>
@@ -603,6 +668,12 @@ function doSearch() {
     for (let c of cards) {
         c.style.display = c.getAttribute('data-text').includes(q) ? "" : "none";
     }
+}
+
+function changeTrack(url) {
+    const audio = document.getElementById('focusAudio');
+    audio.src = url;
+    audio.play();
 }
 
 function toggleFocusMode() {

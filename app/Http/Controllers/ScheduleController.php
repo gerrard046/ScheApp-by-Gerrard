@@ -111,7 +111,9 @@ class ScheduleController extends Controller
             'category'      => 'required',
             'date'          => 'required|date',
             'time'          => 'required',
-            'group_id'      => 'nullable|exists:groups,id'
+            'group_id'      => 'nullable|exists:groups,id',
+            'attachment_url'=> 'nullable|url',
+            'attachment_type'=> 'nullable|string'
         ]);
 
         $data = $request->all();
@@ -145,6 +147,13 @@ class ScheduleController extends Controller
         
         // If User toggles their own task
         if ($schedule->user_id === $user->id) {
+            
+            // Handle Proof Image Upload
+            if ($request->hasFile('proof_image')) {
+                $path = $request->file('proof_image')->store('proofs', 'public');
+                $schedule->proof_image = $path;
+            }
+
             $schedule->is_completed = !$schedule->is_completed;
             $schedule->is_verified = false; // Reset verification on toggle
             $schedule->save();
@@ -253,22 +262,7 @@ class ScheduleController extends Controller
         return response()->json(['suggested_time' => "21:00"]);
     }
 
-    public function storeSubTask(Request $request) {
-        $data = $request->validate([
-            'schedule_id' => 'required|exists:schedules,id',
-            'title'       => 'required|string|min:2'
-        ]);
-
-        \App\Models\SubTask::create($data);
-        return redirect()->back()->with('success', 'Sub-tugas ditambahkan!');
-    }
-
-    public function toggleSubTask($id) {
-        $sub = \App\Models\SubTask::findOrFail($id);
-        $sub->is_completed = !$sub->is_completed;
-        $sub->save();
-        return redirect()->back()->with('success', 'Sub-tugas diperbarui!');
-    }
+    // Sub-task methods moved to SubTaskController
 
     public function calendar(Request $request) {
         if ($request->ajax()) {
