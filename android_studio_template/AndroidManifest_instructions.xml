@@ -1,0 +1,5 @@
+<!-- Tambahkan permission ini di dalam tag <manifest> -->
+<uses-permission android:name="android.permission.INTERNET" />
+
+<!-- Tambahkan atribut ini di dalam tag <application> agar bisa akses http lokal -->
+android:usesCleartextTraffic="true"
