@@ -1,6 +1,6 @@
 # 📋 ScheApp Pro - Elite Task Management System
 
-Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain modern **Glassmorphism** dan dukungan **Mobile Android**. ScheApp dirancang khusus untuk meminimalisir risiko kelalaian tugas di tengah dinamika kegiatan yang padat, dilengkapi dengan fitur kolaborasi tim dan sistem dashboard admin yang canggih.
+Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain ceria **"Sunset Sunshine" Glassmorphism** dan dukungan **Mobile Android**. ScheApp dirancang khusus untuk meminimalisir risiko kelalaian tugas di tengah dinamika kegiatan yang padat, dilengkapi dengan fitur kolaborasi tim dan sistem dashboard admin yang canggih.
 
 ---
 
@@ -12,13 +12,12 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 - [🛠 Tech Stack](#-tech-stack)
 - [📁 Struktur Project](#-struktur-project)
 - [🔗 Database Schema](#-database-schema)
-- [� Instalasi - Web](#-instalasi---web)
-- [� Instalasi - Mobile](#-instalasi---mobile)
+- [🚀 Instalasi - Web](#-instalasi---web)
+- [📱 Instalasi - Mobile](#-instalasi---mobile)
 - [🔌 API Endpoints](#-api-endpoints)
 - [📋 User Stories](#-user-stories)
-- [� Testing](#-testing)
+- [🧪 Testing](#-testing)
 - [📊 Development Workflow](#-development-workflow)
-- [�🤝 Kontribusi](#-kontribusi)
 - [📄 Lisensi](#-lisensi)
 
 ---
@@ -28,7 +27,7 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain mo
 
 Aplikasi ini merupakan evolusi dari manajemen jadwal personal menjadi sistem kolaborasi tim yang lengkap. ScheApp memungkinkan pengguna untuk tidak hanya mengatur jadwal pribadi, tetapi juga bekerja dalam grup, menerima broadcast tugas dari admin, dan berkompetisi secara sehat lewat sistem **Gamification (XP & Leveling)** demi menjaga produktivitas di tengah kesibukan yang tinggi.
 
-Dengan antarmuka **Glassmorphism** yang mewah dan responsif, ScheApp memberikan pengalaman pengguna yang premium baik di browser desktop maupun di layar smartphone melalui wrapper Android Native.
+Dengan antarmuka **Cheerful Glassmorphism (Sunset Sunshine Theme)** yang mewah, ceria, dan responsif, ScheApp memberikan pengalaman pengguna yang premium baik di browser desktop maupun di layar smartphone melalui wrapper Android Native. Perpaduan warna oranye dan emas memberikan energi positif bagi para ksatria Poltek SSN dalam mengelola tugas harian.
 
 ---
 
@@ -523,18 +522,6 @@ develop        (Integration branch)
   ↑
 feature/XYZ    (Individual feature development)
 ```
-
-### Contribution Guide
-1. **Fork** repository ini.
-2. Buat branch fitur baru: `git checkout -b feature/nama-fitur`.
-3. **Commit** perubahan: `git commit -m "Add: Penjelasan fitur"`.
-4. **Push** ke branch: `git push origin feature/nama-fitur`.
-5. Buka **Pull Request**.
-
----
-
-## 🤝 Kontribusi
-Kontribusi sangat terbuka! Silakan lakukan **Fork** dan **Pull Request** ke branch `main`. Pastikan mengikuti standar kodingan Laravel.
 
 ---
 
