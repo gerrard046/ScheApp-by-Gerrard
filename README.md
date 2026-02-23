@@ -4,9 +4,6 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain ce
 
 ---
 
-> [!NOTE]
-> **TITAN EDITION UPDATE**: Versi terbaru kini mendukung **Sub-Tasks**, **Real File Uploads**, **Midnight Sunset (Dark Mode)**, dan **Smart Notifications Center**.
-
 ---
 
 ## 📋 Daftar Isi
