@@ -4,8 +4,6 @@ Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain ce
 
 ---
 
----
-
 ## 📋 Daftar Isi
 - [🎯 Deskripsi](#-deskripsi)
 - [✨ Fitur Utama](#-fitur-utama)
