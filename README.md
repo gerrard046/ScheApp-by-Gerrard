@@ -1,6 +1,6 @@
 # 📋 ScheApp Pro - Elite Task Management System
 
-Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain ceria **"Sunset Sunshine" Glassmorphism** dan dukungan **Mobile Android**. ScheApp dirancang khusus untuk meminimalisir risiko kelalaian tugas di tengah dinamika kegiatan yang padat, dilengkapi dengan fitur kolaborasi tim dan sistem dashboard admin yang canggih.
+Platform manajemen tugas (Task Management) berbasis **Laravel** dengan desain *"Sunset Sunshine" Glassmorphism*dan dukungan **Mobile Android**. ScheApp dirancang untuk meminimalisir risiko kelalaian tugas di tengah dinamika kegiatan yang padat di lingkungan kampus, dilengkapi dengan fitur kolaborasi tim dan sistem dashboard admin yang canggih.
 
 ---
 
