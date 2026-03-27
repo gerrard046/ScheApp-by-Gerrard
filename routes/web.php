@@ -13,6 +13,8 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WalletController;
 use App\Http\Middleware\IsAdmin;
 
 // Rute Authentication
@@ -34,6 +36,17 @@ Route::middleware(['auth'])->group(function () {
     // Notifications
     Route::post('/notifications/read-all', [ScheduleController::class, 'markNotificationsAsRead']);
     Route::post('/zen/log', [ScheduleController::class, 'logZenSession']);
+
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile', [ProfileController::class, 'update']);
+
+    // --- Dompet Digital (Wallet) ---
+    Route::get('/wallet', [WalletController::class, 'index'])->name('wallet.index');
+    Route::post('/wallet/topup', [WalletController::class, 'topup'])->name('wallet.topup');
+    Route::post('/wallet/income', [WalletController::class, 'income'])->name('wallet.income');
+    Route::post('/wallet/expense', [WalletController::class, 'expense'])->name('wallet.expense');
+    Route::delete('/wallet/{id}', [WalletController::class, 'destroy'])->name('wallet.destroy');
 
     // --- Core Schedule Management (Available to All Users) ---
     Route::post('/schedules', [ScheduleController::class, 'store']);

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScheApp Pro - Visual Documentation Suite</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --accent: #3b82f6;
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.83);
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #f1f5f9 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-weight: 800;
+            font-size: 3rem;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            border-color: #3b82f6;
+        }
+
+        .card-header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 15px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .mermaid-container {
+            flex-grow: 1;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 350px;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .text-diagram {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 30px;
+            border-radius: 20px;
+            line-height: 1.6;
+            overflow-x: auto;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: #dbeafe;
+            color: #1e40af;
+            margin-bottom: 12px;
+        }
+
+        /* Mermaid Theme Overrides */
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Tooltip-like decorative elements */
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent 70%);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            padding: 20px;
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2.2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .mermaid-container {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <span class="badge">Official Documentation Artifacts</span>
+            <h1>ScheApp Visual Documentation</h1>
+            <p>High-fidelity system diagrams and workflow visualizations for the <strong>Arctic Zen Edition</strong>.
+            </p>
+        </header>
+
+        <div class="grid">
+            <!-- 1. Use Case Diagram -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">👤 Use Case Diagram</div>
+                    <div class="card-subtitle">Functional mapping between Mahasiswa (User) and Administrator roles.
+                    </div>
+                </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph TD
+    subgraph Actors
+        U["Mahasiswa (User)"]
+        A["Administrator"]
+    end
+
+    subgraph "ScheApp System"
+        UC1([Manage Personal Task])
+        UC2([Join Team Group])
+        UC3([Earn XP & Level Up])
+        UCc([Zen Mode Tracking])
+        UC4([Create & Manage Group])
+        UC5([Broadcast Schedule])
+        UC6([Verify User Task])
+        UC7([View Admin Insights])
+    end
+
+    U --> UC1
+    U --> UC2
+    U --> UC3
+    U --> UCc
+    
+    A --> UC4
+    A --> UC5
+    A --> UC6
+    A --> UC7
+    A -.-> U
+                    </pre>
+                </div>
+            </div>
+
+            <!-- 2. Task Management Flow -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">⚡ Task Management Flow</div>
+                    <div class="card-subtitle">End-to-end task lifecycle including sub-tasks and Zen Mode integration.
+                    </div>
+                </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph TD
+    A[Start] --> B{Login Success?}
+    B -- No --> C[Auth Page]
+    B -- Yes --> D[Dashboard]
+    D --> E[Create Task]
+    E --> Sub[Add Sub-tasks]
+    Sub --> F[Task Stored in DB]
+    F --> Zen{Enter Zen Mode?}
+    Zen -- Yes --> Focus[Pomodoro Session]
+    Focus --> G
+    Zen -- No --> G[Mark Progress]
+    G --> H{Need Admin Verify?}
+    H -- Yes --> I[Status: Waiting Verification]
+    I --> J[Admin Review Evidence]
+    J --> K[XP + Bonus & Status: Verified]
+    H -- No --> L[XP +10 & Status: Finished]
+    K --> M[End]
+    L --> M
+                    </pre>
+                </div>
+            </div>
+
+            <!-- 3. Dashboard Analytics Flow -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📊 Dashboard Analytics Flow</div>
+                    <div class="card-subtitle">Real-time data aggregation and processing for administrative
+                        decision-making.</div>
+                </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+graph LR
+    A[User Activity] --> B[(Database)]
+    B --> C[Insights Engine]
+    C --> D{Process Analytics}
+    D --> E[Global Completion %]
+    D --> F[Top Performers]
+    D --> G[Burnout Detection]
+    E --> H[Visual Dashboard]
+    F --> H
+    G --> H
+                    </pre>
+                </div>
+            </div>
+
+            <!-- 4. Complete User Journey -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🗺️ Complete User Journey</div>
+                    <div class="card-subtitle">Sequence of interactions through the entire ScheApp ecosystem.</div>
+                </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+sequenceDiagram
+    participant U as Mahasiswa
+    participant S as ScheApp Pro
+    participant A as Administrator
+    
+    U->>S: Register/Login (Google OAuth)
+    S-->>U: Access Dashboard & Stats
+    A->>S: Create Group & Broadcast Task
+    S-->>U: Real-time Notification
+    U->>S: Start Zen Mode session
+    U->>S: Complete Sub-tasks & Upload Evidence
+    S-->>A: Request Task Verification
+    A->>S: Approve Evidence & Validate
+    S-->>U: Award Level Up & XP
+                    </pre>
+                </div>
+            </div>
+
+            <!-- 5. Flow Interaksi Data -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🔀 Data Interaction Flow</div>
+                    <div class="card-subtitle">Core data lifecycle from frontend interactions to MySQL persistence.
+                    </div>
+                </div>
+                <div class="text-diagram">┌─────────────┐
+                    │ User │
+                    └──────┬──────┘
+                    │
+                    │ Opens App
+                    ▼
+                    ┌──────────────────┐
+                    │ Login/Register │
+                    ├──────────────────┤
+                    │ Email + Password │
+                    │ atau Google │
+                    └────────┬─────────┘
+                    │
+                    │ Success ✓
+                    ▼
+                    ┌────────────────────┐
+                    │ Dashboard/Home │
+                    ├────────────────────┤
+                    │ Load User Tasks │
+                    │ Display Analytics │
+                    └────────┬───────────┘
+                    │
+                    ┌────┴────────────────┐
+                    │ │
+                    ▼ ▼
+                    ┌─────────────┐ ┌────────────────┐
+                    │ Create Task │ │ View/Edit Task │
+                    │ (w/Subtasks)│ │ (Up Evidence) │
+                    └────┬────────┘ └────────┬───────┘
+                    │ │
+                    │ Save to DB │ Update DB
+                    ▼ ▼
+                    ┌─────────────────────────────────┐
+                    │ MySQL 8.0 Database │
+                    │ (Persistent Transactional Data)│
+                    └─────────────────────────────────┘</div>
+            </div>
+
+            <!-- 6. Arsitektur Sistem & Metodologi -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🏗️ System Architecture & SDLC</div>
+                    <div class="card-subtitle">Service-oriented structure and development lifecycle.</div>
+                </div>
+                <div class="text-diagram">┌─────────────────────────────────────────────────────────────┐
+                    │ SCHEAPP PRO ARCHITECTURE │
+                    ├─────────────────────────────────────────────────────────────┤
+                    │ Presentation Layer │
+                    │ ┌──────────────┐ ┌──────────────┐ │
+                    │ │ Web Client │ │ Mobile App │ │
+                    │ │ (Blade + CSS) │ │ (WebView) │ │
+                    │ └──────┬───────┘ └──────┬───────┘ │
+                    └─────────┼──────────────────────────────────────────┼─────────┘
+                    │ RESTful API communication │
+                    ┌─────────┴──────────────────────────────────────────┴─────────┐
+                    │ Application Layer (Backend) │
+                    │ ┌─────────────────────────────────┐ │
+                    │ │ Laravel 11 Ecosystem │ │
+                    │ └─────────────────────────────────┘ │
+                    └┬────────────────────────────────────────────────────────────┬┘
+                    │ Data Persistence Layer │
+                    ┌┴────────────────────────────────────────────────────────────┐
+                    │ MySQL 8.0 Management System │
+                    └─────────────────────────────────────────────────────────────┘
+
+                    SDLC METHODOLOGY: Waterfall Model
+                    1. Requirement Analysis (Poltek SSN Use Case)
+                    2. System Design (ERD, UI/UX Glassmorphism)
+                    3. Implementation (Laravel 11, Livewire, Alpine.js)
+                    4. Black-Box & Integration Testing
+                    5. Documentation & Deployment</div>
+            </div>
+
+            <!-- 7. Struktur Proyek -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📂 Project Structure</div>
+                    <div class="card-subtitle">File organization reflecting the MVC architecture.</div>
+                </div>
+                <div class="text-diagram">ScheApp-by-Gerrard/
+                    ├── app/ # Web Logic (MVC)
+                    │ ├── Http/Controllers # Business Logic
+                    │ ├── Models/ # Eloquent Entities
+                    │ └── Providers/ # Service Definitions
+                    ├── android_app/ # Mobile Source (Kotlin)
+                    ├── config/ # Laravel Configs
+                    ├── database/ # Migrations & Seeds
+                    │ ├── migrations/ # DB Versioning
+                    │ └── seeders/ # Initial Data
+                    ├── resources/ # Frontend Assets
+                    │ ├── views/ # Blade Templates
+                    │ └── css/js # Styles & Logic
+                    ├── routes/ # Routing (Web/API)
+                    ├── public/ # Global Assets
+                    └── storage/ # File Storage & Logs</div>
+            </div>
+
+            <!-- 8. Skema Basis Data (ERD) -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🗄️ Database Schema</div>
+                    <div class="card-subtitle">Comprehensive relational model of the ScheApp ecosystem.</div>
+                </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+erDiagram
+    USERS ||--o{ SCHEDULES : "owns"
+    USERS ||--o{ GROUPS : "administers"
+    USERS ||--o{ NOTIFICATIONS : "receives"
+    SCHEDULES ||--o{ SUB_TASKS : "breaks down into"
+    GROUPS ||--o{ SCHEDULES : "shares"
+    GROUPS ||--o{ GROUP_RESOURCES : "contains"
+    
+    USERS {
+        int id PK
+        string name
+        string email
+        string role
+        int xp
+        int level
+        int streak
+    }
+    
+    SCHEDULES {
+        int id PK
+        int user_id FK
+        int group_id FK
+        string title
+        string category
+        string priority
+        string attachment_file
+        boolean is_verified
+        int zen_total_time
+    }
+    
+    SUB_TASKS {
+        int id PK
+        int schedule_id FK
+        string name
+        boolean is_completed
+    }
+    
+    GROUPS {
+        int id PK
+        string name
+        int admin_id FK
+    }
+    
+    NOTIFICATIONS {
+        int id PK
+        int user_id FK
+        string message
+        string type
+    }
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <footer style="margin-top: 80px; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+            &copy; 2026 ScheApp Pro - Arctic Zen Edition | Documentation Artifacts Generated for Gerrard.
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#3b82f6',
+                primaryTextColor: '#ffffff',
+                primaryBorderColor: '#1e40af',
+                lineColor: '#64748b',
+                secondaryColor: '#eff6ff',
+                tertiaryColor: '#ffffff',
+                fontFamily: 'Plus Jakarta Sans',
+                fontSize: '14px'
+            }
+        });
+    </script>
+</body>
+
+</html>

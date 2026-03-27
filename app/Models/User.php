@@ -23,9 +23,17 @@ class User extends Authenticatable
         'password',
         'role',
         'xp',
+        'total_xp_earned',
         'level',
+        'title',
         'streak',
+        'combo_count',
+        'highest_combo',
+        'total_early_completions',
+        'badges',
         'last_activity_date',
+        'avatar_color',
+        'bio',
     ];
 
     /**
@@ -49,6 +57,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_activity_date' => 'date',
+            'badges' => 'array',
         ];
     }
 

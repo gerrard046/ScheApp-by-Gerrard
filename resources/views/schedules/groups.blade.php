@@ -108,8 +108,14 @@
             <a href="/calendar" class="nav-item">
                 <span>📅</span> Kalender
             </a>
+            <a href="/kanban" class="nav-item">
+                <span>📋</span> Kanban Board
+            </a>
             <a href="/groups" class="nav-item active">
                 <span>🤝</span> Tim Grup
+            </a>
+            <a href="/profile" class="nav-item">
+                <span>👤</span> Profil
             </a>
             @if(auth()->user()->role === 'admin')
             <a href="/admin/insights" class="nav-item">
