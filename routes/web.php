@@ -15,6 +15,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\GoogleCalendarController;
 use App\Http\Middleware\IsAdmin;
 
 // Rute Authentication
@@ -27,11 +28,23 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // Semua rute schedule butuh login (middleware auth)
 Route::middleware(['auth'])->group(function () {
     
-    // Semua role bisa melihat jadwal (Menggunakan AI Smart Sorting dari tahap sebelumnya)
+    // Semua role bisa melihat jadwal
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::get('/calendar', [ScheduleController::class, 'calendar']);
     Route::get('/groups', [GroupController::class, 'index']);
     Route::get('/kanban', [ScheduleController::class, 'kanban']);
+
+    // ── Time-Block Calendar AJAX API (FullCalendar) ────────────────────────
+    Route::get('/calendar/events', [ScheduleController::class, 'calendarEvents'])->name('calendar.events');
+    Route::post('/calendar/events', [ScheduleController::class, 'calendarStore'])->name('calendar.store');
+    Route::patch('/calendar/events/{schedule}', [ScheduleController::class, 'calendarUpdate'])->name('calendar.update');
+    Route::delete('/calendar/events/{schedule}', [ScheduleController::class, 'calendarDestroy'])->name('calendar.destroy');
+
+    // ── Google Calendar OAuth & Sync ───────────────────────────────────────
+    Route::get('/auth/google', [GoogleCalendarController::class, 'redirect'])->name('google.redirect');
+    Route::get('/auth/google/callback', [GoogleCalendarController::class, 'callback'])->name('google.callback');
+    Route::post('/google/disconnect', [GoogleCalendarController::class, 'disconnect'])->name('google.disconnect');
+    Route::post('/google/sync', [GoogleCalendarController::class, 'syncPull'])->name('google.sync');
 
     // Notifications
     Route::post('/notifications/read-all', [ScheduleController::class, 'markNotificationsAsRead']);

@@ -583,67 +583,161 @@ class ScheduleController extends Controller
     // Sub-task methods moved to SubTaskController
 
     public function calendar(Request $request) {
-        if ($request->ajax()) {
-            $user = auth()->user();
-            $query = Schedule::query();
-            if ($user->role !== 'admin') {
-                $query->where(function($q) use ($user) {
-                    $q->where('user_id', $user->id)
-                      ->orWhereHas('group', function($g) use ($user) {
-                          $g->whereHas('members', function($m) use ($user) {
-                              $m->where('users.id', $user->id);
-                          });
-                      });
-                });
-            }
-            $schedules = $query->get();
-            
-            $events = $schedules->map(function($s) {
-                $isCompleted = $s->is_completed;
-                $isEarly = false;
-                if ($isCompleted && $s->completed_at) {
-                    $deadline = Carbon::parse($s->date . ' ' . $s->time);
-                    $isEarly = Carbon::parse($s->completed_at)->lt($deadline);
-                }
-                $isMissed = !$isCompleted && Carbon::parse($s->date . ' ' . $s->time)->isPast();
-                
-                // Color coding: green = done, gold = early done, red = missed/high priority, purple = default
-                if ($isCompleted && $isEarly) {
-                    $color = '#F59E0B'; // Gold for early completion
-                } elseif ($isCompleted) {
-                    $color = '#10b981'; // Green for completed
-                } elseif ($isMissed) {
-                    $color = '#EF4444'; // Red for missed
-                } elseif ($s->priority == 'high') {
-                    $color = '#EF4444'; // Red for high priority
-                } else {
-                    $color = '#6366f1'; // Purple for default
-                }
-
-                $title = $s->activity_name;
-                if ($isCompleted && $isEarly) $title = '🏃 ' . $title;
-                elseif ($isCompleted) $title = '✅ ' . $title;
-                elseif ($isMissed) $title = '⚠️ ' . $title;
-
-                return [
-                    'id' => $s->id,
-                    'title' => $title,
-                    'start' => $s->date . 'T' . $s->time,
-                    'color' => $color,
-                    'extendedProps' => [
-                        'category' => $s->category,
-                        'priority' => $s->priority,
-                        'is_completed' => $isCompleted,
-                        'is_early' => $isEarly,
-                        'notes' => $s->notes,
-                        'group_name' => $s->group_name,
-                    ]
-                ];
-            });
-            return response()->json($events);
-        }
-        return view('schedules.calendar');
+        return view('schedules.calendar', [
+            'googleConnected' => (bool) auth()->user()->google_access_token,
+        ]);
     }
+
+    // ─── Calendar AJAX API (FullCalendar Time-Block) ──────────────────────────
+
+    /**
+     * Sumber event FullCalendar — dipanggil setiap kali kalender berpindah range.
+     * FullCalendar mengirim `start` dan `end` sebagai ISO8601 string.
+     */
+    public function calendarEvents(Request $request)
+    {
+        $user = auth()->user();
+
+        $rangeStart = $request->query('start')
+            ? Carbon::parse($request->query('start'))
+            : now()->startOfWeek();
+
+        $rangeEnd = $request->query('end')
+            ? Carbon::parse($request->query('end'))
+            : now()->endOfWeek();
+
+        $query = Schedule::with('group');
+
+        if ($user->role !== 'admin') {
+            $query->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhereHas('group', function ($g) use ($user) {
+                      $g->whereHas('members', fn($m) => $m->where('users.id', $user->id));
+                  });
+            });
+        }
+
+        // Ambil semua event yang overlap dengan rentang yang diminta
+        $schedules = $query
+            ->where('start_datetime', '<', $rangeEnd)
+            ->where('end_datetime', '>', $rangeStart)
+            ->get();
+
+        return response()->json($schedules->map->toCalendarEvent()->values());
+    }
+
+    /**
+     * Simpan event baru dari modal FullCalendar (klik slot kosong atau tombol +).
+     */
+    public function calendarStore(Request $request)
+    {
+        $validated = $request->validate([
+            'title'           => 'required|string|max:255',
+            'start_datetime'  => 'required|date',
+            'end_datetime'    => 'required|date|after_or_equal:start_datetime',
+            'is_all_day'      => 'boolean',
+            'color'           => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'category'        => 'nullable|string|max:100',
+            'priority'        => 'nullable|in:high,med,low',
+            'notes'           => 'nullable|string|max:2000',
+            'recurrence_rule' => 'nullable|string|max:500',
+        ]);
+
+        $start = Carbon::parse($validated['start_datetime']);
+
+        $schedule = Schedule::create([
+            'user_id'         => auth()->id(),
+            'user_name'       => auth()->user()->name,
+            'activity_name'   => $validated['title'],
+            'start_datetime'  => $validated['start_datetime'],
+            'end_datetime'    => $validated['end_datetime'],
+            'is_all_day'      => $validated['is_all_day'] ?? false,
+            'color'           => $validated['color'] ?? null,
+            'date'            => $start->format('Y-m-d'),
+            'time'            => $start->format('H:i:s'),
+            'category'        => $validated['category'] ?? 'Lainnya',
+            'priority'        => $validated['priority'] ?? 'low',
+            'notes'           => $validated['notes'] ?? null,
+            'recurrence_rule' => $validated['recurrence_rule'] ?? null,
+        ]);
+
+        // Push ke Google Calendar jika sudah terhubung
+        if (auth()->user()->google_access_token) {
+            try {
+                app(\App\Services\GoogleCalendarService::class)->createEvent($schedule);
+            } catch (\Throwable $e) {
+                \Log::warning('Google Calendar push failed: ' . $e->getMessage());
+            }
+        }
+
+        return response()->json($schedule->load('group')->toCalendarEvent(), 201);
+    }
+
+    /**
+     * Perbarui event setelah drag-and-drop atau resize di FullCalendar.
+     * Juga digunakan untuk edit detail event dari modal.
+     */
+    public function calendarUpdate(Request $request, Schedule $schedule)
+    {
+        abort_if($schedule->user_id !== auth()->id() && auth()->user()->role !== 'admin', 403);
+
+        $validated = $request->validate([
+            'title'          => 'sometimes|string|max:255',
+            'start_datetime' => 'required|date',
+            'end_datetime'   => 'required|date|after_or_equal:start_datetime',
+            'is_all_day'     => 'boolean',
+            'color'          => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'priority'       => 'nullable|in:high,med,low',
+            'notes'          => 'nullable|string|max:2000',
+        ]);
+
+        $start = Carbon::parse($validated['start_datetime']);
+
+        $schedule->update([
+            'activity_name'  => $validated['title'] ?? $schedule->activity_name,
+            'start_datetime' => $validated['start_datetime'],
+            'end_datetime'   => $validated['end_datetime'],
+            'is_all_day'     => $validated['is_all_day'] ?? $schedule->is_all_day,
+            'date'           => $start->format('Y-m-d'),
+            'time'           => $start->format('H:i:s'),
+            'color'          => array_key_exists('color', $validated) ? $validated['color'] : $schedule->color,
+            'priority'       => $validated['priority'] ?? $schedule->priority,
+            'notes'          => $validated['notes'] ?? $schedule->notes,
+        ]);
+
+        // Sinkronisasi ke Google Calendar
+        if (auth()->user()->google_access_token) {
+            try {
+                app(\App\Services\GoogleCalendarService::class)->updateEvent($schedule);
+            } catch (\Throwable $e) {
+                \Log::warning('Google Calendar update failed: ' . $e->getMessage());
+            }
+        }
+
+        return response()->json($schedule->fresh()->load('group')->toCalendarEvent());
+    }
+
+    /**
+     * Hapus event dari kalender (dan Google Calendar jika tersinkronisasi).
+     */
+    public function calendarDestroy(Schedule $schedule)
+    {
+        abort_if($schedule->user_id !== auth()->id() && auth()->user()->role !== 'admin', 403);
+
+        if ($schedule->google_event_id && auth()->user()->google_access_token) {
+            try {
+                app(\App\Services\GoogleCalendarService::class)->deleteEvent($schedule);
+            } catch (\Throwable $e) {
+                \Log::warning('Google Calendar delete failed: ' . $e->getMessage());
+            }
+        }
+
+        $schedule->delete();
+
+        return response()->json(['message' => 'Jadwal berhasil dihapus']);
+    }
+
+    // ─── End Calendar AJAX API ────────────────────────────────────────────────
 
     public function markNotificationsAsRead() {
         auth()->user()->unreadNotifications->markAsRead();
