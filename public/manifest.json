@@ -1,24 +1,51 @@
 {
-    "name": "ScheApp Pro: Arctic Zen",
+    "name": "ScheApp Pro",
     "short_name": "ScheApp",
-    "description": "Dynamic Scheduling System with Arctic Zen Aesthetic",
+    "description": "Aplikasi manajemen jadwal modern dengan kalender time-block dan dompet digital",
     "start_url": "/schedules",
+    "scope": "/",
     "display": "standalone",
-    "background_color": "#F0F7FF",
+    "background_color": "#0c1222",
     "theme_color": "#1E88E5",
-    "orientation": "portrait",
+    "orientation": "portrait-primary",
+    "lang": "id",
+    "categories": ["productivity", "utilities"],
     "icons": [
         {
-            "src": "/icons/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
         },
         {
-            "src": "/icons/icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
+            "src": "/icons/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        }
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Jadwal Hari Ini",
+            "short_name": "Jadwal",
+            "description": "Lihat jadwal hari ini",
+            "url": "/schedules",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+        },
+        {
+            "name": "Kalender",
+            "short_name": "Kalender",
+            "description": "Buka kalender time-block",
+            "url": "/calendar",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+        },
+        {
+            "name": "Dompet",
+            "short_name": "Dompet",
+            "description": "Cek dompet digital",
+            "url": "/wallet",
+            "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
         }
     ]
 }
