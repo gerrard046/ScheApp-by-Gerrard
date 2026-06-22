@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="ScheApp Pro - Aplikasi manajemen jadwal modern dengan AI-powered scheduling, Zen Mode, dan gamifikasi.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ScheApp Pro - Smart Schedule Manager</title>
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
@@ -367,6 +368,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
