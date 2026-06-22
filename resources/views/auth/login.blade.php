@@ -211,16 +211,16 @@
                 <div class="alert alert-error">{{ $errors->first() }}</div>
             @endif
 
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" autocomplete="off">
                 @csrf
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email" class="login-input" required placeholder="name@example.com" value="{{ old('email') }}">
+                    <input type="email" name="email" class="login-input" required placeholder="name@example.com" value="{{ old('email') }}" autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" class="login-input" required placeholder="••••••••">
+                    <input type="password" name="password" class="login-input" required placeholder="••••••••" autocomplete="current-password">
                 </div>
 
                 <button type="submit" class="btn-login">Masuk</button>

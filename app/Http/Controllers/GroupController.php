@@ -64,7 +64,10 @@ class GroupController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'file' => 'required|file|max:10240', // Max 10MB
+            'file' => [
+                'required', 'file', 'max:10240',
+                'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,jpg,jpeg,png,gif,zip,rar',
+            ],
         ]);
 
         if ($request->hasFile('file')) {

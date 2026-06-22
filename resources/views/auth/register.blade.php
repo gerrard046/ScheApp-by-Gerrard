@@ -149,26 +149,26 @@
             </div>
         @endif
 
-        <form action="/register" method="POST">
+        <form action="/register" method="POST" autocomplete="off">
             @csrf
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" name="name" class="arctic-input" required placeholder="John Doe" value="{{ old('name') }}">
+                <input type="text" name="name" class="arctic-input" required placeholder="John Doe" value="{{ old('name') }}" autocomplete="name">
             </div>
 
             <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" name="email" class="arctic-input" required placeholder="name@example.com" value="{{ old('email') }}">
+                <input type="email" name="email" class="arctic-input" required placeholder="name@example.com" value="{{ old('email') }}" autocomplete="email">
             </div>
 
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" class="arctic-input" required placeholder="Min. 8 characters">
+                <input type="password" name="password" class="arctic-input" required placeholder="Min. 8 characters" autocomplete="new-password">
             </div>
 
             <div class="form-group">
                 <label>Confirm Password</label>
-                <input type="password" name="password_confirmation" class="arctic-input" required placeholder="Repeat password">
+                <input type="password" name="password_confirmation" class="arctic-input" required placeholder="Repeat password" autocomplete="new-password">
             </div>
 
             <button type="submit" class="btn-arctic">

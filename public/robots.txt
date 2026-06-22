@@ -1,2 +1,13 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /auth/google
+Disallow: /google/
+Disallow: /wallet/
+Disallow: /profile
+Disallow: /zen/
+Disallow: /notifications/
+Disallow: /sub-tasks/
+Disallow: /calendar/events
+Allow: /login
+Allow: /register
+Allow: /

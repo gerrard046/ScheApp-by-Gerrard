@@ -53,6 +53,13 @@ class SecurityHeaders
             );
         }
 
+        // Cache-Control — cegah browser cache halaman yg mengandung data user
+        $contentType = $response->headers->get('Content-Type', '');
+        if (str_contains($contentType, 'text/html')) {
+            $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+            $response->headers->set('Pragma', 'no-cache');
+        }
+
         // Hapus header yang membocorkan info server
         $response->headers->remove('X-Powered-By');
         $response->headers->remove('Server');
