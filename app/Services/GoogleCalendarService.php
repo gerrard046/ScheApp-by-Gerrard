@@ -179,6 +179,7 @@ class GoogleCalendarService
             $data = [
                 'user_id'        => $user->id,
                 'user_name'      => $user->name,
+                'group_name'     => 'Google Calendar',
                 'activity_name'  => $gEvent->getSummary() ?: '(Tanpa Judul)',
                 'notes'          => $gEvent->getDescription(),
                 'start_datetime' => $start,

@@ -648,6 +648,7 @@ class ScheduleController extends Controller
         $schedule = Schedule::create([
             'user_id'         => auth()->id(),
             'user_name'       => auth()->user()->name,
+            'group_name'      => 'Personal',
             'activity_name'   => $validated['title'],
             'start_datetime'  => $validated['start_datetime'],
             'end_datetime'    => $validated['end_datetime'],
