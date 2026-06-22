@@ -342,6 +342,7 @@ main { flex:1; padding:30px; overflow-y:auto; }
 </div>{{-- /main-wrapper --}}
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 // Configure Axios CSRF token
 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')?.content;
