@@ -1,21 +1,27 @@
 # 📋 ScheApp Pro — Dynamic Scheduling System
 
-Platform manajemen jadwal berbasis **Laravel 12** dengan desain *Arctic Breeze Glassmorphism*, kalender **Time-Block interaktif**, sinkronisasi **Google Calendar**, dan dukungan **PWA / Mobile Android**. Dirancang untuk meminimalisir risiko kelalaian tugas di lingkungan akademik yang padat, dilengkapi fitur kolaborasi tim, dompet digital, dan sistem dashboard admin.
+[![CI](https://github.com/gerrard046/ScheApp-by-Gerrard/actions/workflows/ci.yml/badge.svg)](https://github.com/gerrard046/ScheApp-by-Gerrard/actions/workflows/ci.yml)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-blue)](https://php.net)
+[![Laravel](https://img.shields.io/badge/Laravel-12-red)](https://laravel.com)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+Platform manajemen jadwal berbasis **Laravel 12** dengan desain *Arctic Breeze Glassmorphism*, kalender **Time-Block interaktif**, sinkronisasi **Google Calendar**, dan dukungan **PWA / Mobile Android**. Dirancang untuk meminimalisir risiko kelalaian tugas di lingkungan akademik yang padat, dilengkapi fitur kolaborasi tim, dompet digital, dan sistem keamanan OWASP.
 
 ---
 
 ## 📋 Daftar Isi
 - [🎯 Deskripsi](#-deskripsi)
 - [✨ Fitur Utama](#-fitur-utama)
+- [🚀 Instalasi - Web](#-instalasi---web)
+- [📖 Panduan Penggunaan](#-panduan-penggunaan)
+- [📱 Instalasi - Mobile](#-instalasi---mobile-pwa--android-studio)
 - [📊 User Flow & Use Case](#-user-flow--use-case)
 - [🏗️ Arsitektur & SDLC](#-arsitektur--sdlc)
 - [🛠 Tech Stack](#-tech-stack)
 - [📁 Struktur Project](#-struktur-project)
 - [🔗 Database Schema](#-database-schema)
-- [🚀 Instalasi - Web](#-instalasi---web)
-- [📱 Instalasi - Mobile (PWA & Android Studio)](#-instalasi---mobile-pwa--android-studio)
 - [🔌 API Endpoints](#-api-endpoints)
-- [📋 User Stories](#-user-stories)
+- [🔒 Keamanan](#-keamanan-owasp)
 - [🧪 Testing](#-testing)
 - [📄 Lisensi](#-lisensi)
 
@@ -30,6 +36,7 @@ Platform manajemen jadwal berbasis **Laravel 12** dengan desain *Arctic Breeze G
 - **Dompet Digital** untuk manajemen keuangan personal
 - **PWA (Progressive Web App)** — bisa diinstall di HP tanpa App Store
 - **Glassmorphism UI** dengan tema Arctic Breeze
+- **Keamanan OWASP Top 10** — rate limiting, audit log, security headers
 
 ---
 
@@ -52,14 +59,15 @@ Platform manajemen jadwal berbasis **Laravel 12** dengan desain *Arctic Breeze G
 ### 💰 Dompet Digital
 - Pencatatan pemasukan & pengeluaran
 - Kategori transaksi & ringkasan saldo
-- Riwayat transaksi dengan filter
+- Chart bulanan 6 bulan terakhir
+- Riwayat transaksi lengkap
 
 ### 📊 Manajemen Jadwal & Tim
 - CRUD jadwal personal & grup
 - Kanban board (drag & drop antar status)
 - Verifikasi tugas oleh admin dengan bukti digital
 - Broadcast jadwal ke seluruh anggota grup
-- Sistem XP & Level (gamifikasi)
+- Sistem XP, Level & Badge (gamifikasi)
 
 ### 📱 PWA & Mobile
 - **Installable** di Android/iOS langsung dari browser Chrome
@@ -73,6 +81,257 @@ Platform manajemen jadwal berbasis **Laravel 12** dengan desain *Arctic Breeze G
 - Dark mode toggle
 - Mobile bottom navigation
 - Web push notifications
+
+---
+
+## 🚀 Instalasi - Web
+
+### Prasyarat
+- PHP 8.2+, Composer 2+, Node.js 18+
+
+### Langkah Instalasi
+
+```bash
+# 1. Clone repo
+git clone https://github.com/gerrard046/ScheApp-by-Gerrard.git
+cd ScheApp-by-Gerrard
+
+# 2. Install dependensi
+composer install
+npm install
+
+# 3. Konfigurasi environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Jalankan migrasi database
+php artisan migrate
+
+# 5. Jalankan server
+php artisan serve
+# Akses: http://127.0.0.1:8000
+```
+
+### Environment Google Calendar (opsional)
+```env
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-secret
+GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
+```
+> Setup di [Google Cloud Console](https://console.cloud.google.com/) → OAuth 2.0 Credentials → Web Application
+
+---
+
+## 📖 Panduan Penggunaan
+
+### 1. Daftar & Login
+
+1. Buka aplikasi → klik **Daftar sekarang**
+2. Isi nama, email, dan password
+
+> ⚠️ **Syarat password:** Minimal 8 karakter, harus mengandung huruf besar, huruf kecil, angka, dan simbol.
+> Contoh yang valid: `ScheApp@2024`
+
+3. User pertama yang mendaftar otomatis menjadi **Admin**
+4. User berikutnya mendaftar sebagai **User** biasa
+
+---
+
+### 2. Manajemen Jadwal (`/schedules`)
+
+Ini adalah halaman utama. Di sini kamu bisa melihat, membuat, dan mengelola semua jadwal.
+
+**Membuat jadwal baru:**
+1. Klik tombol **+ Tambah Jadwal** (pojok kanan atas)
+2. Isi form: nama aktivitas, tanggal, waktu, kategori, prioritas
+3. Klik **Simpan**
+
+**Menyelesaikan jadwal:**
+- Klik tombol ✓ di sebelah jadwal → status berubah jadi selesai dan kamu mendapat XP
+
+**Menghapus jadwal:**
+- Klik ikon 🗑️ → konfirmasi hapus
+
+**Filter & Grup:**
+- Gunakan dropdown grup untuk menyaring jadwal berdasarkan kelompok
+- Kanban view tersedia di `/kanban` untuk tampilan per status
+
+---
+
+### 3. Time-Block Calendar (`/calendar`)
+
+Tampilan kalender interaktif bergaya Google Calendar.
+
+**Membuat event baru:**
+- **Cara 1:** Klik langsung pada slot waktu kosong di kalender
+- **Cara 2:** Klik tombol **+ Event** di pojok kanan atas
+- Isi judul, pilih warna, kategori, prioritas → **Simpan**
+
+**Menggeser jadwal (reschedule):**
+- **Drag & drop** event ke slot waktu yang diinginkan
+- Perubahan otomatis tersimpan ke database
+
+**Mengubah durasi:**
+- **Resize** bagian bawah event ke atas/bawah
+- Perubahan otomatis tersimpan
+
+**Mengedit event:**
+- Klik event → muncul popup detail
+- Klik **Edit** untuk buka form edit lengkap
+
+**Menghapus event:**
+- Klik event → klik tombol **Hapus** di popup
+
+---
+
+### 4. Google Calendar Sync (`/calendar`)
+
+Hubungkan ScheApp dengan akun Google Calendar kamu.
+
+**Menghubungkan akun Google:**
+1. Di halaman Calendar, klik tombol **Hubungkan Google**
+2. Pilih akun Google → izinkan akses kalender
+3. Kamu akan diarahkan kembali ke ScheApp
+
+**Sync jadwal dari Google ke ScheApp:**
+1. Klik tombol **Sync dari Google**
+2. Event dari Google Calendar 30 hari lalu hingga 90 hari ke depan akan otomatis masuk
+
+**Push jadwal ke Google:**
+- Setiap jadwal baru yang dibuat di ScheApp otomatis dikirim ke Google Calendar (selama akun sudah terhubung)
+
+**Memutus koneksi Google:**
+- Klik tombol **Putus Koneksi** → token dihapus dari sistem
+
+---
+
+### 5. Dompet Digital (`/wallet`)
+
+Catat pemasukan dan pengeluaran harian kamu.
+
+**Top Up saldo:**
+1. Klik **Top Up**
+2. Masukkan nominal (minimal Rp 1.000) dan keterangan
+3. Klik **Simpan**
+
+**Catat pemasukan:**
+1. Klik **+ Pemasukan**
+2. Isi nominal, kategori, keterangan
+3. Klik **Simpan** → saldo bertambah
+
+**Catat pengeluaran:**
+1. Klik **- Pengeluaran**
+2. Isi nominal, kategori, keterangan
+3. Klik **Simpan** → saldo berkurang otomatis
+4. ⚠️ Jika saldo tidak cukup, transaksi ditolak
+
+**Menghapus transaksi:**
+- Klik ikon 🗑️ di baris transaksi → saldo disesuaikan otomatis
+
+---
+
+### 6. Manajemen Grup (`/groups`)
+
+Fitur kolaborasi untuk tim/kelompok.
+
+**Membuat grup (Admin only):**
+1. Klik **+ Buat Grup**
+2. Masukkan nama grup (minimal 3 karakter)
+3. Klik **Buat**
+
+**Menambah anggota (Admin only):**
+1. Klik grup yang ingin dikelola
+2. Pilih nama user dari dropdown
+3. Klik **Tambah Anggota**
+
+**Upload materi/file:**
+1. Di dalam halaman grup, klik **Upload Materi**
+2. Masukkan judul dan pilih file
+3. File yang diterima: PDF, Word, Excel, PowerPoint, gambar, ZIP (max 10MB)
+4. Klik **Upload**
+
+**Download materi:**
+- Klik tombol **Download** di sebelah nama file
+
+---
+
+### 7. Profil & Gamifikasi (`/profile`)
+
+Lihat perkembangan dan pencapaian kamu.
+
+- **XP & Level** — setiap tugas selesai menambah XP, kumpulkan cukup XP untuk naik level
+- **Streak** — selesaikan tugas setiap hari untuk mempertahankan streak
+- **Badge** — unlock badge berdasarkan pencapaian (10 tugas, 7 hari streak, dll)
+- **Combo** — selesaikan beberapa tugas berturut-turut untuk bonus XP
+
+**Edit profil:**
+1. Klik tab **Edit Profil**
+2. Ubah nama, bio, atau warna avatar
+3. Klik **Simpan**
+
+---
+
+### 8. Admin Dashboard (`/admin/insights`)
+
+Hanya bisa diakses oleh user dengan role **Admin**.
+
+- Lihat statistik penggunaan semua user
+- Analitik jadwal, penyelesaian, dan aktivitas
+- Export laporan ke PDF
+
+---
+
+### 9. Install sebagai Aplikasi (PWA)
+
+**Di Android (Chrome):**
+1. Buka ScheApp di Chrome
+2. Tap ⋮ (titik tiga) → **"Tambahkan ke layar utama"** atau **"Install App"**
+3. ScheApp muncul di homescreen — bisa dibuka fullscreen tanpa browser
+
+**Di iOS (Safari):**
+1. Buka ScheApp di Safari
+2. Tap ikon **Share** (kotak dengan panah ke atas)
+3. Pilih **"Add to Home Screen"**
+
+**Di Desktop (Chrome/Edge):**
+1. Lihat ikon install di address bar (pojok kanan)
+2. Klik → **Install**
+
+---
+
+## 📱 Instalasi - Mobile (PWA & Android Studio)
+
+### Opsi 1: PWA (Langsung dari Browser) — Paling Mudah
+Ikuti langkah di bagian [Install sebagai Aplikasi](#9-install-sebagai-aplikasi-pwa) di atas.
+
+### Opsi 2: APK via Capacitor + Android Studio
+
+#### Prasyarat
+- Android Studio (Hedgehog atau lebih baru)
+- Node.js 18+, Android SDK 33+
+
+#### Langkah
+```bash
+# 1. Install Capacitor
+npm install @capacitor/core @capacitor/cli @capacitor/android
+
+# 2. Init Capacitor (isi App Name: ScheApp Pro, Package ID: com.poltek.scheapp)
+npx cap init
+
+# 3. Build web assets
+npm run build
+
+# 4. Tambah platform Android
+npx cap add android
+
+# 5. Copy web assets ke native
+npx cap sync
+
+# 6. Buka di Android Studio
+npx cap open android
+```
+
+> Di Android Studio: **Build → Build Bundle(s) / APK(s) → Build APK(s)** untuk menghasilkan file `.apk`.
 
 ---
 
@@ -195,7 +454,7 @@ sequenceDiagram
 1. **Analisis Kebutuhan** — identifikasi kebutuhan penjadwalan akademik
 2. **Desain Sistem** — ERD, wireframe, arsitektur API
 3. **Implementasi** — Laravel backend + Alpine.js frontend
-4. **Uji Coba** — Black-Box Testing fungsional
+4. **Pengujian** — PHPUnit Feature & Unit Tests, Black-Box Testing
 5. **Deployment** — GitHub Codespaces + PWA
 
 ---
@@ -208,7 +467,7 @@ sequenceDiagram
 | Framework | Laravel 12 |
 | Bahasa | PHP 8.2+ |
 | Database | SQLite (default) / MySQL 8.0+ |
-| Auth | Laravel Breeze (session) |
+| Auth | Laravel Session Auth |
 | Google API | `google/apiclient:^2.15` |
 | Enkripsi token | Laravel `encrypt()` / `decrypt()` |
 
@@ -235,35 +494,61 @@ sequenceDiagram
 
 ```text
 ScheApp-by-Gerrard/
+├── .github/workflows/
+│   └── ci.yml                             # GitHub Actions CI pipeline
 ├── app/
-│   ├── Http/Controllers/
-│   │   ├── ScheduleController.php     # CRUD jadwal + FullCalendar API
-│   │   ├── GoogleCalendarController.php # OAuth2 flow + sync
-│   │   ├── WalletController.php       # Dompet digital
-│   │   └── GroupController.php        # Manajemen tim
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php         # Login, register, logout + audit log
+│   │   │   ├── ScheduleController.php     # CRUD jadwal + FullCalendar API
+│   │   │   ├── GoogleCalendarController.php # OAuth2 flow + sync
+│   │   │   ├── WalletController.php       # Dompet digital
+│   │   │   ├── GroupController.php        # Manajemen tim
+│   │   │   └── SubTaskController.php      # Sub-task CRUD
+│   │   └── Middleware/
+│   │       ├── SecurityHeaders.php        # OWASP A05 — HTTP security headers
+│   │       └── IsAdmin.php               # Role-based access control
 │   ├── Models/
-│   │   ├── Schedule.php               # toCalendarEvent(), resolveEventColor()
-│   │   └── User.php                   # XP, level, google tokens
+│   │   ├── Schedule.php                   # toCalendarEvent(), resolveEventColor()
+│   │   ├── User.php                       # XP, level, google tokens
+│   │   ├── AuditLog.php                   # OWASP A09 — security logging
+│   │   └── WalletTransaction.php
+│   ├── Providers/
+│   │   └── AppServiceProvider.php         # Rate limiters, HTTPS, OWASP config
 │   └── Services/
-│       └── GoogleCalendarService.php  # Push/pull Google Calendar
-├── config/
-│   └── google.php                     # Client ID, Secret, Scopes
-├── database/migrations/
-│   ├── ..._create_schedules_table.php
-│   ├── ..._add_timeblock_columns_to_schedules_table.php  # start/end datetime, color, dll
-│   └── ..._add_google_tokens_to_users_table.php
+│       └── GoogleCalendarService.php      # Push/pull Google Calendar
+├── database/
+│   ├── factories/
+│   │   ├── UserFactory.php
+│   │   └── ScheduleFactory.php
+│   └── migrations/
 ├── public/
-│   ├── manifest.json                  # PWA manifest
-│   ├── service-worker.js              # Offline & caching strategy
-│   └── icons/icon.svg                 # App icon
+│   ├── manifest.json                      # PWA manifest
+│   ├── service-worker.js                  # Offline & caching strategy
+│   ├── robots.txt                         # Block private routes from indexing
+│   └── icons/icon.svg                     # App icon
 ├── resources/views/
-│   ├── layouts/app.blade.php          # Layout utama + mobile nav
+│   ├── layouts/app.blade.php              # Layout utama + mobile nav
+│   ├── auth/
+│   │   ├── login.blade.php
+│   │   └── register.blade.php
+│   ├── errors/
+│   │   ├── 403.blade.php                  # Akses ditolak
+│   │   ├── 404.blade.php                  # Halaman tidak ditemukan
+│   │   └── 500.blade.php                  # Server error
 │   ├── schedules/
-│   │   ├── index.blade.php            # Dashboard jadwal
-│   │   └── calendar.blade.php         # Time-Block Calendar
-│   └── wallet/                        # Dompet digital views
-├── routes/web.php                     # Semua route web + API kalender
-└── .env.example                       # Template env (termasuk GOOGLE_*)
+│   │   ├── index.blade.php                # Dashboard jadwal
+│   │   └── calendar.blade.php             # Time-Block Calendar
+│   └── wallet/                            # Dompet digital views
+├── routes/web.php                         # Semua route + throttle middleware
+└── tests/
+    ├── Feature/
+    │   ├── AuthTest.php                   # Login, register, logout
+    │   ├── ScheduleTest.php               # CRUD + ownership check
+    │   ├── SecurityHeadersTest.php        # Verifikasi OWASP headers
+    │   └── WalletTest.php                 # Transaksi keuangan
+    └── Unit/
+        └── AuditLogTest.php               # Security logging
 ```
 
 ---
@@ -274,8 +559,9 @@ ScheApp-by-Gerrard/
 ┌──────────────────────────────────────────┐
 │               USERS                      │
 ├──────────────────────────────────────────┤
-│ id, name, email, password                │
-│ xp, level, streak                        │
+│ id, name, email, password (bcrypt)       │
+│ role (admin/user)                        │
+│ xp, level, streak, combo_count           │
 │ google_access_token (encrypted)          │
 │ google_refresh_token (encrypted)         │
 │ google_token_expires_at                  │
@@ -296,9 +582,12 @@ ScheApp-by-Gerrard/
 └──────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────┐
-│               GROUPS                     │
+│             AUDIT_LOGS                   │
 ├──────────────────────────────────────────┤
-│ id, name, admin_id (FK)                  │
+│ id, user_id (FK nullable)                │
+│ event, description                       │
+│ ip_address, user_agent                   │
+│ metadata (JSON), created_at              │
 └──────────────────────────────────────────┘
 
 ┌──────────────────────────────────────────┐
@@ -306,93 +595,12 @@ ScheApp-by-Gerrard/
 ├──────────────────────────────────────────┤
 │ id, user_id (FK)                         │
 │ type (income/expense), amount            │
-│ category, description, date              │
+│ category, description                    │
 └──────────────────────────────────────────┘
 ```
 
 **Priority:** `low` · `med` · `high`
 **Status:** Aktif · Menunggu Verifikasi · Verified · Selesai · Terlewat
-
----
-
-## 🚀 Instalasi - Web
-
-### Prasyarat
-- PHP 8.2+, Composer 2+, Node.js 18+
-
-### Langkah Instalasi
-
-```bash
-# 1. Clone repo
-git clone https://github.com/gerrard046/ScheApp-by-Gerrard.git
-cd ScheApp-by-Gerrard
-
-# 2. Install dependensi
-composer install
-npm install
-
-# 3. Konfigurasi environment
-cp .env.example .env
-php artisan key:generate
-
-# 4. Jalankan migrasi
-php artisan migrate
-
-# 5. (Opsional) Google Calendar Sync
-composer require google/apiclient:^2.15
-# Isi GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET di .env
-
-# 6. Jalankan server
-php artisan serve
-# Akses: http://127.0.0.1:8000
-```
-
-### Environment Google Calendar (opsional)
-```env
-GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-secret
-GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
-```
-> Setup di [Google Cloud Console](https://console.cloud.google.com/) → OAuth 2.0 Credentials → Web Application
-
----
-
-## 📱 Instalasi - Mobile (PWA & Android Studio)
-
-### Opsi 1: PWA (Langsung dari Browser) — Paling Mudah
-1. Buka ScheApp di **Chrome Android**
-2. Tap ⋮ (titik tiga) → **"Add to Home Screen"** atau **"Install App"**
-3. ScheApp muncul di homescreen — fullscreen, tanpa address bar
-4. Shortcuts tersedia: Jadwal, Kalender, Dompet
-
-### Opsi 2: APK via Capacitor + Android Studio
-
-#### Prasyarat
-- Android Studio (Hedgehog atau lebih baru)
-- Node.js 18+, Android SDK 33+
-
-#### Langkah
-```bash
-# 1. Install Capacitor
-npm install @capacitor/core @capacitor/cli @capacitor/android
-
-# 2. Init Capacitor (isi App Name: ScheApp Pro, Package ID: com.poltek.scheapp)
-npx cap init
-
-# 3. Build web assets
-npm run build
-
-# 4. Tambah platform Android
-npx cap add android
-
-# 5. Copy web assets ke native
-npx cap sync
-
-# 6. Buka di Android Studio
-npx cap open android
-```
-
-> Di Android Studio: **Build → Build Bundle(s) / APK(s) → Build APK(s)** untuk menghasilkan file `.apk`.
 
 ---
 
@@ -402,17 +610,16 @@ npx cap open android
 | Method | Endpoint | Deskripsi |
 |---|---|---|
 | POST | `/register` | Daftar akun baru |
-| POST | `/login` | Login |
+| POST | `/login` | Login (throttle: 5x/menit) |
 | POST | `/logout` | Logout |
 
-### Jadwal — CRUD Klasik
+### Jadwal — CRUD
 | Method | Endpoint | Deskripsi |
 |---|---|---|
 | GET | `/schedules` | Dashboard jadwal |
 | POST | `/schedules` | Buat jadwal baru |
-| GET | `/schedules/{id}/edit` | Form edit |
 | POST | `/schedules/{id}/toggle` | Toggle selesai |
-| DELETE | `/schedules/{id}` | Hapus jadwal |
+| DELETE | `/schedules/{id}` | Hapus jadwal (owner/admin) |
 
 ### Kalender — FullCalendar AJAX API
 | Method | Endpoint | Deskripsi |
@@ -431,47 +638,95 @@ npx cap open android
 | POST | `/google/sync` | Pull dari Google Calendar |
 | POST | `/google/disconnect` | Putus koneksi Google |
 
-### Grup & Admin
-| Method | Endpoint | Deskripsi |
-|---|---|---|
-| GET | `/groups` | Daftar grup |
-| POST | `/groups` | Buat grup baru |
-| GET | `/admin/insights` | Dashboard analitik admin |
-
 ### Dompet Digital
 | Method | Endpoint | Deskripsi |
 |---|---|---|
 | GET | `/wallet` | Dashboard dompet |
-| POST | `/wallet/transactions` | Catat transaksi |
-| DELETE | `/wallet/transactions/{id}` | Hapus transaksi |
+| POST | `/wallet/topup` | Tambah saldo |
+| POST | `/wallet/income` | Catat pemasukan |
+| POST | `/wallet/expense` | Catat pengeluaran |
+| DELETE | `/wallet/{id}` | Hapus transaksi (owner only) |
+
+### Grup & Admin
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/groups` | Daftar grup |
+| POST | `/groups` | Buat grup baru (admin) |
+| POST | `/groups/{id}/add-member` | Tambah anggota (admin) |
+| GET | `/admin/insights` | Dashboard analitik (admin) |
 
 ---
 
-## 📋 User Stories
+## 🔒 Keamanan (OWASP)
 
-### Web
-- Sebagai **mahasiswa**, saya ingin melihat jadwal dalam tampilan kalender mingguan agar bisa merencanakan waktu secara visual.
-- Sebagai **pengguna**, saya ingin drag-and-drop event di kalender agar bisa reschedule tanpa membuka form edit.
-- Sebagai **pengguna**, saya ingin sinkronisasi dengan Google Calendar agar jadwal akademik dan personal terintegrasi.
-- Sebagai **pengguna**, saya ingin mencatat pengeluaran harian di dompet digital agar bisa memantau keuangan.
-- Sebagai **admin**, saya ingin mem-broadcast tugas grup agar tim tidak ketinggalan jadwal penting.
+ScheApp Pro menerapkan standar **OWASP Secure Coding Practices**:
 
-### Mobile
-- Sebagai **mahasiswa**, saya ingin menginstall ScheApp di homescreen HP agar bisa akses cepat seperti native app.
-- Sebagai **pengguna**, saya ingin app tetap bisa digunakan saat sinyal lemah berkat offline cache.
-- Sebagai **admin**, saya ingin melakukan verifikasi tugas anggota langsung dari HP.
+| OWASP | Implementasi |
+|---|---|
+| A01 — Broken Access Control | Ownership check setiap operasi delete/update, role-based middleware |
+| A02 — Cryptographic Failures | Bcrypt password, `encrypt()` untuk Google tokens, HTTPS di production |
+| A05 — Security Misconfiguration | `SecurityHeaders` middleware: CSP, X-Frame-Options, HSTS, nosniff |
+| A07 — Auth Failures | Rate limiting login (5x/menit), password complexity (upper+lower+number+symbol+uncompromised) |
+| A09 — Security Logging | `AuditLog` model: catat login, gagal login, logout, hapus jadwal, akses tidak sah |
+
+**HTTP Security Headers yang aktif:**
+- `X-Frame-Options: SAMEORIGIN`
+- `X-Content-Type-Options: nosniff`
+- `Content-Security-Policy` (whitelist CDN)
+- `Referrer-Policy: strict-origin-when-cross-origin`
+- `Permissions-Policy` (disable camera, mic, geolocation)
+- `Strict-Transport-Security` (production only)
+- `Cache-Control: no-store` (semua HTML response)
 
 ---
 
 ## 🧪 Testing
 
+### Menjalankan Tests
+
 ```bash
 # Jalankan semua test
 php artisan test
 
-# Test dengan coverage (butuh Xdebug)
-php artisan test --coverage
+# Jalankan dengan output detail
+php artisan test --verbose
+
+# Jalankan test spesifik
+php artisan test --filter AuthTest
+php artisan test --filter ScheduleTest
+php artisan test --filter SecurityHeadersTest
+php artisan test --filter WalletTest
 ```
+
+### Cakupan Tests
+
+| File | Yang Diuji |
+|---|---|
+| `AuthTest` | Login, register, logout, password complexity, generic error, first user = admin |
+| `ScheduleTest` | CRUD, ownership check, kalender API hanya return jadwal sendiri |
+| `SecurityHeadersTest` | Semua OWASP headers (CSP, X-Frame-Options, Cache-Control, dll) |
+| `WalletTest` | Top up, income, expense, cegah akses transaksi user lain |
+| `AuditLogTest` | `record()`, metadata JSON, truncate user-agent panjang |
+
+### CI/CD
+
+Setiap push ke `main` otomatis menjalankan:
+1. Install PHP 8.2 + dependencies
+2. Run seluruh PHPUnit test suite (SQLite in-memory)
+3. `composer audit` untuk cek kerentanan dependency
+
+Status CI dapat dilihat di tab **[Actions](https://github.com/gerrard046/ScheApp-by-Gerrard/actions)**.
+
+---
+
+## 📋 User Stories
+
+- Sebagai **mahasiswa**, saya ingin melihat jadwal dalam tampilan kalender mingguan agar bisa merencanakan waktu secara visual.
+- Sebagai **pengguna**, saya ingin drag-and-drop event di kalender agar bisa reschedule tanpa membuka form edit.
+- Sebagai **pengguna**, saya ingin sinkronisasi dengan Google Calendar agar jadwal akademik dan personal terintegrasi.
+- Sebagai **pengguna**, saya ingin mencatat pengeluaran harian di dompet digital agar bisa memantau keuangan.
+- Sebagai **admin**, saya ingin mem-broadcast tugas grup agar tim tidak ketinggalan jadwal penting.
+- Sebagai **mahasiswa**, saya ingin menginstall ScheApp di homescreen HP agar bisa akses cepat seperti native app.
 
 ---
 
