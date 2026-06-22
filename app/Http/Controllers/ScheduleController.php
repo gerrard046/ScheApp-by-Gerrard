@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
 use App\Models\Schedule;
 use App\Models\User;
-use App\Notifications\GeneralNotification;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
-
 use App\Models\ZenSession;
+use App\Notifications\GeneralNotification;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
@@ -526,11 +526,23 @@ class ScheduleController extends Controller
     }
 
     // 5. Hapus Jadwal
+    // OWASP A01 — Broken Access Control: pastikan hanya pemilik/admin yg bisa hapus
     public function destroy($id) {
         $schedule = Schedule::find($id);
         if (!$schedule) {
             return redirect()->back()->withErrors('Data tidak ditemukan');
         }
+
+        $user = auth()->user();
+        if ($schedule->user_id !== $user->id && $user->role !== 'admin') {
+            AuditLog::record('unauthorized_delete', 'Percobaan hapus jadwal orang lain', [
+                'schedule_id' => $id,
+                'owner_id'    => $schedule->user_id,
+            ]);
+            abort(403, 'Kamu tidak punya izin menghapus jadwal ini.');
+        }
+
+        AuditLog::record('schedule_delete', 'Jadwal dihapus', ['schedule_id' => $id, 'activity' => $schedule->activity_name]);
         $schedule->delete();
         return redirect()->back()->with('success', 'Jadwal berhasil dihapus!');
     }
