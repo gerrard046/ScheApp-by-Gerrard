@@ -31,10 +31,12 @@ class SecurityHeaders
         // Batasi akses fitur browser yang tidak dipakai (OWASP A05)
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
 
-        // CSP — izinkan CDN yang dipakai (FullCalendar, Alpine.js, Google Fonts)
+        // CSP — Alpine.js & axios kini di-host lokal (public/js), jadi cukup 'self'.
+        // 'unsafe-eval' WAJIB untuk Alpine.js v3 (mengevaluasi ekspresi x-data/x-bind).
+        // Tanpa itu, semua komponen Alpine gagal jalan & halaman tampak kosong.
         $csp = implode('; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' cdn.jsdelivr.net",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net",
             "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net fonts.googleapis.com",
             "font-src 'self' fonts.gstatic.com",
             "img-src 'self' data: blob:",
