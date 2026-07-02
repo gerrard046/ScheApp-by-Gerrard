@@ -167,7 +167,10 @@
     }
 </style>
 
-<div class="arctic-cal" x-data="calendarApp(@json($events))" x-cloak>
+{{-- PENTING: atribut x-data pakai kutip TUNGGAL karena @json menghasilkan
+     tanda kutip ganda (") — kalau atributnya juga kutip ganda, HTML-nya putus
+     begitu ada event, dan seluruh kalender gagal render. --}}
+<div class="arctic-cal" x-data='calendarApp(@json($events))' x-cloak>
 
     {{-- ===== Header: navigasi + label periode + switch tampilan ===== --}}
     <div class="cal-header glass">
