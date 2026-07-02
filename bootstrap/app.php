@@ -14,6 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // OWASP A05 — Security headers di setiap response
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
+        // WAJIB untuk hosting (Laravel Cloud/Railway/Render dkk): aplikasi
+        // berjalan di balik reverse proxy, jadi Laravel harus mempercayai
+        // header X-Forwarded-* agar HTTPS terdeteksi benar. Tanpa ini,
+        // cookie session/CSRF rusak di production -> error 419.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
