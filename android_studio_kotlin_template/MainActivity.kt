@@ -4,37 +4,67 @@ import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : ComponentActivity() {
+/**
+ * ScheApp — WebView wrapper.
+ *
+ * URL server TIDAK di-hardcode: dibaca dari BuildConfig.BASE_URL yang
+ * di-generate dari local.properties (lihat build.gradle.kts). Dengan begitu
+ * tiap developer/perangkat bisa punya URL sendiri tanpa mengubah kode:
+ *   - Emulator : scheapp.baseUrl=http://10.0.2.2:8000
+ *   - HP fisik : scheapp.baseUrl=http://192.168.x.x:8000 (IP laptop, cek ipconfig)
+ */
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var webView: WebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Membuat WebView secara dinamis
-        val webView = WebView(this)
-        
+        val baseUrl = resolveBaseUrl()
+
+        webView = WebView(this)
+
         val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.domStorageEnabled = true
+        settings.javaScriptEnabled = true      // wajib: app pakai Alpine.js
+        settings.domStorageEnabled = true      // wajib: session & localStorage
         settings.loadWithOverviewMode = true
         settings.useWideViewPort = true
         settings.builtInZoomControls = false
         settings.displayZoomControls = false
-        
-        // Agar link tetap terbuka di dalam aplikasi
+
+        // Link tetap terbuka di dalam aplikasi, bukan lompat ke Chrome
         webView.webViewClient = WebViewClient()
 
         setContentView(webView)
-
-        // GANTI DENGAN IP LAPTOP KONTROLER JIKA PAKAI HP ASLI
-        // Jika pakai emulator, gunakan http://10.0.2.2:8000/schedules
-        webView.loadUrl("http://10.0.2.2:8000/schedules")
+        webView.loadUrl(baseUrl)
     }
 
-    // Menangani tombol back agar kembali ke halaman sebelumnya di web, bukan keluar app
+    /**
+     * Ambil URL dari BuildConfig; kalau developer lupa mengisi
+     * local.properties, langsung gagal dengan pesan yang jelas —
+     * lebih baik crash informatif daripada layar putih misterius.
+     */
+    private fun resolveBaseUrl(): String {
+        val url = BuildConfig.BASE_URL
+        check(url.isNotBlank()) {
+            """
+            BASE_URL belum dikonfigurasi!
+
+            Buka file local.properties di root project, tambahkan:
+                scheapp.baseUrl=http://10.0.2.2:8000
+
+            (Contoh lengkap ada di local.properties.example)
+            Lalu Sync Project with Gradle Files dan jalankan ulang.
+            """.trimIndent()
+        }
+        return url
+    }
+
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        val webView = contentView as? WebView
-        if (webView?.canGoBack() == true) {
+        if (webView.canGoBack()) {
             webView.goBack()
         } else {
             super.onBackPressed()

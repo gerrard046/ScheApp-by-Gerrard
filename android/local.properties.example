@@ -1,0 +1,13 @@
+# ============================================================
+# ScheApp Android — konfigurasi lokal (copy jadi local.properties)
+# ============================================================
+# File local.properties TIDAK ikut ke git. Android Studio otomatis
+# membuatnya (berisi sdk.dir) saat project pertama kali dibuka —
+# kamu tinggal menambahkan baris scheapp.baseUrl di bawahnya.
+#
+# URL server Laravel:
+#   Emulator          -> http://10.0.2.2:8000   (default, boleh dikosongi)
+#   HP fisik (1 WiFi) -> http://IP_LAPTOP:8000  (cek: ipconfig)
+#   Production        -> https://scheapp.domainmu.com
+
+scheapp.baseUrl=http://10.0.2.2:8000

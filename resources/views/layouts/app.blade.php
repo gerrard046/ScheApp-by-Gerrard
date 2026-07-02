@@ -368,8 +368,11 @@
             100% { opacity: 1; transform: translateY(0); }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- Library di-host lokal (public/js) supaya aplikasi tetap jalan tanpa
+         internet — penting untuk WebView Android & jaringan kampus yang
+         memblokir CDN. Tanpa Alpine.js, semua halaman interaktif jadi kosong. --}}
+    <script src="{{ asset('js/axios.min.js') }}"></script>
+    <script defer src="{{ asset('js/alpine.min.js') }}"></script>
 </head>
 <body x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))">
     <nav class="navbar-custom">

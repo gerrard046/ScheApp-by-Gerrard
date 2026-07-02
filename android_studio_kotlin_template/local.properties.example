@@ -1,0 +1,21 @@
+# ============================================================
+# ScheApp — Template konfigurasi lokal Android
+# ============================================================
+# CARA PAKAI:
+#   1. Copy file ini menjadi `local.properties` di ROOT project Android
+#      (folder yang sama dengan settings.gradle.kts)
+#   2. Sesuaikan nilainya dengan mesinmu
+#   3. Android Studio: File -> Sync Project with Gradle Files
+#
+# CATATAN: local.properties TIDAK ikut ke git (ada di .gitignore),
+# jadi tiap developer aman punya konfigurasi masing-masing.
+# ============================================================
+
+# Path Android SDK (biasanya otomatis diisi Android Studio)
+# sdk.dir=C\:\\Users\\NAMAMU\\AppData\\Local\\Android\\Sdk
+
+# URL server Laravel ScheApp:
+#   - Emulator Android  -> http://10.0.2.2:8000  (alamat khusus ke localhost laptop)
+#   - HP fisik (1 WiFi) -> http://IP_LAPTOP:8000 (cek dengan: ipconfig)
+#   - Server production -> https://scheapp.domainmu.com
+scheapp.baseUrl=http://10.0.2.2:8000

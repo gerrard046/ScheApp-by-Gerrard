@@ -6,10 +6,10 @@ plugins {
 }
 
 // ============================================================
-// Baca URL server dari local.properties (TIDAK ikut ke git).
-// Contoh isi local.properties:
+// URL server dibaca dari local.properties (tidak ikut ke git).
 //   scheapp.baseUrl=http://10.0.2.2:8000
-// Lihat local.properties.example untuk template lengkap.
+// Kalau kosong: build debug fallback ke http://10.0.2.2:8000
+// (emulator), build release WAJIB diisi (app menolak jalan).
 // ============================================================
 val localProps = Properties().apply {
     val file = rootProject.file("local.properties")
@@ -20,24 +20,20 @@ val localProps = Properties().apply {
 val scheappBaseUrl: String = localProps.getProperty("scheapp.baseUrl") ?: ""
 
 android {
-    namespace = "com.example.scheapp"
-    compileSdk = 34
+    namespace = "com.gerrard.scheapp"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.scheapp"
+        applicationId = "com.gerrard.scheapp"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
-        // Expose ke BuildConfig.BASE_URL — bisa dibaca dari kode Kotlin
         buildConfigField("String", "BASE_URL", "\"$scheappBaseUrl\"")
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
-        // Wajib true agar buildConfigField di atas di-generate (AGP 8+ defaultnya mati)
         buildConfig = true
     }
 
@@ -51,17 +47,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
 }
