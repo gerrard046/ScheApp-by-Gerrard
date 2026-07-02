@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fullscreen tanpa ActionBar — seluruh UI dirender oleh web -->
+    <style name="Theme.ScheApp" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>

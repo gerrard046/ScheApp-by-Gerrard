@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kebijakan jaringan RELEASE (default): semua trafik wajib HTTPS.
+    HTTP polos hanya diizinkan ke alamat development lokal di bawah.
+    (Saat build DEBUG, file ini ditimpa versi longgar di src/debug.)
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Emulator Android -> localhost laptop -->
+        <domain includeSubdomains="false">10.0.2.2</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+</network-security-config>

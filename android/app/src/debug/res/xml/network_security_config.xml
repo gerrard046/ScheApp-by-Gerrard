@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Kebijakan jaringan DEBUG: HTTP polos diizinkan ke mana saja,
+    supaya bisa tes ke IP WiFi laptop (mis. http://192.168.1.10:8000)
+    tanpa mengubah konfigurasi. TIDAK berlaku di build release.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

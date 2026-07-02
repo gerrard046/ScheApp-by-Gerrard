@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tidak Bisa Terhubung</title>
+<style>
+    body {
+        margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: linear-gradient(180deg, #F5FAFE, #EAF4FB); color: #2E4057;
+    }
+    .card {
+        text-align: center; padding: 40px 28px; margin: 20px; max-width: 340px;
+        background: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.6);
+        border-radius: 22px; box-shadow: 0 10px 40px rgba(46,64,87,0.12);
+    }
+    .emoji { font-size: 56px; }
+    h1 { font-size: 20px; margin: 14px 0 8px; }
+    p { font-size: 14px; color: #5E7689; line-height: 1.6; margin: 0 0 22px; }
+    button {
+        border: none; cursor: pointer; padding: 13px 30px; border-radius: 12px;
+        font-size: 15px; font-weight: 800; color: #fff;
+        background: linear-gradient(135deg, #3E88D6, #2E6DA4);
+        box-shadow: 0 8px 20px rgba(62,136,214,0.4);
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <div class="emoji">&#10052;&#65039;</div>
+        <h1>Tidak Bisa Terhubung ke Server</h1>
+        <p>
+            Pastikan server Laravel sedang berjalan di laptop:<br>
+            <code>php artisan serve --host=0.0.0.0</code><br>
+            lalu coba lagi.
+        </p>
+        <button onclick="history.back()">Coba Lagi</button>
+    </div>
+</body>
+</html>
