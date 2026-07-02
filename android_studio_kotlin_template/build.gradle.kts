@@ -1,7 +1,23 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+// ============================================================
+// Baca URL server dari local.properties (TIDAK ikut ke git).
+// Contoh isi local.properties:
+//   scheapp.baseUrl=http://10.0.2.2:8000
+// Lihat local.properties.example untuk template lengkap.
+// ============================================================
+val localProps = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use { load(it) }
+    }
+}
+val scheappBaseUrl: String = localProps.getProperty("scheapp.baseUrl") ?: ""
 
 android {
     namespace = "com.example.scheapp"
@@ -14,7 +30,15 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        // Expose ke BuildConfig.BASE_URL — bisa dibaca dari kode Kotlin
+        buildConfigField("String", "BASE_URL", "\"$scheappBaseUrl\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        // Wajib true agar buildConfigField di atas di-generate (AGP 8+ defaultnya mati)
+        buildConfig = true
     }
 
     buildTypes {
