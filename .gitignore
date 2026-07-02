@@ -1,24 +1,72 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+# ==============================================
+# ScheApp — Laravel 11 + Android (monorepo)
+# ==============================================
+
+# ---------- Laravel ----------
+/vendor
 /node_modules
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
+.phpunit.result.cache
+/.phpunit.cache
 Homestead.json
 Homestead.yaml
+auth.json
+
+# Environment & secrets (JANGAN pernah commit!)
+.env
+.env.backup
+.env.production
+.env.*.local
+
+# Database lokal
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# ---------- Android / Kotlin ----------
+# Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Konfigurasi lokal per-mesin (berisi SDK path & URL server)
+local.properties
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+.navigation/
+
+# Keystore / signing (JANGAN pernah commit!)
+*.jks
+*.keystore
+key.properties
+
+# ---------- Editor & OS ----------
+/.fleet
+/.nova
+/.vscode
+/.zed
+.phpactor.json
+.DS_Store
 Thumbs.db
+desktop.ini
+
+# ---------- Log & artefak ----------
+*.log
+npm-debug.log*
+yarn-error.log
+
+# ---------- Paket binary yang tidak perlu di repo ----------
+*.deb
+*.rpm
+*.zip
+*.tar.gz
